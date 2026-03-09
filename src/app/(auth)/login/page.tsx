@@ -1,0 +1,163 @@
+"use client";
+
+import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import Link from "next/link";
+import { Loader2 } from "lucide-react";
+
+function LoginContent() {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/feed";
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  // 이메일/비밀번호 로그인
+  const handleCredentialsLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (!email || !password) {
+      setError("이메일과 비밀번호를 입력해주세요.");
+      return;
+    }
+
+    setLoading(true);
+
+    const result = await signIn("credentials", {
+      email,
+      password,
+      callbackUrl,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      setError("이메일 또는 비밀번호가 올바르지 않습니다.");
+      setLoading(false);
+      return;
+    }
+
+    window.location.href = callbackUrl;
+  };
+
+  // 구글 로그인
+  const handleGoogleLogin = () => {
+    setGoogleLoading(true);
+    signIn("google", { callbackUrl: "/feed" });
+  };
+
+  return (
+    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4">
+      <div className="w-full max-w-md space-y-8">
+        {/* 로고 */}
+        <div className="text-center space-y-3">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-[#ff3d7f] to-[#c084fc] bg-clip-text text-transparent">
+            FanMaker
+          </h1>
+          <p className="text-gray-400 text-lg">K-pop 팬 창작 플랫폼</p>
+          <p className="text-gray-500 text-sm">
+            AI로 나만의 K-pop 콘텐츠를 만들어보세요
+          </p>
+        </div>
+
+        {/* 이메일/비밀번호 로그인 */}
+        <form onSubmit={handleCredentialsLogin} className="space-y-4 pt-4">
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-sm px-4 py-3 rounded-xl">
+              {error}
+            </div>
+          )}
+
+          <div>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="이메일"
+              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#ff3d7f] transition-colors"
+            />
+          </div>
+
+          <div>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="비밀번호"
+              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#ff3d7f] transition-colors"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-[#ff3d7f] text-white font-medium py-3 px-4 rounded-xl hover:bg-[#e6356f] disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
+          >
+            {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+            로그인
+          </button>
+        </form>
+
+        {/* 구분선 */}
+        <div className="flex items-center gap-3">
+          <div className="flex-1 h-px bg-gray-800" />
+          <span className="text-gray-600 text-xs">또는</span>
+          <div className="flex-1 h-px bg-gray-800" />
+        </div>
+
+        {/* 구글 로그인 */}
+        <div className="space-y-3">
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            disabled={googleLoading}
+            className="w-full flex items-center justify-center gap-3 bg-white text-gray-900 font-medium py-3 px-4 rounded-xl hover:bg-gray-100 disabled:opacity-50 transition-colors"
+          >
+            {googleLoading ? (
+              <Loader2 className="w-5 h-5 animate-spin" />
+            ) : (
+              <svg className="w-5 h-5" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
+              </svg>
+            )}
+            Google로 계속하기
+          </button>
+        </div>
+
+        {/* 회원가입 링크 */}
+        <p className="text-center text-gray-500 text-sm">
+          계정이 없나요?{" "}
+          <Link href="/signup" className="text-[#ff3d7f] hover:underline">
+            회원가입
+          </Link>
+        </p>
+
+        <p className="text-gray-600 text-xs text-center">
+          계속하면 서비스 이용약관 및 개인정보 처리방침에 동의하는 것으로
+          간주됩니다.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center">
+          <div className="text-gray-400">로딩 중...</div>
+        </div>
+      }
+    >
+      <LoginContent />
+    </Suspense>
+  );
+}

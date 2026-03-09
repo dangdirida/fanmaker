@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "app/api/ai/**": { "maxDuration": 300 },
+    "app/api/upload": { "maxDuration": 120 },
+    "app/api/payments/webhook": { "maxDuration": 30 }
+  }
+}

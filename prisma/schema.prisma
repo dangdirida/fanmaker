@@ -1,0 +1,269 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String       @id @default(cuid())
+  email            String       @unique
+  emailVerified    DateTime?
+  name             String?
+  image            String?
+  password         String?
+  nickname         String?      @unique
+  bio              String?
+  activityType     ActivityType @default(LIGHT)
+  role             Role         @default(USER)
+  onboardingDone   Boolean      @default(false)
+  isPro            Boolean      @default(false)
+  stripeCustomerId String?
+  proExpiresAt     DateTime?
+  aiUsageCount     Int          @default(0)
+  aiUsageResetAt   DateTime?
+  language         String       @default("ko")
+  isSuspended      Boolean      @default(false)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  accounts         Account[]
+  sessions         Session[]
+  posts            Post[]
+  reactions        Reaction[]
+  comments         Comment[]
+  following        Follow[]     @relation("following")
+  followers        Follow[]     @relation("followers")
+  badges           UserBadge[]
+  artistFollows    ArtistFollow[]
+  votes            Vote[]
+  aiJobs           AIJob[]
+}
+
+enum ActivityType {
+  LIGHT
+  CREATIVE
+  GLOBAL
+  CREATOR
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Artist {
+  id            String   @id @default(cuid())
+  name          String
+  nameEn        String?
+  agency        String?
+  groupImageUrl String?
+  description   String?
+  debutDate     DateTime?
+  sns           Json?
+  members       Json?
+  createdAt     DateTime @default(now())
+
+  posts         Post[]
+  artistFollows ArtistFollow[]
+  notices       Notice[]
+}
+
+model ArtistFollow {
+  userId    String
+  artistId  String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  artist    Artist   @relation(fields: [artistId], references: [id])
+  @@id([userId, artistId])
+}
+
+model Post {
+  id           String       @id @default(cuid())
+  authorId     String
+  artistId     String?
+  category     PostCategory
+  title        String
+  description  String?
+  thumbnailUrl String?
+  contentData  Json
+  fileUrls     String[]
+  tags         String[]
+  isPublic     Boolean      @default(true)
+  viewCount    Int          @default(0)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  author       User         @relation(fields: [authorId], references: [id])
+  artist       Artist?      @relation(fields: [artistId], references: [id])
+  reactions    Reaction[]
+  comments     Comment[]
+  votes        Vote[]
+}
+
+enum PostCategory {
+  REMIX
+  VIRTUAL
+  CONCEPT
+  PERFORMANCE
+  IDOL_PROJECT
+  GLOBAL_SYNC
+}
+
+model Reaction {
+  id       String       @id @default(cuid())
+  postId   String
+  userId   String
+  type     ReactionType
+  post     Post         @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user     User         @relation(fields: [userId], references: [id])
+  @@unique([postId, userId, type])
+}
+
+enum ReactionType {
+  LIKE
+  CHEER
+  WOW
+}
+
+model Comment {
+  id        String    @id @default(cuid())
+  postId    String
+  authorId  String
+  parentId  String?
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author    User      @relation(fields: [authorId], references: [id])
+  parent    Comment?  @relation("replies", fields: [parentId], references: [id])
+  replies   Comment[] @relation("replies")
+}
+
+model Vote {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  voteType  VoteType
+  createdAt DateTime @default(now())
+
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id])
+  @@unique([postId, userId])
+}
+
+enum VoteType {
+  EXPECTATION
+  ATTENTION
+}
+
+model Follow {
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+  follower    User     @relation("following", fields: [followerId], references: [id])
+  following   User     @relation("followers", fields: [followingId], references: [id])
+  @@id([followerId, followingId])
+}
+
+model Badge {
+  id          String      @id @default(cuid())
+  name        String
+  description String
+  imageUrl    String
+  condition   String
+  userBadges  UserBadge[]
+}
+
+model UserBadge {
+  userId    String
+  badgeId   String
+  awardedAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+  badge     Badge    @relation(fields: [badgeId], references: [id])
+  @@id([userId, badgeId])
+}
+
+model AIJob {
+  id         String    @id @default(cuid())
+  userId     String
+  type       AIJobType
+  status     JobStatus @default(PENDING)
+  inputData  Json
+  outputData Json?
+  error      String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  user       User      @relation(fields: [userId], references: [id])
+}
+
+enum AIJobType {
+  REMIX_SEPARATE
+  REMIX_GENERATE
+  VIRTUAL_GENERATE
+  CONCEPT_GENERATE
+  CONCEPT_LOGO
+  CONCEPT_COVER
+  CONCEPT_KEYVISUAL
+  PERFORMANCE_VIDEO
+  IDOL_PROJECT
+  GLOBAL_TRANSCRIBE
+  GLOBAL_TRANSLATE
+  IDOL_TEXT
+  SYNC_TRANSCRIBE
+  SYNC_TRANSLATE
+}
+
+enum JobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+model Notice {
+  id        String   @id @default(cuid())
+  artistId  String?
+  title     String
+  content   String   @db.Text
+  isPublic  Boolean  @default(true)
+  isPinned  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  artist    Artist?  @relation(fields: [artistId], references: [id])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  @@unique([identifier, token])
+}
