@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { cn } from "@/lib/utils";
 import SessionProvider from "@/components/providers/SessionProvider";
+import ThemeProvider from "@/components/providers/ThemeProvider";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -38,9 +39,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={cn(geistSans.variable)}>
-      <body className="antialiased bg-[#0a0a0a] text-white font-[family-name:var(--font-geist-sans)]">
-        <SessionProvider>{children}</SessionProvider>
+    <html lang="ko" className={cn(geistSans.variable)} suppressHydrationWarning>
+      <body className="antialiased bg-white text-gray-900 dark:bg-[#0a0a0a] dark:text-white font-[family-name:var(--font-geist-sans)] transition-colors duration-200">
+        <SessionProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </SessionProvider>
       </body>
     </html>
   );

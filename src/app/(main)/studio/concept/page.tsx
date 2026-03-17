@@ -86,25 +86,25 @@ export default function ConceptStudioPage() {
         onSelect={handleArtistSelect}
       />
 
-      <h1 className="text-2xl font-bold text-white mb-6">컨셉 스튜디오</h1>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">컨셉 스튜디오</h1>
 
       {generating ? (
         <AILoadingState estimatedSeconds={15} />
       ) : result ? (
         /* 결과 표시 */
         <div className="space-y-6">
-          <h2 className="text-lg font-medium text-white">컨셉 키트 완성!</h2>
+          <h2 className="text-lg font-medium text-gray-900 dark:text-white">컨셉 키트 완성!</h2>
 
           {/* 로고 시안 */}
           <div>
-            <h3 className="text-sm text-gray-400 mb-3">로고 시안 (클릭하여 선택)</h3>
+            <h3 className="text-sm text-gray-500 dark:text-gray-400 mb-3">로고 시안 (클릭하여 선택)</h3>
             <div className="grid grid-cols-5 gap-3">
               {result.logos.map((logo, i) => (
                 <button
                   key={i}
                   onClick={() => setSelectedLogo(i)}
-                  className={`aspect-square bg-gray-900 rounded-xl border-2 flex items-center justify-center text-2xl transition-colors ${
-                    selectedLogo === i ? "border-[#ff3d7f]" : "border-gray-800 hover:border-gray-700"
+                  className={`aspect-square bg-gray-100 dark:bg-gray-900 rounded-xl border-2 flex items-center justify-center text-2xl transition-colors ${
+                    selectedLogo === i ? "border-[#ff3d7f]" : "border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700"
                   }`}
                 >
                   🎨
@@ -116,14 +116,14 @@ export default function ConceptStudioPage() {
           {/* 앨범커버 + 키비주얼 */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <h3 className="text-sm text-gray-400 mb-2">앨범 커버</h3>
-              <div className="aspect-square bg-gray-900 rounded-xl flex items-center justify-center text-4xl border border-gray-800">
+              <h3 className="text-sm text-gray-500 dark:text-gray-400 mb-2">앨범 커버</h3>
+              <div className="aspect-square bg-gray-100 dark:bg-gray-900 rounded-xl flex items-center justify-center text-4xl border border-gray-200 dark:border-gray-800">
                 💿
               </div>
             </div>
             <div>
-              <h3 className="text-sm text-gray-400 mb-2">키 비주얼</h3>
-              <div className="aspect-square bg-gray-900 rounded-xl flex items-center justify-center text-4xl border border-gray-800">
+              <h3 className="text-sm text-gray-500 dark:text-gray-400 mb-2">키 비주얼</h3>
+              <div className="aspect-square bg-gray-100 dark:bg-gray-900 rounded-xl flex items-center justify-center text-4xl border border-gray-200 dark:border-gray-800">
                 🖼️
               </div>
             </div>
@@ -131,12 +131,12 @@ export default function ConceptStudioPage() {
 
           {/* 색상 팔레트 */}
           <div>
-            <h3 className="text-sm text-gray-400 mb-2">색상 팔레트</h3>
+            <h3 className="text-sm text-gray-500 dark:text-gray-400 mb-2">색상 팔레트</h3>
             <div className="flex gap-2">
               {result.palette.map((color, i) => (
                 <div
                   key={i}
-                  className="w-12 h-12 rounded-lg border border-gray-700"
+                  className="w-12 h-12 rounded-lg border border-gray-300 dark:border-gray-700"
                   style={{ backgroundColor: color }}
                   title={color}
                 />
@@ -154,7 +154,7 @@ export default function ConceptStudioPage() {
             </button>
             <button
               onClick={() => { setResult(null); }}
-              className="border border-gray-700 text-gray-400 px-6 py-2.5 rounded-xl hover:bg-gray-800 text-sm"
+              className="border border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 px-6 py-2.5 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800 text-sm"
             >
               다시 만들기
             </button>
@@ -185,17 +185,17 @@ export default function ConceptStudioPage() {
           )}
 
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">아티스트/그룹명</label>
+            <label className="text-sm text-gray-500 dark:text-gray-400 mb-2 block">아티스트/그룹명</label>
             <input
               value={artistName}
               onChange={(e) => setArtistName(e.target.value)}
               placeholder="아티스트 이름"
-              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#ff3d7f]"
+              className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#ff3d7f]"
             />
           </div>
 
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">컨셉 무드</label>
+            <label className="text-sm text-gray-500 dark:text-gray-400 mb-2 block">컨셉 무드</label>
             <div className="flex flex-wrap gap-2">
               {[...MOODS, "직접입력"].map((m) => (
                 <button
@@ -204,7 +204,7 @@ export default function ConceptStudioPage() {
                   className={`px-4 py-2 text-sm rounded-full border transition-colors ${
                     mood === m
                       ? "border-[#ff3d7f] bg-[#ff3d7f]/10 text-[#ff3d7f]"
-                      : "border-gray-700 text-gray-400 hover:border-gray-600"
+                      : "border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-600"
                   }`}
                 >
                   {m}
@@ -216,18 +216,18 @@ export default function ConceptStudioPage() {
                 value={customMood}
                 onChange={(e) => setCustomMood(e.target.value)}
                 placeholder="원하는 무드를 입력하세요"
-                className="mt-2 w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#ff3d7f]"
+                className="mt-2 w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#ff3d7f]"
               />
             )}
           </div>
 
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">핵심 키워드 (최대 5개)</label>
+            <label className="text-sm text-gray-500 dark:text-gray-400 mb-2 block">핵심 키워드 (최대 5개)</label>
             <div className="flex gap-2 mb-2 flex-wrap">
               {keywords.map((kw, i) => (
-                <span key={i} className="text-xs bg-gray-800 text-gray-300 px-2.5 py-1 rounded-full flex items-center gap-1">
+                <span key={i} className="text-xs bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-300 px-2.5 py-1 rounded-full flex items-center gap-1">
                   {kw}
-                  <button onClick={() => setKeywords(keywords.filter((_, j) => j !== i))} className="text-gray-500 hover:text-white">×</button>
+                  <button onClick={() => setKeywords(keywords.filter((_, j) => j !== i))} className="text-gray-400 dark:text-gray-500 hover:text-gray-900 dark:hover:text-white">×</button>
                 </span>
               ))}
             </div>
@@ -237,18 +237,18 @@ export default function ConceptStudioPage() {
                 onChange={(e) => setKeywordInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && addKeyword()}
                 placeholder="키워드 입력 후 Enter"
-                className="flex-1 bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-[#ff3d7f]"
+                className="flex-1 bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-[#ff3d7f]"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">대표 색상</label>
+            <label className="text-sm text-gray-500 dark:text-gray-400 mb-2 block">대표 색상</label>
             <input
               type="color"
               value={primaryColor}
               onChange={(e) => setPrimaryColor(e.target.value)}
-              className="w-12 h-12 rounded-lg border border-gray-700 cursor-pointer bg-transparent"
+              className="w-12 h-12 rounded-lg border border-gray-300 dark:border-gray-700 cursor-pointer bg-transparent"
             />
           </div>
 

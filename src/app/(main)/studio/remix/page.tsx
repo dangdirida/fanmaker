@@ -98,19 +98,19 @@ export default function RemixStudioPage() {
         onSelect={handleArtistSelect}
       />
 
-      <h1 className="text-2xl font-bold text-white mb-6">리믹스 스튜디오</h1>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">리믹스 스튜디오</h1>
 
       {/* 스텝 인디케이터 */}
       <div className="flex items-center gap-2 mb-8">
         {["음원 업로드", "편집", "AI 리믹스"].map((s, i) => (
           <div key={i} className="flex items-center gap-2">
             <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium ${
-              step > i + 1 ? "bg-green-500 text-white" : step === i + 1 ? "bg-[#ff3d7f] text-white" : "bg-gray-800 text-gray-500"
+              step > i + 1 ? "bg-green-500 text-white" : step === i + 1 ? "bg-[#ff3d7f] text-white" : "bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-500"
             }`}>
               {i + 1}
             </div>
-            <span className={`text-xs ${step === i + 1 ? "text-white" : "text-gray-500"}`}>{s}</span>
-            {i < 2 && <div className={`w-8 h-0.5 ${step > i + 1 ? "bg-green-500" : "bg-gray-800"}`} />}
+            <span className={`text-xs ${step === i + 1 ? "text-gray-900 dark:text-white" : "text-gray-400 dark:text-gray-500"}`}>{s}</span>
+            {i < 2 && <div className={`w-8 h-0.5 ${step > i + 1 ? "bg-green-500" : "bg-gray-200 dark:bg-gray-800"}`} />}
           </div>
         ))}
       </div>
@@ -130,7 +130,7 @@ export default function RemixStudioPage() {
       {step === 2 && (
         <div className="space-y-6">
           {/* 파형 플레이스홀더 */}
-          <div className="bg-gray-900 rounded-xl p-4 border border-gray-800">
+          <div className="bg-gray-100 dark:bg-gray-900 rounded-xl p-4 border border-gray-200 dark:border-gray-800">
             <div className="h-24 flex items-center justify-center gap-1">
               {Array.from({ length: 60 }).map((_, i) => (
                 <div
@@ -150,7 +150,7 @@ export default function RemixStudioPage() {
           <div className="grid grid-cols-2 gap-6">
             {/* BPM */}
             <div>
-              <label className="text-sm text-gray-400 mb-2 block">BPM: {bpm}</label>
+              <label className="text-sm text-gray-500 dark:text-gray-400 mb-2 block">BPM: {bpm}</label>
               <input
                 type="range"
                 min={60}
@@ -166,15 +166,15 @@ export default function RemixStudioPage() {
 
             {/* 키 조정 */}
             <div>
-              <label className="text-sm text-gray-400 mb-2 block">키 조정: {keyShift > 0 ? `+${keyShift}` : keyShift} 반음</label>
+              <label className="text-sm text-gray-500 dark:text-gray-400 mb-2 block">키 조정: {keyShift > 0 ? `+${keyShift}` : keyShift} 반음</label>
               <div className="flex items-center gap-3">
-                <button onClick={() => setKeyShift(Math.max(-6, keyShift - 1))} className="w-8 h-8 rounded-lg border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white">
+                <button onClick={() => setKeyShift(Math.max(-6, keyShift - 1))} className="w-8 h-8 rounded-lg border border-gray-300 dark:border-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
                   <Minus className="w-4 h-4" />
                 </button>
-                <div className="flex-1 h-2 bg-gray-800 rounded-full relative">
+                <div className="flex-1 h-2 bg-gray-200 dark:bg-gray-800 rounded-full relative">
                   <div className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-[#ff3d7f] rounded-full" style={{ left: `${((keyShift + 6) / 12) * 100}%` }} />
                 </div>
-                <button onClick={() => setKeyShift(Math.min(6, keyShift + 1))} className="w-8 h-8 rounded-lg border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white">
+                <button onClick={() => setKeyShift(Math.min(6, keyShift + 1))} className="w-8 h-8 rounded-lg border border-gray-300 dark:border-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
                   <Plus className="w-4 h-4" />
                 </button>
               </div>
@@ -207,11 +207,11 @@ export default function RemixStudioPage() {
                 className={`p-6 rounded-xl border text-center transition-all ${
                   selectedStyle === style.value
                     ? "border-[#ff3d7f] bg-[#ff3d7f]/10"
-                    : "border-gray-700 hover:border-gray-600"
+                    : "border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600"
                 }`}
               >
                 <span className="text-3xl block mb-2">{style.emoji}</span>
-                <span className="text-sm text-white">{style.label}</span>
+                <span className="text-sm text-gray-900 dark:text-white">{style.label}</span>
               </button>
             ))}
           </div>
@@ -219,13 +219,13 @@ export default function RemixStudioPage() {
           {generating && <AILoadingState estimatedSeconds={20} />}
 
           {remixUrl && (
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-4 space-y-3">
+            <div className="bg-gray-100 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 space-y-3">
               <div className="flex items-center gap-3">
                 <Music className="w-5 h-5 text-[#ff3d7f]" />
-                <span className="text-white text-sm">리믹스 완성!</span>
+                <span className="text-gray-900 dark:text-white text-sm">리믹스 완성!</span>
               </div>
               <div className="flex gap-3">
-                <button className="flex-1 py-2.5 text-sm border border-gray-700 text-gray-400 rounded-xl hover:bg-gray-800">
+                <button className="flex-1 py-2.5 text-sm border border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800">
                   MP3 다운로드
                 </button>
                 <button

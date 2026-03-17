@@ -214,13 +214,13 @@ export default function IdolProjectPage() {
       case 0:
         return (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-white">세계관 설정</h2>
-            <p className="text-gray-400">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">세계관 설정</h2>
+            <p className="text-gray-500 dark:text-gray-400">
               아이돌 그룹의 세계관을 만들어보세요. 키워드와 분위기를 입력하면 AI가 세계관을 생성합니다.
             </p>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
                 키워드 (콤마로 구분)
               </label>
               <textarea
@@ -229,12 +229,12 @@ export default function IdolProjectPage() {
                   setWorldbuilding((prev) => ({ ...prev, keywords: e.target.value }))
                 }
                 placeholder="예: 우주, 별, 꿈, 시간여행, 마법..."
-                className="w-full h-32 bg-[#1a1a2e] border border-gray-700 rounded-xl p-4 text-white placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none resize-none transition-colors"
+                className="w-full h-32 bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none resize-none transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">분위기</label>
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">분위기</label>
               <div className="flex gap-3">
                 {(["bright", "dark", "neutral"] as const).map((mood) => (
                   <button
@@ -243,7 +243,7 @@ export default function IdolProjectPage() {
                     className={`px-5 py-2.5 rounded-lg font-medium transition-all ${
                       worldbuilding.mood === mood
                         ? "bg-[#ff3d7f] text-white shadow-lg shadow-[#ff3d7f]/25"
-                        : "bg-[#1a1a2e] text-gray-400 border border-gray-700 hover:border-gray-500"
+                        : "bg-gray-100 dark:bg-[#1a1a2e] text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500"
                     }`}
                   >
                     {mood === "bright" ? "밝은" : mood === "dark" ? "어두운" : "중립"}
@@ -268,7 +268,7 @@ export default function IdolProjectPage() {
             </button>
 
             {worldbuildingResult && (
-              <div className="bg-[#1a1a2e] border border-[#c084fc]/30 rounded-xl p-5">
+              <div className="bg-gray-100 dark:bg-[#1a1a2e] border border-[#c084fc]/30 rounded-xl p-5">
                 <h3 className="text-[#c084fc] font-semibold mb-2">생성된 세계관</h3>
                 <p className="text-gray-300 whitespace-pre-line leading-relaxed">
                   {worldbuildingResult}
@@ -282,11 +282,11 @@ export default function IdolProjectPage() {
       case 1:
         return (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-white">그룹 컨셉</h2>
-            <p className="text-gray-400">그룹의 음악 장르, 팬덤, 활동 형태를 설정하세요.</p>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">그룹 컨셉</h2>
+            <p className="text-gray-500 dark:text-gray-400">그룹의 음악 장르, 팬덤, 활동 형태를 설정하세요.</p>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
                 장르 (복수 선택 가능)
               </label>
               <div className="flex flex-wrap gap-2">
@@ -297,7 +297,7 @@ export default function IdolProjectPage() {
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       groupConcept.genres.includes(genre)
                         ? "bg-[#ff3d7f] text-white shadow-lg shadow-[#ff3d7f]/25"
-                        : "bg-[#1a1a2e] text-gray-400 border border-gray-700 hover:border-gray-500"
+                        : "bg-gray-100 dark:bg-[#1a1a2e] text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500"
                     }`}
                   >
                     {genre}
@@ -307,7 +307,7 @@ export default function IdolProjectPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">타겟 팬덤</label>
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">타겟 팬덤</label>
               <input
                 type="text"
                 value={groupConcept.targetFandom}
@@ -315,12 +315,12 @@ export default function IdolProjectPage() {
                   setGroupConcept((prev) => ({ ...prev, targetFandom: e.target.value }))
                 }
                 placeholder="예: 10~20대 여성, 글로벌 K-pop 팬..."
-                className="w-full bg-[#1a1a2e] border border-gray-700 rounded-xl p-4 text-white placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none transition-colors"
+                className="w-full bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none transition-colors"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
                 활동 형태 (복수 선택 가능)
               </label>
               <div className="flex flex-wrap gap-2">
@@ -330,7 +330,7 @@ export default function IdolProjectPage() {
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all ${
                       groupConcept.activityFormats.includes(format)
                         ? "bg-[#c084fc]/20 text-[#c084fc] border border-[#c084fc]/40"
-                        : "bg-[#1a1a2e] text-gray-400 border border-gray-700 hover:border-gray-500"
+                        : "bg-gray-100 dark:bg-[#1a1a2e] text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500"
                     }`}
                   >
                     <input
@@ -359,7 +359,7 @@ export default function IdolProjectPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
                 차별화 포인트
               </label>
               <textarea
@@ -368,7 +368,7 @@ export default function IdolProjectPage() {
                   setGroupConcept((prev) => ({ ...prev, differentiation: e.target.value }))
                 }
                 placeholder="이 그룹만의 독특한 매력이나 차별점을 작성하세요..."
-                className="w-full h-28 bg-[#1a1a2e] border border-gray-700 rounded-xl p-4 text-white placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none resize-none transition-colors"
+                className="w-full h-28 bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none resize-none transition-colors"
               />
             </div>
           </div>
@@ -378,8 +378,8 @@ export default function IdolProjectPage() {
       case 2:
         return (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-white">그룹 이름</h2>
-            <p className="text-gray-400">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">그룹 이름</h2>
+            <p className="text-gray-500 dark:text-gray-400">
               AI가 세계관과 컨셉을 기반으로 이름 후보를 제안합니다.
             </p>
 
@@ -413,10 +413,10 @@ export default function IdolProjectPage() {
                     className={`p-4 rounded-xl text-left transition-all ${
                       groupName.selected === candidate.name
                         ? "bg-[#ff3d7f]/20 border-2 border-[#ff3d7f] shadow-lg shadow-[#ff3d7f]/10"
-                        : "bg-[#1a1a2e] border border-gray-700 hover:border-gray-500"
+                        : "bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500"
                     }`}
                   >
-                    <p className="text-white font-bold text-lg">{candidate.name}</p>
+                    <p className="text-gray-900 dark:text-white font-bold text-lg">{candidate.name}</p>
                     <p className="text-[#c084fc] text-xs font-medium mt-1">
                       {candidate.romanization}
                     </p>
@@ -427,7 +427,7 @@ export default function IdolProjectPage() {
             )}
 
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
                 또는 직접 입력
               </label>
               <input
@@ -437,12 +437,12 @@ export default function IdolProjectPage() {
                   setGroupName((prev) => ({ ...prev, custom: e.target.value, selected: "" }))
                 }
                 placeholder="원하는 그룹명을 직접 입력하세요..."
-                className="w-full bg-[#1a1a2e] border border-gray-700 rounded-xl p-4 text-white placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none transition-colors"
+                className="w-full bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none transition-colors"
               />
             </div>
 
             {finalGroupName && (
-              <div className="bg-[#1a1a2e] border border-[#ff3d7f]/30 rounded-xl p-4 text-center">
+              <div className="bg-gray-100 dark:bg-[#1a1a2e] border border-[#ff3d7f]/30 rounded-xl p-4 text-center">
                 <p className="text-gray-400 text-sm">선택된 이름</p>
                 <p className="text-[#ff3d7f] text-2xl font-bold mt-1">{finalGroupName}</p>
               </div>
@@ -454,11 +454,11 @@ export default function IdolProjectPage() {
       case 3:
         return (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-white">멤버 구성</h2>
-            <p className="text-gray-400">그룹 멤버의 이름, 포지션, 캐릭터를 설정하세요.</p>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">멤버 구성</h2>
+            <p className="text-gray-500 dark:text-gray-400">그룹 멤버의 이름, 포지션, 캐릭터를 설정하세요.</p>
 
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
                 멤버 수: <span className="text-[#ff3d7f] font-bold">{membersData.count}명</span>
               </label>
               <input
@@ -479,35 +479,35 @@ export default function IdolProjectPage() {
               {membersData.members.map((member, i) => (
                 <div
                   key={i}
-                  className="bg-[#1a1a2e] border border-gray-700 rounded-xl p-5 space-y-4"
+                  className="bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-5 space-y-4"
                 >
                   <h3 className="text-[#c084fc] font-semibold">멤버 {i + 1}</h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs text-gray-400 mb-1">이름</label>
+                      <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">이름</label>
                       <input
                         type="text"
                         value={member.name}
                         onChange={(e) => updateMember(i, "name", e.target.value)}
                         placeholder="멤버 이름"
-                        className="w-full bg-[#0f0f23] border border-gray-700 rounded-lg p-3 text-white text-sm placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none transition-colors"
+                        className="w-full bg-gray-50 dark:bg-[#0f0f23] border border-gray-300 dark:border-gray-700 rounded-lg p-3 text-gray-900 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none transition-colors"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs text-gray-400 mb-1">국적</label>
+                      <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">국적</label>
                       <input
                         type="text"
                         value={member.nationality}
                         onChange={(e) => updateMember(i, "nationality", e.target.value)}
                         placeholder="예: 한국, 일본, 미국..."
-                        className="w-full bg-[#0f0f23] border border-gray-700 rounded-lg p-3 text-white text-sm placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none transition-colors"
+                        className="w-full bg-gray-50 dark:bg-[#0f0f23] border border-gray-300 dark:border-gray-700 rounded-lg p-3 text-gray-900 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none transition-colors"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs text-gray-400 mb-1">
+                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">
                       포지션 (복수 선택)
                     </label>
                     <div className="flex flex-wrap gap-1.5">
@@ -518,7 +518,7 @@ export default function IdolProjectPage() {
                           className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
                             member.positions.includes(pos)
                               ? "bg-[#c084fc] text-white"
-                              : "bg-[#0f0f23] text-gray-400 border border-gray-700 hover:border-gray-500"
+                              : "bg-gray-50 dark:bg-[#0f0f23] text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500"
                           }`}
                         >
                           {pos}
@@ -528,12 +528,12 @@ export default function IdolProjectPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs text-gray-400 mb-1">캐릭터 설명</label>
+                    <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">캐릭터 설명</label>
                     <textarea
                       value={member.character}
                       onChange={(e) => updateMember(i, "character", e.target.value)}
                       placeholder="이 멤버의 성격, 특징, 세계관 내 역할 등..."
-                      className="w-full h-20 bg-[#0f0f23] border border-gray-700 rounded-lg p-3 text-white text-sm placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none resize-none transition-colors"
+                      className="w-full h-20 bg-gray-50 dark:bg-[#0f0f23] border border-gray-300 dark:border-gray-700 rounded-lg p-3 text-gray-900 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none resize-none transition-colors"
                     />
                   </div>
                 </div>
@@ -546,29 +546,29 @@ export default function IdolProjectPage() {
       case 4:
         return (
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-white">비주얼 설정</h2>
-            <p className="text-gray-400">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">비주얼 설정</h2>
+            <p className="text-gray-500 dark:text-gray-400">
               그룹의 비주얼 컨셉을 설정하세요. 이 단계는 선택 사항입니다.
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <button className="flex flex-col items-center justify-center gap-3 bg-[#1a1a2e] border border-gray-700 rounded-xl p-8 hover:border-[#ff3d7f] transition-colors group">
+              <button className="flex flex-col items-center justify-center gap-3 bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-8 hover:border-[#ff3d7f] transition-colors group">
                 <div className="w-16 h-16 rounded-full bg-[#ff3d7f]/10 flex items-center justify-center group-hover:bg-[#ff3d7f]/20 transition-colors">
                   <svg className="w-8 h-8 text-[#ff3d7f]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <span className="text-white font-semibold">버추얼 스튜디오</span>
+                <span className="text-gray-900 dark:text-white font-semibold">버추얼 스튜디오</span>
                 <span className="text-gray-500 text-sm">준비 중</span>
               </button>
 
-              <button className="flex flex-col items-center justify-center gap-3 bg-[#1a1a2e] border border-gray-700 rounded-xl p-8 hover:border-[#c084fc] transition-colors group">
+              <button className="flex flex-col items-center justify-center gap-3 bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-8 hover:border-[#c084fc] transition-colors group">
                 <div className="w-16 h-16 rounded-full bg-[#c084fc]/10 flex items-center justify-center group-hover:bg-[#c084fc]/20 transition-colors">
                   <svg className="w-8 h-8 text-[#c084fc]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <span className="text-white font-semibold">컨셉 스튜디오</span>
+                <span className="text-gray-900 dark:text-white font-semibold">컨셉 스튜디오</span>
                 <span className="text-gray-500 text-sm">준비 중</span>
               </button>
             </div>
@@ -593,10 +593,10 @@ export default function IdolProjectPage() {
   // ── 제안서 미리보기 ─────────────────────────────────────
   const renderPreview = () => (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-white">제안서 미리보기</h2>
+      <h2 className="text-2xl font-bold text-gray-900 dark:text-white">제안서 미리보기</h2>
 
       {/* 세계관 */}
-      <div className="bg-[#1a1a2e] border border-gray-700 rounded-xl p-5">
+      <div className="bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-5">
         <h3 className="text-[#ff3d7f] font-semibold mb-2">세계관</h3>
         <p className="text-gray-400 text-sm">키워드: {worldbuilding.keywords || "-"}</p>
         <p className="text-gray-400 text-sm">
@@ -608,7 +608,7 @@ export default function IdolProjectPage() {
       </div>
 
       {/* 그룹 컨셉 */}
-      <div className="bg-[#1a1a2e] border border-gray-700 rounded-xl p-5">
+      <div className="bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-5">
         <h3 className="text-[#ff3d7f] font-semibold mb-2">그룹 컨셉</h3>
         <p className="text-gray-400 text-sm">장르: {groupConcept.genres.join(", ") || "-"}</p>
         <p className="text-gray-400 text-sm">타겟 팬덤: {groupConcept.targetFandom || "-"}</p>
@@ -619,18 +619,18 @@ export default function IdolProjectPage() {
       </div>
 
       {/* 그룹 이름 */}
-      <div className="bg-[#1a1a2e] border border-gray-700 rounded-xl p-5">
+      <div className="bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-5">
         <h3 className="text-[#ff3d7f] font-semibold mb-2">그룹 이름</h3>
-        <p className="text-white text-xl font-bold">{finalGroupName || "-"}</p>
+        <p className="text-gray-900 dark:text-white text-xl font-bold">{finalGroupName || "-"}</p>
       </div>
 
       {/* 멤버 */}
-      <div className="bg-[#1a1a2e] border border-gray-700 rounded-xl p-5">
+      <div className="bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-5">
         <h3 className="text-[#ff3d7f] font-semibold mb-3">멤버 ({membersData.count}명)</h3>
         <div className="space-y-3">
           {membersData.members.map((m, i) => (
             <div key={i} className="border-b border-gray-700/50 pb-2 last:border-0 last:pb-0">
-              <p className="text-white font-medium">
+              <p className="text-gray-900 dark:text-white font-medium">
                 {m.name || `멤버 ${i + 1}`}
                 {m.nationality && (
                   <span className="text-gray-500 text-sm ml-2">({m.nationality})</span>
@@ -649,7 +649,7 @@ export default function IdolProjectPage() {
       <div className="flex gap-3">
         <button
           onClick={handleDownloadPDF}
-          className="flex-1 py-3.5 rounded-xl font-semibold text-white bg-[#1a1a2e] border border-gray-700 hover:border-gray-500 transition-colors"
+          className="flex-1 py-3.5 rounded-xl font-semibold text-gray-900 dark:text-white bg-gray-100 dark:bg-[#1a1a2e] border border-gray-700 hover:border-gray-500 transition-colors"
         >
           PDF 다운로드
         </button>
@@ -672,14 +672,14 @@ export default function IdolProjectPage() {
 
   // ── 메인 레이아웃 ───────────────────────────────────────
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-white dark:bg-[#0a0a0a]">
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* 헤더 */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
             AI 아이돌 프로젝트
           </h1>
-          <p className="text-gray-400 mt-1">AI와 함께 나만의 아이돌 그룹을 기획하세요</p>
+          <p className="text-gray-500 dark:text-gray-400 mt-1">AI와 함께 나만의 아이돌 그룹을 기획하세요</p>
         </div>
 
         {/* 스텝 인디케이터 */}
@@ -697,7 +697,7 @@ export default function IdolProjectPage() {
                         ? "bg-[#ff3d7f] text-white shadow-lg shadow-[#ff3d7f]/30"
                         : i < currentStep
                         ? "bg-[#c084fc] text-white"
-                        : "bg-[#1a1a2e] text-gray-500 border border-gray-700"
+                        : "bg-gray-100 dark:bg-[#1a1a2e] text-gray-400 dark:text-gray-500 border border-gray-300 dark:border-gray-700"
                     }`}
                   >
                     {i < currentStep ? (

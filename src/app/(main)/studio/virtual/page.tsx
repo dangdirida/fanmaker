@@ -77,7 +77,7 @@ export default function VirtualStudioPage() {
         onSelect={handleArtistSelect}
       />
 
-      <h1 className="text-2xl font-bold text-white mb-6">버추얼 스튜디오</h1>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">버추얼 스튜디오</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* 좌: 편집 패널 */}
@@ -92,7 +92,7 @@ export default function VirtualStudioPage() {
           )}
 
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">성별</label>
+            <label className="text-sm text-gray-500 dark:text-gray-400 mb-2 block">성별</label>
             <div className="flex gap-2">
               {GENDERS.map((g) => (
                 <button
@@ -101,7 +101,7 @@ export default function VirtualStudioPage() {
                   className={`flex-1 py-2 text-sm rounded-xl border transition-colors ${
                     gender === g.value
                       ? "border-[#ff3d7f] bg-[#ff3d7f]/10 text-[#ff3d7f]"
-                      : "border-gray-700 text-gray-400 hover:border-gray-600"
+                      : "border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-600"
                   }`}
                 >
                   {g.label}
@@ -111,7 +111,7 @@ export default function VirtualStudioPage() {
           </div>
 
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">피부톤</label>
+            <label className="text-sm text-gray-500 dark:text-gray-400 mb-2 block">피부톤</label>
             <div className="flex gap-2">
               {SKIN_TONES.map((tone) => (
                 <button
@@ -127,7 +127,7 @@ export default function VirtualStudioPage() {
           </div>
 
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">스타일 프리셋</label>
+            <label className="text-sm text-gray-500 dark:text-gray-400 mb-2 block">스타일 프리셋</label>
             <div className="grid grid-cols-3 gap-2">
               {STYLE_PRESETS.map((s) => (
                 <button
@@ -136,7 +136,7 @@ export default function VirtualStudioPage() {
                   className={`py-2 text-sm rounded-xl border transition-colors ${
                     stylePreset === s.value
                       ? "border-[#c084fc] bg-[#c084fc]/10 text-[#c084fc]"
-                      : "border-gray-700 text-gray-400 hover:border-gray-600"
+                      : "border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-600"
                   }`}
                 >
                   {s.label}
@@ -146,13 +146,13 @@ export default function VirtualStudioPage() {
           </div>
 
           <div>
-            <label className="text-sm text-gray-400 mb-2 block">추가 묘사</label>
+            <label className="text-sm text-gray-500 dark:text-gray-400 mb-2 block">추가 묘사</label>
             <textarea
               value={customPrompt}
               onChange={(e) => setCustomPrompt(e.target.value)}
               placeholder="원하는 스타일을 자유롭게 설명해주세요 (한국어/영어)"
               rows={3}
-              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#ff3d7f] resize-none"
+              className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#ff3d7f] resize-none"
             />
           </div>
 
@@ -171,13 +171,13 @@ export default function VirtualStudioPage() {
             <AILoadingState estimatedSeconds={15} />
           ) : resultImage ? (
             <div className="space-y-4">
-              <div className="aspect-[3/4] bg-gray-900 rounded-xl border border-gray-800 flex items-center justify-center text-6xl">
+              <div className="aspect-[3/4] bg-gray-100 dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 flex items-center justify-center text-6xl">
                 🎭
               </div>
               <div className="flex gap-3">
                 <button
                   onClick={handleGenerate}
-                  className="flex-1 py-2.5 text-sm border border-gray-700 text-gray-400 rounded-xl hover:bg-gray-800"
+                  className="flex-1 py-2.5 text-sm border border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-800"
                 >
                   재생성
                 </button>
@@ -198,7 +198,7 @@ export default function VirtualStudioPage() {
               />
             </div>
           ) : (
-            <div className="aspect-[3/4] bg-gray-900/50 border-2 border-dashed border-gray-700 rounded-xl flex flex-col items-center justify-center">
+            <div className="aspect-[3/4] bg-gray-100/50 dark:bg-gray-900/50 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl flex flex-col items-center justify-center">
               <p className="text-gray-600 text-sm">생성된 이미지가 여기에 표시됩니다</p>
               <p className="text-gray-700 text-xs mt-1">좌측에서 옵션을 선택하고 생성하세요</p>
             </div>

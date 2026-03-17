@@ -189,7 +189,7 @@ export default function PerformancePlannerPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-white dark:bg-[#0a0a0a] text-gray-900 dark:text-white">
       <ArtistSelector
         isOpen={showArtistSelector}
         onClose={() => setShowArtistSelector(false)}
@@ -197,23 +197,23 @@ export default function PerformancePlannerPage() {
       />
 
       {/* 헤더 */}
-      <header className="border-b border-white/10 px-6 py-4 flex items-center justify-between">
+      <header className="border-b border-gray-200 dark:border-white/10 px-6 py-4 flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold">Performance Planner</h1>
-          <p className="text-sm text-white/50 mt-0.5">
+          <p className="text-sm text-gray-500 dark:text-white/50 mt-0.5">
             {artistName} - {scenes.length}개 씬
           </p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={handleSimulate}
-            className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-sm font-medium transition-colors"
+            className="px-4 py-2 rounded-lg bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-sm font-medium transition-colors"
           >
             Simulate Video
           </button>
           <button
             onClick={handleDownloadPDF}
-            className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-sm font-medium transition-colors"
+            className="px-4 py-2 rounded-lg bg-gray-100 dark:bg-white/10 hover:bg-gray-200 dark:hover:bg-white/20 text-sm font-medium transition-colors"
           >
             Download PDF
           </button>
@@ -228,9 +228,9 @@ export default function PerformancePlannerPage() {
 
       <div className="flex flex-1" style={{ height: "calc(100vh - 73px)" }}>
         {/* 좌측: 씬 타임라인 패널 */}
-        <aside className="w-64 border-r border-white/10 flex flex-col">
-          <div className="px-4 py-3 border-b border-white/10 flex items-center justify-between">
-            <span className="text-sm font-semibold text-white/70">Scenes</span>
+        <aside className="w-64 border-r border-gray-200 dark:border-white/10 flex flex-col">
+          <div className="px-4 py-3 border-b border-gray-200 dark:border-white/10 flex items-center justify-between">
+            <span className="text-sm font-semibold text-gray-600 dark:text-white/70">Scenes</span>
             <button
               onClick={addScene}
               className="w-7 h-7 rounded bg-[#ff3d7f] hover:bg-[#ff3d7f]/80 flex items-center justify-center text-sm font-bold transition-colors"
@@ -247,12 +247,12 @@ export default function PerformancePlannerPage() {
                 className={`group flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-colors ${
                   index === activeSceneIndex
                     ? "bg-[#ff3d7f]/20 border border-[#ff3d7f]/40"
-                    : "hover:bg-white/5 border border-transparent"
+                    : "hover:bg-gray-100 dark:hover:bg-white/5 border border-transparent"
                 }`}
               >
                 <div className="min-w-0">
                   <p className="text-sm font-medium truncate">{scene.name}</p>
-                  <p className="text-xs text-white/40 mt-0.5">
+                  <p className="text-xs text-gray-400 dark:text-white/40 mt-0.5">
                     {scene.startTime} - {scene.endTime}
                   </p>
                 </div>
@@ -262,7 +262,7 @@ export default function PerformancePlannerPage() {
                       e.stopPropagation();
                       deleteScene(index);
                     }}
-                    className="opacity-0 group-hover:opacity-100 w-6 h-6 rounded flex items-center justify-center text-white/40 hover:text-red-400 hover:bg-red-400/10 transition-all text-xs"
+                    className="opacity-0 group-hover:opacity-100 w-6 h-6 rounded flex items-center justify-center text-gray-400 dark:text-white/40 hover:text-red-400 hover:bg-red-400/10 transition-all text-xs"
                     title="씬 삭제"
                   >
                     X
@@ -279,7 +279,7 @@ export default function PerformancePlannerPage() {
           <div className="flex-1 flex items-center justify-center p-6">
             {activeScene && (
               <div
-                className="relative bg-white/5 border border-white/10 rounded-xl overflow-hidden select-none"
+                className="relative bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl overflow-hidden select-none"
                 style={{ width: 600, height: 400 }}
                 onMouseMove={handleEditorMouseMove}
                 onMouseUp={handleEditorMouseUp}
@@ -296,10 +296,10 @@ export default function PerformancePlannerPage() {
                 </svg>
 
                 {/* 스테이지 라벨 */}
-                <div className="absolute top-3 left-1/2 -translate-x-1/2 text-xs text-white/30 tracking-widest uppercase">
+                <div className="absolute top-3 left-1/2 -translate-x-1/2 text-xs text-gray-300 dark:text-white/30 tracking-widest uppercase">
                   Stage Front
                 </div>
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 text-xs text-white/30 tracking-widest uppercase">
+                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 text-xs text-gray-300 dark:text-white/30 tracking-widest uppercase">
                   Stage Back
                 </div>
 
@@ -335,44 +335,44 @@ export default function PerformancePlannerPage() {
 
           {/* 하단: 씬 설정 */}
           {activeScene && (
-            <div className="border-t border-white/10 px-6 py-4">
+            <div className="border-t border-gray-200 dark:border-white/10 px-6 py-4">
               <div className="grid grid-cols-4 gap-6">
                 {/* 씬 이름 */}
                 <div>
-                  <label className="block text-xs text-white/50 mb-1.5">Scene Name</label>
+                  <label className="block text-xs text-gray-500 dark:text-white/50 mb-1.5">Scene Name</label>
                   <input
                     type="text"
                     value={activeScene.name}
                     onChange={(e) => updateActiveScene({ name: e.target.value })}
-                    className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#ff3d7f]/50 transition-colors"
+                    className="w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#ff3d7f]/50 transition-colors"
                   />
                 </div>
 
                 {/* 시작/종료 시간 */}
                 <div>
-                  <label className="block text-xs text-white/50 mb-1.5">Time Range</label>
+                  <label className="block text-xs text-gray-500 dark:text-white/50 mb-1.5">Time Range</label>
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
                       value={activeScene.startTime}
                       onChange={(e) => updateActiveScene({ startTime: e.target.value })}
                       placeholder="00:00"
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#ff3d7f]/50 transition-colors"
+                      className="w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#ff3d7f]/50 transition-colors"
                     />
-                    <span className="text-white/30 text-sm">-</span>
+                    <span className="text-gray-300 dark:text-white/30 text-sm">-</span>
                     <input
                       type="text"
                       value={activeScene.endTime}
                       onChange={(e) => updateActiveScene({ endTime: e.target.value })}
                       placeholder="00:30"
-                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#ff3d7f]/50 transition-colors"
+                      className="w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#ff3d7f]/50 transition-colors"
                     />
                   </div>
                 </div>
 
                 {/* 라이팅 무드 */}
                 <div>
-                  <label className="block text-xs text-white/50 mb-1.5">Lighting Mood</label>
+                  <label className="block text-xs text-gray-500 dark:text-white/50 mb-1.5">Lighting Mood</label>
                   <div className="flex gap-1.5">
                     {LIGHTING_PRESETS.map((preset) => (
                       <button
@@ -392,7 +392,7 @@ export default function PerformancePlannerPage() {
 
                 {/* 이펙트 */}
                 <div>
-                  <label className="block text-xs text-white/50 mb-1.5">Effect</label>
+                  <label className="block text-xs text-gray-500 dark:text-white/50 mb-1.5">Effect</label>
                   <div className="flex gap-1.5">
                     {EFFECTS.map((effect) => (
                       <button
@@ -401,7 +401,7 @@ export default function PerformancePlannerPage() {
                         className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                           activeScene.effect === effect.value
                             ? "bg-[#ff3d7f] text-white"
-                            : "bg-white/5 text-white/50 hover:bg-white/10"
+                            : "bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-white/50 hover:bg-gray-200 dark:hover:bg-white/10"
                         }`}
                       >
                         {effect.label}

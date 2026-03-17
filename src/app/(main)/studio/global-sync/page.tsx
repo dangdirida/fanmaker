@@ -173,25 +173,25 @@ export default function GlobalSyncPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen bg-white dark:bg-[#0a0a0a] text-gray-900 dark:text-white">
       <ArtistSelector
         isOpen={showArtistSelector}
         onClose={() => setShowArtistSelector(false)}
         onSelect={handleArtistSelect}
       />
       {/* 헤더 */}
-      <div className="border-b border-gray-800 bg-[#0a0a0a]/80 backdrop-blur-sm sticky top-0 z-40">
+      <div className="border-b border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-sm sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Globe className="w-6 h-6 text-[#ff3d7f]" />
             <div>
               <h1 className="text-lg font-bold">Global Sync</h1>
-              <p className="text-xs text-gray-500">자막 / 번역 스튜디오</p>
+              <p className="text-xs text-gray-400 dark:text-gray-500">자막 / 번역 스튜디오</p>
             </div>
           </div>
           {selectedArtist && (
-            <div className="flex items-center gap-2 bg-gray-900 px-3 py-1.5 rounded-full">
-              <div className="w-5 h-5 rounded-full bg-gray-700 overflow-hidden">
+            <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-900 px-3 py-1.5 rounded-full">
+              <div className="w-5 h-5 rounded-full bg-gray-300 dark:bg-gray-700 overflow-hidden">
                 {selectedArtist.groupImageUrl ? (
                   <img
                     src={selectedArtist.groupImageUrl}
@@ -228,7 +228,7 @@ export default function GlobalSyncPage() {
                     ? "bg-[#ff3d7f] text-white"
                     : step > s.num
                     ? "bg-[#ff3d7f]/20 text-[#ff3d7f] cursor-pointer"
-                    : "bg-gray-900 text-gray-500"
+                    : "bg-gray-100 dark:bg-gray-900 text-gray-400 dark:text-gray-500"
                 }`}
               >
                 <span>{s.num}</span>
@@ -244,13 +244,13 @@ export default function GlobalSyncPage() {
           <div className="max-w-2xl mx-auto space-y-6">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold mb-2">영상 소스 선택</h2>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-500 dark:text-gray-400 text-sm">
                 자막을 생성할 영상을 선택하세요
               </p>
             </div>
 
             {/* 소스 타입 토글 */}
-            <div className="flex bg-gray-900 rounded-xl p-1">
+            <div className="flex bg-gray-100 dark:bg-gray-900 rounded-xl p-1">
               <button
                 onClick={() => setSourceType("youtube")}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-lg text-sm font-medium transition-colors ${
@@ -283,11 +283,11 @@ export default function GlobalSyncPage() {
                   value={youtubeUrl}
                   onChange={(e) => setYoutubeUrl(e.target.value)}
                   placeholder="https://www.youtube.com/watch?v=..."
-                  className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#ff3d7f] transition-colors"
+                  className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#ff3d7f] transition-colors"
                 />
                 {getYoutubeId(youtubeUrl) && (
-                  <div className="bg-gray-900 border border-gray-700 rounded-xl p-4">
-                    <div className="aspect-video bg-gray-800 rounded-lg overflow-hidden">
+                  <div className="bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl p-4">
+                    <div className="aspect-video bg-gray-200 dark:bg-gray-800 rounded-lg overflow-hidden">
                       <img
                         src={`https://img.youtube.com/vi/${getYoutubeId(youtubeUrl)}/hqdefault.jpg`}
                         alt="YouTube 썸네일"
@@ -328,24 +328,24 @@ export default function GlobalSyncPage() {
           <div className="max-w-2xl mx-auto space-y-6">
             <div className="text-center mb-8">
               <h2 className="text-2xl font-bold mb-2">번역 설정</h2>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-500 dark:text-gray-400 text-sm">
                 원본 언어와 번역할 언어를 설정하세요
               </p>
             </div>
 
             {/* 원본 언어 */}
-            <div className="bg-gray-900 border border-gray-700 rounded-xl p-4">
-              <label className="text-sm text-gray-400 mb-2 block">원본 언어</label>
-              <div className="flex items-center gap-3 bg-gray-800 rounded-lg px-4 py-3">
+            <div className="bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl p-4">
+              <label className="text-sm text-gray-500 dark:text-gray-400 mb-2 block">원본 언어</label>
+              <div className="flex items-center gap-3 bg-gray-200 dark:bg-gray-800 rounded-lg px-4 py-3">
                 <span className="text-lg">🇰🇷</span>
-                <span className="text-white font-medium">한국어</span>
-                <span className="text-xs text-gray-500 ml-auto">고정</span>
+                <span className="text-gray-900 dark:text-white font-medium">한국어</span>
+                <span className="text-xs text-gray-400 dark:text-gray-500 ml-auto">고정</span>
               </div>
             </div>
 
             {/* 번역 대상 언어 */}
-            <div className="bg-gray-900 border border-gray-700 rounded-xl p-4">
-              <label className="text-sm text-gray-400 mb-3 block">
+            <div className="bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl p-4">
+              <label className="text-sm text-gray-500 dark:text-gray-400 mb-3 block">
                 번역 대상 언어
               </label>
               <div className="grid grid-cols-2 gap-2">
@@ -356,7 +356,7 @@ export default function GlobalSyncPage() {
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm transition-all ${
                       targetLang === lang.code
                         ? "bg-[#ff3d7f]/20 border border-[#ff3d7f] text-white"
-                        : "bg-gray-800 border border-transparent text-gray-300 hover:border-gray-600"
+                        : "bg-gray-200 dark:bg-gray-800 border border-transparent text-gray-600 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-600"
                     }`}
                   >
                     <span className="text-lg">{lang.flag}</span>
@@ -368,12 +368,12 @@ export default function GlobalSyncPage() {
 
             {/* 번역 방향 표시 */}
             <div className="flex items-center justify-center gap-4 py-4">
-              <div className="flex items-center gap-2 bg-gray-900 px-4 py-2 rounded-full">
+              <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-900 px-4 py-2 rounded-full">
                 <span>🇰🇷</span>
                 <span className="text-sm text-gray-300">한국어</span>
               </div>
               <Languages className="w-5 h-5 text-[#ff3d7f]" />
-              <div className="flex items-center gap-2 bg-gray-900 px-4 py-2 rounded-full">
+              <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-900 px-4 py-2 rounded-full">
                 <span>
                   {SUPPORTED_LANGUAGES.find((l) => l.code === targetLang)?.flag}
                 </span>
@@ -406,14 +406,14 @@ export default function GlobalSyncPage() {
               <div className="flex items-center gap-2">
                 <button
                   onClick={handleRetranslateAll}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-800 border border-gray-700 text-gray-300 rounded-xl text-sm hover:bg-gray-700 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl text-sm hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
                 >
                   <RefreshCw className="w-4 h-4" />
                   전체 재번역
                 </button>
                 <button
                   onClick={handleDownloadSRT}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-800 border border-gray-700 text-gray-300 rounded-xl text-sm hover:bg-gray-700 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-xl text-sm hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
                 >
                   <Download className="w-4 h-4" />
                   SRT 다운로드
@@ -431,7 +431,7 @@ export default function GlobalSyncPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* 왼쪽: 비디오 플레이어 */}
               <div className="space-y-4">
-                <div className="aspect-video bg-gray-900 border border-gray-700 rounded-xl flex items-center justify-center">
+                <div className="aspect-video bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl flex items-center justify-center">
                   {sourceType === "youtube" && getYoutubeId(youtubeUrl) ? (
                     <div className="w-full h-full relative rounded-xl overflow-hidden">
                       <img
@@ -454,11 +454,11 @@ export default function GlobalSyncPage() {
                 </div>
 
                 {/* 번역 정보 */}
-                <div className="bg-gray-900 border border-gray-700 rounded-xl p-4">
+                <div className="bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl p-4">
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2">
                       <span>🇰🇷</span>
-                      <span className="text-gray-300">한국어</span>
+                      <span className="text-gray-600 dark:text-gray-300">한국어</span>
                     </div>
                     <Languages className="w-4 h-4 text-[#ff3d7f]" />
                     <div className="flex items-center gap-2">
@@ -481,15 +481,15 @@ export default function GlobalSyncPage() {
                 {subtitles.map((sub) => (
                   <div
                     key={sub.id}
-                    className="bg-gray-900 border border-gray-700 rounded-xl p-4 space-y-3 hover:border-gray-600 transition-colors"
+                    className="bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl p-4 space-y-3 hover:border-gray-400 dark:hover:border-gray-600 transition-colors"
                   >
                     {/* 타임스탬프 */}
                     <div className="flex items-center gap-2 text-xs text-gray-500">
-                      <span className="bg-gray-800 px-2 py-0.5 rounded font-mono">
+                      <span className="bg-gray-200 dark:bg-gray-800 px-2 py-0.5 rounded font-mono">
                         {sub.startTime}
                       </span>
                       <span>~</span>
-                      <span className="bg-gray-800 px-2 py-0.5 rounded font-mono">
+                      <span className="bg-gray-200 dark:bg-gray-800 px-2 py-0.5 rounded font-mono">
                         {sub.endTime}
                       </span>
                     </div>
@@ -505,7 +505,7 @@ export default function GlobalSyncPage() {
                         onChange={(e) =>
                           updateSubtitle(sub.id, "original", e.target.value)
                         }
-                        className="w-full bg-gray-800 border border-gray-700 text-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#ff3d7f] transition-colors"
+                        className="w-full bg-gray-200 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#ff3d7f] transition-colors"
                       />
                     </div>
 
@@ -523,7 +523,7 @@ export default function GlobalSyncPage() {
                         onChange={(e) =>
                           updateSubtitle(sub.id, "translated", e.target.value)
                         }
-                        className="w-full bg-gray-800 border border-[#ff3d7f]/30 text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#ff3d7f] transition-colors"
+                        className="w-full bg-gray-200 dark:bg-gray-800 border border-[#ff3d7f]/30 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#ff3d7f] transition-colors"
                       />
                     </div>
                   </div>
