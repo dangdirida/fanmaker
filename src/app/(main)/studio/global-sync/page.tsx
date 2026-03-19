@@ -47,7 +47,7 @@ const SUPPORTED_LANGUAGES = [
 
 export default function GlobalSyncPage() {
   // 아티스트 선택
-  const [showArtistSelector, setShowArtistSelector] = useState(true);
+  const [showArtistSelector, setShowArtistSelector] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
 
   // 스텝 관리: 1=영상 소스, 2=번역 설정, 3=자막 편집

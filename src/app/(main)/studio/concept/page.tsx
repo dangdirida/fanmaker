@@ -16,7 +16,7 @@ type ConceptResult = {
 };
 
 export default function ConceptStudioPage() {
-  const [showArtistSelector, setShowArtistSelector] = useState(true);
+  const [showArtistSelector, setShowArtistSelector] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [artistName, setArtistName] = useState("");
   const [mood, setMood] = useState("");

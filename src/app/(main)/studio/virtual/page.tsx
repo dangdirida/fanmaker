@@ -25,7 +25,7 @@ const STYLE_PRESETS = [
 ];
 
 export default function VirtualStudioPage() {
-  const [showArtistSelector, setShowArtistSelector] = useState(true);
+  const [showArtistSelector, setShowArtistSelector] = useState(false);
   const [selectedArtist, setSelectedArtist] = useState<Artist | null>(null);
   const [gender, setGender] = useState("female");
   const [skinTone, setSkinTone] = useState(SKIN_TONES[1]);
