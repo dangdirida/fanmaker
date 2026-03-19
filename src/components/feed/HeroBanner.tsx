@@ -2,113 +2,93 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const slides = [
   {
+    tag: "🎵 AI 리믹스",
     title: "내가 직접 만드는\nK-pop 리믹스",
     sub: "좋아하는 아이돌 음원을 AI로 재탄생시켜 보세요",
-    cta: "리믹스 시작하기",
+    cta: "리믹스 시작하기 →",
     href: "/studio/remix",
-    gradient: "from-[#7c3aed] via-[#a855f7] to-[#ec4899]",
-    mockEmoji: "🎵",
-    mockLabel: "AI 리믹스 생성 중...",
-    mockBars: true,
+    icon: "🎧",
+    stats: ["12,000+ 리믹스", "340개 아티스트", "실시간 AI 생성"],
+    badges: ["AI 기반", "무료"],
   },
   {
+    tag: "✨ 버추얼 스튜디오",
     title: "나만의 버추얼\n아이돌 디자인",
     sub: "AI로 버추얼 아이돌의 비주얼을 직접 만들어보세요",
-    cta: "캐릭터 만들기",
+    cta: "캐릭터 만들기 →",
     href: "/studio/virtual",
-    gradient: "from-[#ec4899] via-[#f43f5e] to-[#a855f7]",
-    mockEmoji: "🎭",
-    mockLabel: "버추얼 프리뷰",
-    mockBars: false,
+    icon: "🎤",
+    stats: ["8,500+ 캐릭터", "AI 얼굴 생성", "스타일 커스텀"],
+    badges: ["AI 기반", "무료"],
   },
   {
+    tag: "🎨 컨셉 디자인",
     title: "다음 앨범 컨셉,\n팬이 먼저 만든다",
-    sub: "로고부터 앨범커버까지 컨셉 키트를 AI로 제작하세요",
-    cta: "컨셉 디자인 시작",
+    sub: "로고부터 앨범커버까지 컨셉 키트를 제작해보세요",
+    cta: "컨셉 제작하기 →",
     href: "/studio/concept",
-    gradient: "from-[#0ea5e9] via-[#3b82f6] to-[#6366f1]",
-    mockEmoji: "🎨",
-    mockLabel: "컨셉 키트 미리보기",
-    mockBars: false,
+    icon: "🖼️",
+    stats: ["5,200+ 컨셉", "앨범커버 포함", "무료 다운로드"],
+    badges: ["AI 기반", "무료"],
   },
   {
-    title: "무대 퍼포먼스를\n직접 기획하세요",
-    sub: "포메이션과 동선을 기획하고 AI 시뮬레이션으로 확인",
-    cta: "퍼포먼스 기획",
+    tag: "💃 퍼포먼스 기획",
+    title: "무대 위 퍼포먼스를\n직접 기획",
+    sub: "포메이션과 동선을 기획하고 AI 시뮬레이션으로 확인해보세요",
+    cta: "퍼포먼스 기획 →",
     href: "/studio/performance",
-    gradient: "from-[#f97316] via-[#ef4444] to-[#dc2626]",
-    mockEmoji: "💃",
-    mockLabel: "포메이션 에디터",
-    mockBars: false,
+    icon: "🕺",
+    stats: ["3,400+ 퍼포먼스", "3D 시뮬레이션", "팀 협업 가능"],
+    badges: ["AI 기반", "무료"],
   },
   {
-    title: "새로운 아이돌\n그룹을 창조하세요",
-    sub: "세계관부터 멤버 구성까지 AI와 함께 데뷔 기획서 완성",
-    cta: "아이돌 기획 시작",
-    href: "/studio/idol-project",
-    gradient: "from-[#10b981] via-[#14b8a6] to-[#3b82f6]",
-    mockEmoji: "⭐",
-    mockLabel: "AI 기획서 생성",
-    mockBars: false,
-  },
-  {
+    tag: "🌏 글로벌 싱크",
     title: "K-pop을\n전 세계 언어로",
-    sub: "좋아하는 아티스트의 콘텐츠를 다국어로 번역하고 공유하세요",
-    cta: "번역 시작하기",
+    sub: "내가 좋아하는 아티스트의 콘텐츠를 다국어로 번역·공유해요",
+    cta: "번역 시작하기 →",
     href: "/studio/global-sync",
-    gradient: "from-[#eab308] via-[#f97316] to-[#ef4444]",
-    mockEmoji: "🌍",
-    mockLabel: "자막 번역 미리보기",
-    mockBars: false,
+    icon: "🌐",
+    stats: ["45개 언어", "140개국 팬", "실시간 번역"],
+    badges: ["AI 기반", "무료"],
   },
 ];
-
-function FloatingParticle({ delay, x }: { delay: number; x: number }) {
-  return (
-    <div
-      className="absolute w-1 h-1 bg-white/30 rounded-full animate-float"
-      style={{
-        left: `${x}%`,
-        bottom: "-5%",
-        animationDelay: `${delay}s`,
-        animationDuration: `${3 + Math.random() * 4}s`,
-      }}
-    />
-  );
-}
 
 export default function HeroBanner() {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [textVisible, setTextVisible] = useState(true);
+  const [direction, setDirection] = useState<"left" | "right">("right");
+  const [animating, setAnimating] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
   const goTo = useCallback(
-    (index: number) => {
-      setTextVisible(false);
+    (index: number, dir?: "left" | "right") => {
+      if (animating || index === current) return;
+      setDirection(dir ?? (index > current ? "right" : "left"));
+      setAnimating(true);
       setTimeout(() => {
         setCurrent(index);
-        setTextVisible(true);
-      }, 200);
+        setTimeout(() => setAnimating(false), 500);
+      }, 10);
     },
-    []
+    [current, animating]
   );
 
   const next = useCallback(() => {
-    goTo((current + 1) % slides.length);
-  }, [current, goTo]);
-
-  const prev = useCallback(() => {
-    goTo((current - 1 + slides.length) % slides.length);
-  }, [current, goTo]);
+    const nextIndex = (current + 1) % slides.length;
+    setDirection("right");
+    setAnimating(true);
+    setTimeout(() => {
+      setCurrent(nextIndex);
+      setTimeout(() => setAnimating(false), 500);
+    }, 10);
+  }, [current]);
 
   useEffect(() => {
     if (paused) return;
-    timerRef.current = setInterval(next, 3000);
+    timerRef.current = setInterval(next, 4000);
     return () => clearInterval(timerRef.current);
   }, [paused, next]);
 
@@ -116,149 +96,263 @@ export default function HeroBanner() {
 
   return (
     <div
-      className="relative w-full h-[260px] md:h-[440px] overflow-hidden rounded-2xl"
+      className="relative w-full h-[300px] md:h-[460px] overflow-hidden"
+      style={{ borderRadius: 20 }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* 배경 그라디언트 */}
-      {slides.map((s, i) => (
-        <div
-          key={i}
-          className={`absolute inset-0 bg-gradient-to-br ${s.gradient} transition-opacity duration-700 ${
-            i === current ? "opacity-100" : "opacity-0"
-          }`}
-        />
-      ))}
+      {/* 배경: 순수 블랙 + radial gradient */}
+      <div className="absolute inset-0 bg-black" />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 70% at 75% 50%, rgba(255,255,255,0.06) 0%, transparent 70%)",
+        }}
+      />
+      {/* 좌측 오버레이 */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to right, rgba(0,0,0,0.5) 0%, transparent 60%)",
+        }}
+      />
 
-      {/* 파티클 */}
-      {Array.from({ length: 12 }).map((_, i) => (
-        <FloatingParticle key={i} delay={i * 0.5} x={8 + i * 7.5} />
-      ))}
-
-      {/* 장식 오브 */}
-      <div className="absolute -top-20 -right-20 w-60 h-60 bg-white/5 rounded-full blur-3xl" />
-      <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-white/5 rounded-full blur-3xl" />
+      {/* 배경 장식 원형 요소 */}
+      <div
+        className="absolute rounded-full"
+        style={{
+          width: 400,
+          height: 400,
+          right: -80,
+          top: -80,
+          background: "rgba(255,255,255,0.02)",
+          border: "1px solid rgba(255,255,255,0.04)",
+        }}
+      />
+      <div
+        className="absolute rounded-full"
+        style={{
+          width: 280,
+          height: 280,
+          right: 60,
+          bottom: -100,
+          background: "rgba(255,255,255,0.015)",
+          border: "1px solid rgba(255,255,255,0.03)",
+        }}
+      />
 
       {/* 콘텐츠 */}
-      <div className="relative z-10 h-full flex items-center px-6 md:px-12">
-        <div className="flex items-center justify-between w-full gap-6">
-          {/* 텍스트 영역 */}
+      <div className="relative z-10 h-full flex items-center px-6 md:px-12 lg:px-16">
+        <div className="flex items-center justify-between w-full gap-8">
+          {/* 왼쪽 텍스트 영역 */}
           <div
-            className={`flex-1 max-w-lg transition-all duration-500 ${
-              textVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4"
-            }`}
+            key={current}
+            className="flex-1 max-w-xl"
+            style={{
+              animation: "slideIn 500ms ease-in-out both",
+            }}
           >
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-extrabold text-white leading-tight whitespace-pre-line drop-shadow-lg">
+            {/* 태그 pill */}
+            <div
+              className="inline-flex items-center px-3.5 py-1.5 rounded-full text-xs font-semibold text-white mb-5"
+              style={{
+                background: "rgba(255,255,255,0.1)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+              }}
+            >
+              {slide.tag}
+            </div>
+
+            {/* 메인 타이틀 */}
+            <h2
+              className="text-white whitespace-pre-line"
+              style={{
+                fontSize: "clamp(28px, 4vw, 46px)",
+                fontWeight: 800,
+                lineHeight: 1.15,
+                letterSpacing: "-1px",
+              }}
+            >
               {slide.title}
             </h2>
-            <p className="text-sm md:text-lg text-white/80 mt-3 md:mt-4 max-w-md">
+
+            {/* 서브 텍스트 */}
+            <p
+              className="mt-4 max-w-md"
+              style={{ fontSize: 15, color: "rgba(255,255,255,0.6)" }}
+            >
               {slide.sub}
             </p>
+
+            {/* Stats row */}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 mt-5">
+              {slide.stats.map((stat, i) => (
+                <span
+                  key={i}
+                  className="flex items-center gap-1.5 text-xs"
+                  style={{ color: "rgba(255,255,255,0.5)" }}
+                >
+                  <span
+                    className="inline-block w-1 h-1 rounded-full"
+                    style={{ background: "rgba(255,255,255,0.4)" }}
+                  />
+                  {stat}
+                </span>
+              ))}
+            </div>
+
+            {/* CTA 버튼 */}
             <Link
               href={slide.href}
-              className="inline-flex items-center gap-2 mt-5 md:mt-7 bg-white text-gray-900 px-6 md:px-8 py-2.5 md:py-3.5 rounded-full font-bold text-sm md:text-base hover:bg-white/90 transition-all shadow-lg hover:shadow-xl hover:scale-105 active:scale-100"
+              className="inline-flex items-center mt-7 bg-white text-black px-7 py-3 text-sm transition-all duration-200"
+              style={{
+                borderRadius: 12,
+                fontWeight: 700,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow =
+                  "0 8px 30px rgba(255,255,255,0.15)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
             >
               {slide.cta}
-              <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
 
-          {/* 목업 카드 */}
+          {/* 오른쪽 시각 요소 */}
           <div
-            className={`hidden md:flex flex-col items-center transition-all duration-500 ${
-              textVisible
-                ? "opacity-100 translate-x-0"
-                : "opacity-0 translate-x-8"
-            }`}
+            key={`visual-${current}`}
+            className="hidden md:flex items-center justify-center relative"
+            style={{
+              width: 280,
+              height: 280,
+              flexShrink: 0,
+              animation: "slideInRight 500ms ease-in-out both",
+            }}
           >
-            <div className="w-56 lg:w-64 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-5 shadow-2xl">
-              <div className="text-center mb-4">
-                <span className="text-5xl">{slide.mockEmoji}</span>
-              </div>
-              <p className="text-white/90 text-sm font-medium text-center mb-4">
-                {slide.mockLabel}
-              </p>
-              {slide.mockBars ? (
-                <div className="flex items-end justify-center gap-1 h-12">
-                  {Array.from({ length: 16 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="w-1.5 bg-white/40 rounded-full animate-pulse"
-                      style={{
-                        height: `${20 + Math.sin(i * 0.8) * 30 + Math.random() * 20}%`,
-                        animationDelay: `${i * 0.1}s`,
-                      }}
-                    />
-                  ))}
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  <div className="h-2 bg-white/20 rounded-full w-full" />
-                  <div className="h-2 bg-white/20 rounded-full w-3/4" />
-                  <div className="h-2 bg-white/20 rounded-full w-5/6" />
-                </div>
-              )}
-              <div className="mt-4 flex justify-center">
-                <div className="px-4 py-1.5 bg-white/20 rounded-full text-white text-xs font-medium">
-                  미리보기
-                </div>
-              </div>
+            {/* 동심원 3개 */}
+            <div
+              className="absolute rounded-full"
+              style={{
+                width: 220,
+                height: 220,
+                border: "1px solid rgba(255,255,255,0.08)",
+              }}
+            />
+            <div
+              className="absolute rounded-full"
+              style={{
+                width: 160,
+                height: 160,
+                border: "1px solid rgba(255,255,255,0.12)",
+              }}
+            />
+            <div
+              className="absolute rounded-full"
+              style={{
+                width: 100,
+                height: 100,
+                border: "1px solid rgba(255,255,255,0.18)",
+              }}
+            />
+
+            {/* 중앙 아이콘 */}
+            <span className="relative z-10" style={{ fontSize: 52 }}>
+              {slide.icon}
+            </span>
+
+            {/* 플로팅 배지: AI 기반 */}
+            <div
+              className="absolute text-white text-[11px] font-semibold px-3 py-1.5 rounded-full"
+              style={{
+                top: 20,
+                right: -10,
+                background: "rgba(255,255,255,0.1)",
+                border: "1px solid rgba(255,255,255,0.15)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                animation: "floatBadge 3s ease-in-out infinite",
+              }}
+            >
+              {slide.badges[0]}
+            </div>
+
+            {/* 플로팅 배지: 무료 */}
+            <div
+              className="absolute text-white text-[11px] font-semibold px-3 py-1.5 rounded-full"
+              style={{
+                bottom: 30,
+                left: -5,
+                background: "rgba(255,255,255,0.1)",
+                border: "1px solid rgba(255,255,255,0.15)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                animation: "floatBadge 3s ease-in-out infinite 1.5s",
+              }}
+            >
+              {slide.badges[1]}
             </div>
           </div>
         </div>
       </div>
 
-      {/* 좌/우 화살표 */}
-      <button
-        onClick={prev}
-        className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/30 hover:bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center transition-colors z-20"
-      >
-        <ChevronLeft className="w-5 h-5 text-white" />
-      </button>
-      <button
-        onClick={next}
-        className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 bg-black/30 hover:bg-black/50 backdrop-blur-sm rounded-full flex items-center justify-center transition-colors z-20"
-      >
-        <ChevronRight className="w-5 h-5 text-white" />
-      </button>
-
       {/* 인디케이터 도트 */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+      <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
         {slides.map((_, i) => (
           <button
             key={i}
             onClick={() => goTo(i)}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              i === current
-                ? "w-8 bg-white"
-                : "w-2 bg-white/40 hover:bg-white/60"
-            }`}
+            className="rounded-full transition-all duration-300"
+            style={{
+              height: 6,
+              width: i === current ? 24 : 6,
+              backgroundColor:
+                i === current
+                  ? "rgba(255,255,255,1)"
+                  : "rgba(255,255,255,0.3)",
+            }}
           />
         ))}
       </div>
 
-      {/* 플로팅 애니메이션 CSS */}
+      {/* 애니메이션 키프레임 */}
       <style jsx>{`
-        @keyframes float {
+        @keyframes slideIn {
           0% {
-            transform: translateY(0) scale(1);
             opacity: 0;
-          }
-          10% {
-            opacity: 0.6;
-          }
-          90% {
-            opacity: 0.2;
+            transform: translateX(-30px);
           }
           100% {
-            transform: translateY(-400px) scale(0.5);
-            opacity: 0;
+            opacity: 1;
+            transform: translateX(0);
           }
         }
-        .animate-float {
-          animation: float linear infinite;
+        @keyframes slideInRight {
+          0% {
+            opacity: 0;
+            transform: translateX(30px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        @keyframes floatBadge {
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-6px);
+          }
         }
       `}</style>
     </div>
