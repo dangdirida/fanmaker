@@ -31,7 +31,7 @@ type Effect = "smoke" | "fireworks" | "confetti" | "none";
 const LIGHTING_PRESETS: { value: LightingMood; label: string; color: string }[] = [
   { value: "warm", label: "Warm", color: "#ff9f43" },
   { value: "cool", label: "Cool", color: "#54a0ff" },
-  { value: "neon", label: "Neon", color: "#ff3d7f" },
+  { value: "neon", label: "Neon", color: "#000000" },
   { value: "spotlight", label: "Spotlight", color: "#feca57" },
   { value: "strobe", label: "Strobe", color: "#ffffff" },
   { value: "sunset", label: "Sunset", color: "#ff6b6b" },
@@ -45,7 +45,7 @@ const EFFECTS: { value: Effect; label: string; icon: string }[] = [
 ];
 
 const MEMBER_COLORS = [
-  "#ff3d7f", "#ff9f43", "#feca57", "#54a0ff",
+  "#000000", "#ff9f43", "#feca57", "#54a0ff",
   "#5f27cd", "#01a3a4", "#2ecc71", "#e056fd", "#ff6348",
 ];
 
@@ -219,7 +219,7 @@ export default function PerformancePlannerPage() {
           </button>
           <button
             onClick={() => setShowPublishModal(true)}
-            className="px-4 py-2 rounded-lg bg-[#ff3d7f] hover:bg-[#ff3d7f]/80 text-sm font-bold transition-colors"
+            className="px-4 py-2 rounded-lg bg-black hover:bg-black/80 text-sm font-bold transition-colors"
           >
             Publish to Feed
           </button>
@@ -233,7 +233,7 @@ export default function PerformancePlannerPage() {
             <span className="text-sm font-semibold text-gray-600 dark:text-white/70">Scenes</span>
             <button
               onClick={addScene}
-              className="w-7 h-7 rounded bg-[#ff3d7f] hover:bg-[#ff3d7f]/80 flex items-center justify-center text-sm font-bold transition-colors"
+              className="w-7 h-7 rounded bg-black hover:bg-black/80 flex items-center justify-center text-sm font-bold transition-colors"
               title="씬 추가"
             >
               +
@@ -246,7 +246,7 @@ export default function PerformancePlannerPage() {
                 onClick={() => setActiveSceneIndex(index)}
                 className={`group flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-colors ${
                   index === activeSceneIndex
-                    ? "bg-[#ff3d7f]/20 border border-[#ff3d7f]/40"
+                    ? "bg-black/20 border border-black/40"
                     : "hover:bg-gray-100 dark:hover:bg-white/5 border border-transparent"
                 }`}
               >
@@ -344,7 +344,7 @@ export default function PerformancePlannerPage() {
                     type="text"
                     value={activeScene.name}
                     onChange={(e) => updateActiveScene({ name: e.target.value })}
-                    className="w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#ff3d7f]/50 transition-colors"
+                    className="w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-black/50 transition-colors"
                   />
                 </div>
 
@@ -357,7 +357,7 @@ export default function PerformancePlannerPage() {
                       value={activeScene.startTime}
                       onChange={(e) => updateActiveScene({ startTime: e.target.value })}
                       placeholder="00:00"
-                      className="w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#ff3d7f]/50 transition-colors"
+                      className="w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-black/50 transition-colors"
                     />
                     <span className="text-gray-300 dark:text-white/30 text-sm">-</span>
                     <input
@@ -365,7 +365,7 @@ export default function PerformancePlannerPage() {
                       value={activeScene.endTime}
                       onChange={(e) => updateActiveScene({ endTime: e.target.value })}
                       placeholder="00:30"
-                      className="w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-[#ff3d7f]/50 transition-colors"
+                      className="w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-black/50 transition-colors"
                     />
                   </div>
                 </div>
@@ -400,7 +400,7 @@ export default function PerformancePlannerPage() {
                         onClick={() => updateActiveScene({ effect: effect.value })}
                         className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                           activeScene.effect === effect.value
-                            ? "bg-[#ff3d7f] text-white"
+                            ? "bg-black text-white"
                             : "bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-white/50 hover:bg-gray-200 dark:hover:bg-white/10"
                         }`}
                       >

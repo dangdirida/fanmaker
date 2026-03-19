@@ -229,7 +229,7 @@ export default function IdolProjectPage() {
                   setWorldbuilding((prev) => ({ ...prev, keywords: e.target.value }))
                 }
                 placeholder="예: 우주, 별, 꿈, 시간여행, 마법..."
-                className="w-full h-32 bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none resize-none transition-colors"
+                className="w-full h-32 bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-black focus:ring-1 focus:ring-[#000000] outline-none resize-none transition-colors"
               />
             </div>
 
@@ -242,7 +242,7 @@ export default function IdolProjectPage() {
                     onClick={() => setWorldbuilding((prev) => ({ ...prev, mood }))}
                     className={`px-5 py-2.5 rounded-lg font-medium transition-all ${
                       worldbuilding.mood === mood
-                        ? "bg-[#ff3d7f] text-white shadow-lg shadow-[#ff3d7f]/25"
+                        ? "bg-black text-white shadow-lg shadow-[#000000]/25"
                         : "bg-gray-100 dark:bg-[#1a1a2e] text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500"
                     }`}
                   >
@@ -255,7 +255,7 @@ export default function IdolProjectPage() {
             <button
               onClick={handleGenerateWorldbuilding}
               disabled={!worldbuilding.keywords.trim() || isGeneratingWorld}
-              className="w-full py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-[#ff3d7f] to-[#c084fc] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+              className="w-full py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-black to-gray-700 hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
             >
               {isGeneratingWorld ? (
                 <span className="flex items-center justify-center gap-2">
@@ -268,8 +268,8 @@ export default function IdolProjectPage() {
             </button>
 
             {worldbuildingResult && (
-              <div className="bg-gray-100 dark:bg-[#1a1a2e] border border-[#c084fc]/30 rounded-xl p-5">
-                <h3 className="text-[#c084fc] font-semibold mb-2">생성된 세계관</h3>
+              <div className="bg-gray-100 dark:bg-[#1a1a2e] border border-gray-700/30 rounded-xl p-5">
+                <h3 className="text-gray-700 font-semibold mb-2">생성된 세계관</h3>
                 <p className="text-gray-300 whitespace-pre-line leading-relaxed">
                   {worldbuildingResult}
                 </p>
@@ -296,7 +296,7 @@ export default function IdolProjectPage() {
                     onClick={() => toggleGenre(genre)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                       groupConcept.genres.includes(genre)
-                        ? "bg-[#ff3d7f] text-white shadow-lg shadow-[#ff3d7f]/25"
+                        ? "bg-black text-white shadow-lg shadow-[#000000]/25"
                         : "bg-gray-100 dark:bg-[#1a1a2e] text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500"
                     }`}
                   >
@@ -315,7 +315,7 @@ export default function IdolProjectPage() {
                   setGroupConcept((prev) => ({ ...prev, targetFandom: e.target.value }))
                 }
                 placeholder="예: 10~20대 여성, 글로벌 K-pop 팬..."
-                className="w-full bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none transition-colors"
+                className="w-full bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-black focus:ring-1 focus:ring-[#000000] outline-none transition-colors"
               />
             </div>
 
@@ -329,7 +329,7 @@ export default function IdolProjectPage() {
                     key={format}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium cursor-pointer transition-all ${
                       groupConcept.activityFormats.includes(format)
-                        ? "bg-[#c084fc]/20 text-[#c084fc] border border-[#c084fc]/40"
+                        ? "bg-[#374151]/20 text-gray-700 border border-gray-700/40"
                         : "bg-gray-100 dark:bg-[#1a1a2e] text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500"
                     }`}
                   >
@@ -342,7 +342,7 @@ export default function IdolProjectPage() {
                     <span
                       className={`w-4 h-4 rounded border flex items-center justify-center ${
                         groupConcept.activityFormats.includes(format)
-                          ? "bg-[#c084fc] border-[#c084fc]"
+                          ? "bg-[#374151] border-gray-700"
                           : "border-gray-600"
                       }`}
                     >
@@ -368,7 +368,7 @@ export default function IdolProjectPage() {
                   setGroupConcept((prev) => ({ ...prev, differentiation: e.target.value }))
                 }
                 placeholder="이 그룹만의 독특한 매력이나 차별점을 작성하세요..."
-                className="w-full h-28 bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none resize-none transition-colors"
+                className="w-full h-28 bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-black focus:ring-1 focus:ring-[#000000] outline-none resize-none transition-colors"
               />
             </div>
           </div>
@@ -386,7 +386,7 @@ export default function IdolProjectPage() {
             <button
               onClick={handleGenerateNames}
               disabled={isGeneratingNames}
-              className="w-full py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-[#ff3d7f] to-[#c084fc] hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
+              className="w-full py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-black to-gray-700 hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
             >
               {isGeneratingNames ? (
                 <span className="flex items-center justify-center gap-2">
@@ -412,12 +412,12 @@ export default function IdolProjectPage() {
                     }
                     className={`p-4 rounded-xl text-left transition-all ${
                       groupName.selected === candidate.name
-                        ? "bg-[#ff3d7f]/20 border-2 border-[#ff3d7f] shadow-lg shadow-[#ff3d7f]/10"
+                        ? "bg-black/20 border-2 border-black shadow-lg shadow-[#000000]/10"
                         : "bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500"
                     }`}
                   >
                     <p className="text-gray-900 dark:text-white font-bold text-lg">{candidate.name}</p>
-                    <p className="text-[#c084fc] text-xs font-medium mt-1">
+                    <p className="text-gray-700 text-xs font-medium mt-1">
                       {candidate.romanization}
                     </p>
                     <p className="text-gray-400 text-xs mt-1">{candidate.meaning}</p>
@@ -437,14 +437,14 @@ export default function IdolProjectPage() {
                   setGroupName((prev) => ({ ...prev, custom: e.target.value, selected: "" }))
                 }
                 placeholder="원하는 그룹명을 직접 입력하세요..."
-                className="w-full bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none transition-colors"
+                className="w-full bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-4 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:border-black focus:ring-1 focus:ring-[#000000] outline-none transition-colors"
               />
             </div>
 
             {finalGroupName && (
-              <div className="bg-gray-100 dark:bg-[#1a1a2e] border border-[#ff3d7f]/30 rounded-xl p-4 text-center">
+              <div className="bg-gray-100 dark:bg-[#1a1a2e] border border-black/30 rounded-xl p-4 text-center">
                 <p className="text-gray-400 text-sm">선택된 이름</p>
-                <p className="text-[#ff3d7f] text-2xl font-bold mt-1">{finalGroupName}</p>
+                <p className="text-black text-2xl font-bold mt-1">{finalGroupName}</p>
               </div>
             )}
           </div>
@@ -459,7 +459,7 @@ export default function IdolProjectPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
-                멤버 수: <span className="text-[#ff3d7f] font-bold">{membersData.count}명</span>
+                멤버 수: <span className="text-black font-bold">{membersData.count}명</span>
               </label>
               <input
                 type="range"
@@ -467,7 +467,7 @@ export default function IdolProjectPage() {
                 max={9}
                 value={membersData.count}
                 onChange={(e) => handleMemberCountChange(Number(e.target.value))}
-                className="w-full accent-[#ff3d7f]"
+                className="w-full accent-[#000000]"
               />
               <div className="flex justify-between text-xs text-gray-500 mt-1">
                 <span>2명</span>
@@ -481,7 +481,7 @@ export default function IdolProjectPage() {
                   key={i}
                   className="bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-5 space-y-4"
                 >
-                  <h3 className="text-[#c084fc] font-semibold">멤버 {i + 1}</h3>
+                  <h3 className="text-gray-700 font-semibold">멤버 {i + 1}</h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -491,7 +491,7 @@ export default function IdolProjectPage() {
                         value={member.name}
                         onChange={(e) => updateMember(i, "name", e.target.value)}
                         placeholder="멤버 이름"
-                        className="w-full bg-gray-50 dark:bg-[#0f0f23] border border-gray-300 dark:border-gray-700 rounded-lg p-3 text-gray-900 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none transition-colors"
+                        className="w-full bg-gray-50 dark:bg-[#0f0f23] border border-gray-300 dark:border-gray-700 rounded-lg p-3 text-gray-900 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500 focus:border-black focus:ring-1 focus:ring-[#000000] outline-none transition-colors"
                       />
                     </div>
                     <div>
@@ -501,7 +501,7 @@ export default function IdolProjectPage() {
                         value={member.nationality}
                         onChange={(e) => updateMember(i, "nationality", e.target.value)}
                         placeholder="예: 한국, 일본, 미국..."
-                        className="w-full bg-gray-50 dark:bg-[#0f0f23] border border-gray-300 dark:border-gray-700 rounded-lg p-3 text-gray-900 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none transition-colors"
+                        className="w-full bg-gray-50 dark:bg-[#0f0f23] border border-gray-300 dark:border-gray-700 rounded-lg p-3 text-gray-900 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500 focus:border-black focus:ring-1 focus:ring-[#000000] outline-none transition-colors"
                       />
                     </div>
                   </div>
@@ -517,7 +517,7 @@ export default function IdolProjectPage() {
                           onClick={() => toggleMemberPosition(i, pos)}
                           className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
                             member.positions.includes(pos)
-                              ? "bg-[#c084fc] text-white"
+                              ? "bg-[#374151] text-white"
                               : "bg-gray-50 dark:bg-[#0f0f23] text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-500"
                           }`}
                         >
@@ -533,7 +533,7 @@ export default function IdolProjectPage() {
                       value={member.character}
                       onChange={(e) => updateMember(i, "character", e.target.value)}
                       placeholder="이 멤버의 성격, 특징, 세계관 내 역할 등..."
-                      className="w-full h-20 bg-gray-50 dark:bg-[#0f0f23] border border-gray-300 dark:border-gray-700 rounded-lg p-3 text-gray-900 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500 focus:border-[#ff3d7f] focus:ring-1 focus:ring-[#ff3d7f] outline-none resize-none transition-colors"
+                      className="w-full h-20 bg-gray-50 dark:bg-[#0f0f23] border border-gray-300 dark:border-gray-700 rounded-lg p-3 text-gray-900 dark:text-white text-sm placeholder-gray-400 dark:placeholder-gray-500 focus:border-black focus:ring-1 focus:ring-[#000000] outline-none resize-none transition-colors"
                     />
                   </div>
                 </div>
@@ -552,9 +552,9 @@ export default function IdolProjectPage() {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <button className="flex flex-col items-center justify-center gap-3 bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-8 hover:border-[#ff3d7f] transition-colors group">
-                <div className="w-16 h-16 rounded-full bg-[#ff3d7f]/10 flex items-center justify-center group-hover:bg-[#ff3d7f]/20 transition-colors">
-                  <svg className="w-8 h-8 text-[#ff3d7f]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <button className="flex flex-col items-center justify-center gap-3 bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-8 hover:border-black transition-colors group">
+                <div className="w-16 h-16 rounded-full bg-black/10 flex items-center justify-center group-hover:bg-black/20 transition-colors">
+                  <svg className="w-8 h-8 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                   </svg>
                 </div>
@@ -562,9 +562,9 @@ export default function IdolProjectPage() {
                 <span className="text-gray-500 text-sm">준비 중</span>
               </button>
 
-              <button className="flex flex-col items-center justify-center gap-3 bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-8 hover:border-[#c084fc] transition-colors group">
-                <div className="w-16 h-16 rounded-full bg-[#c084fc]/10 flex items-center justify-center group-hover:bg-[#c084fc]/20 transition-colors">
-                  <svg className="w-8 h-8 text-[#c084fc]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <button className="flex flex-col items-center justify-center gap-3 bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-8 hover:border-gray-700 transition-colors group">
+                <div className="w-16 h-16 rounded-full bg-black/10 flex items-center justify-center group-hover:bg-[#374151]/20 transition-colors">
+                  <svg className="w-8 h-8 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                 </div>
@@ -597,7 +597,7 @@ export default function IdolProjectPage() {
 
       {/* 세계관 */}
       <div className="bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-5">
-        <h3 className="text-[#ff3d7f] font-semibold mb-2">세계관</h3>
+        <h3 className="text-black font-semibold mb-2">세계관</h3>
         <p className="text-gray-400 text-sm">키워드: {worldbuilding.keywords || "-"}</p>
         <p className="text-gray-400 text-sm">
           분위기: {worldbuilding.mood === "bright" ? "밝은" : worldbuilding.mood === "dark" ? "어두운" : "중립"}
@@ -609,7 +609,7 @@ export default function IdolProjectPage() {
 
       {/* 그룹 컨셉 */}
       <div className="bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-5">
-        <h3 className="text-[#ff3d7f] font-semibold mb-2">그룹 컨셉</h3>
+        <h3 className="text-black font-semibold mb-2">그룹 컨셉</h3>
         <p className="text-gray-400 text-sm">장르: {groupConcept.genres.join(", ") || "-"}</p>
         <p className="text-gray-400 text-sm">타겟 팬덤: {groupConcept.targetFandom || "-"}</p>
         <p className="text-gray-400 text-sm">
@@ -620,13 +620,13 @@ export default function IdolProjectPage() {
 
       {/* 그룹 이름 */}
       <div className="bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-5">
-        <h3 className="text-[#ff3d7f] font-semibold mb-2">그룹 이름</h3>
+        <h3 className="text-black font-semibold mb-2">그룹 이름</h3>
         <p className="text-gray-900 dark:text-white text-xl font-bold">{finalGroupName || "-"}</p>
       </div>
 
       {/* 멤버 */}
       <div className="bg-gray-100 dark:bg-[#1a1a2e] border border-gray-300 dark:border-gray-700 rounded-xl p-5">
-        <h3 className="text-[#ff3d7f] font-semibold mb-3">멤버 ({membersData.count}명)</h3>
+        <h3 className="text-black font-semibold mb-3">멤버 ({membersData.count}명)</h3>
         <div className="space-y-3">
           {membersData.members.map((m, i) => (
             <div key={i} className="border-b border-gray-700/50 pb-2 last:border-0 last:pb-0">
@@ -637,7 +637,7 @@ export default function IdolProjectPage() {
                 )}
               </p>
               {m.positions.length > 0 && (
-                <p className="text-[#c084fc] text-sm">{m.positions.join(", ")}</p>
+                <p className="text-gray-700 text-sm">{m.positions.join(", ")}</p>
               )}
               {m.character && <p className="text-gray-400 text-sm">{m.character}</p>}
             </div>
@@ -655,7 +655,7 @@ export default function IdolProjectPage() {
         </button>
         <button
           onClick={() => setShowPublishModal(true)}
-          className="flex-1 py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-[#ff3d7f] to-[#c084fc] hover:opacity-90 transition-opacity"
+          className="flex-1 py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-black to-gray-700 hover:opacity-90 transition-opacity"
         >
           발행하기
         </button>
@@ -694,9 +694,9 @@ export default function IdolProjectPage() {
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
                       i === currentStep
-                        ? "bg-[#ff3d7f] text-white shadow-lg shadow-[#ff3d7f]/30"
+                        ? "bg-black text-white shadow-lg shadow-[#000000]/30"
                         : i < currentStep
-                        ? "bg-[#c084fc] text-white"
+                        ? "bg-[#374151] text-white"
                         : "bg-gray-100 dark:bg-[#1a1a2e] text-gray-400 dark:text-gray-500 border border-gray-300 dark:border-gray-700"
                     }`}
                   >
@@ -710,7 +710,7 @@ export default function IdolProjectPage() {
                   </div>
                   <span
                     className={`text-xs mt-1.5 hidden sm:block ${
-                      i === currentStep ? "text-[#ff3d7f] font-medium" : "text-gray-500"
+                      i === currentStep ? "text-black font-medium" : "text-gray-500"
                     }`}
                   >
                     {label}
@@ -719,7 +719,7 @@ export default function IdolProjectPage() {
                 {i < STEP_LABELS.length - 1 && (
                   <div
                     className={`w-8 sm:w-16 h-0.5 mx-1 ${
-                      i < currentStep ? "bg-[#c084fc]" : "bg-gray-700"
+                      i < currentStep ? "bg-[#374151]" : "bg-gray-700"
                     }`}
                   />
                 )}
@@ -744,14 +744,14 @@ export default function IdolProjectPage() {
             {currentStep < STEP_LABELS.length - 1 ? (
               <button
                 onClick={() => setCurrentStep((s) => s + 1)}
-                className="px-6 py-2.5 rounded-xl font-medium text-white bg-[#ff3d7f] hover:bg-[#ff3d7f]/90 transition-colors"
+                className="px-6 py-2.5 rounded-xl font-medium text-white bg-black hover:bg-black/90 transition-colors"
               >
                 다음
               </button>
             ) : (
               <button
                 onClick={() => setShowPreview(true)}
-                className="px-6 py-2.5 rounded-xl font-semibold text-white bg-gradient-to-r from-[#ff3d7f] to-[#c084fc] hover:opacity-90 transition-opacity"
+                className="px-6 py-2.5 rounded-xl font-semibold text-white bg-gradient-to-r from-black to-gray-700 hover:opacity-90 transition-opacity"
               >
                 제안서 미리보기
               </button>

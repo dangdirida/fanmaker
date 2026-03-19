@@ -11,7 +11,7 @@ export default function LoginPage() {
     <div className="min-h-screen bg-white dark:bg-[#0a0a0a] flex items-center justify-center px-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center space-y-3">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-[#ff3d7f] to-[#c084fc] bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent">
             FanMaker
           </h1>
           <p className="text-gray-600 dark:text-gray-400 text-lg">K-pop 팬 창작 플랫폼</p>

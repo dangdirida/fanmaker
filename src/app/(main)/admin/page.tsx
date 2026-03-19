@@ -63,7 +63,7 @@ export default function AdminDashboardPage() {
         {statCards.map((card) => (
           <div
             key={card.key}
-            className="bg-[#141414] border border-[#222] rounded-xl p-5 flex flex-col items-center gap-2 hover:border-[#ff3d7f]/40 transition-colors"
+            className="bg-[#141414] border border-[#222] rounded-xl p-5 flex flex-col items-center gap-2 hover:border-black/40 transition-colors"
           >
             <span className="text-2xl">{card.icon}</span>
             <span className="text-xs text-gray-400">{card.label}</span>
@@ -85,12 +85,12 @@ export default function AdminDashboardPage() {
           <Link
             key={link.href}
             href={link.href}
-            className="bg-[#141414] border border-[#222] rounded-xl p-6 flex flex-col items-center gap-3 hover:border-[#c084fc]/50 hover:bg-[#1a1a2e] transition-all group"
+            className="bg-[#141414] border border-[#222] rounded-xl p-6 flex flex-col items-center gap-3 hover:border-gray-700/50 hover:bg-[#1a1a2e] transition-all group"
           >
             <span className="text-3xl group-hover:scale-110 transition-transform">
               {link.icon}
             </span>
-            <span className="text-sm font-medium text-gray-300 group-hover:text-[#c084fc] transition-colors">
+            <span className="text-sm font-medium text-gray-300 group-hover:text-gray-700 transition-colors">
               {link.label}
             </span>
           </Link>

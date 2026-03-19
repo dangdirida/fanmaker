@@ -18,7 +18,7 @@ function emailLayout(content: string) {
   <div style="max-width:560px;margin:0 auto;padding:40px 20px;">
     <!-- 로고 -->
     <div style="text-align:center;margin-bottom:32px;">
-      <span style="font-size:28px;font-weight:bold;background:linear-gradient(90deg,#ff3d7f,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">FanMaker</span>
+      <span style="font-size:28px;font-weight:bold;background:linear-gradient(90deg,#000000,#374151);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">FanMaker</span>
     </div>
     <!-- 콘텐츠 -->
     <div style="background-color:#1a1a1a;border-radius:16px;padding:32px;border:1px solid #2a2a2a;">
@@ -34,7 +34,7 @@ function emailLayout(content: string) {
 }
 
 function buttonHtml(text: string, url: string) {
-  return `<a href="${url}" style="display:inline-block;background-color:#ff3d7f;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;padding:12px 28px;border-radius:10px;margin-top:16px;">${text}</a>`;
+  return `<a href="${url}" style="display:inline-block;background-color:#000000;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;padding:12px 28px;border-radius:10px;margin-top:16px;">${text}</a>`;
 }
 
 // 1. 가입 환영 이메일
@@ -78,7 +78,7 @@ export async function sendReactionNotificationEmail(
       html: emailLayout(`
         <h2 style="color:#ffffff;margin:0 0 12px;font-size:20px;">${nickname}님, 축하해요!</h2>
         <p style="color:#aaa;font-size:14px;line-height:1.6;margin:0 0 8px;">
-          <strong style="color:#ff3d7f;">"${postTitle}"</strong>에
+          <strong style="color:#000000;">"${postTitle}"</strong>에
           ${reactionCount}개의 반응이 달렸어요.
         </p>
         <div style="text-align:center;">
@@ -106,8 +106,8 @@ export async function sendCommentNotificationEmail(
       html: emailLayout(`
         <h2 style="color:#ffffff;margin:0 0 12px;font-size:20px;">${nickname}님, 새 댓글이에요!</h2>
         <p style="color:#aaa;font-size:14px;line-height:1.6;margin:0 0 8px;">
-          <strong style="color:#c084fc;">${commenterNickname}</strong>님이
-          <strong style="color:#ff3d7f;">"${postTitle}"</strong>에 댓글을 남겼어요.
+          <strong style="color:#374151;">${commenterNickname}</strong>님이
+          <strong style="color:#000000;">"${postTitle}"</strong>에 댓글을 남겼어요.
         </p>
         <div style="text-align:center;">
           ${buttonHtml("댓글 보기", `${APP_URL}/feed`)}

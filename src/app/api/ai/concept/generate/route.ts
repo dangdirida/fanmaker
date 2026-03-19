@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
           ],
           albumCover: "/api/placeholder/album-cover",
           keyVisual: "/api/placeholder/key-visual",
-          palette: [primaryColor || "#ff3d7f", "#c084fc", "#38bdf8", "#0a0a0a", "#ffffff"],
+          palette: [primaryColor || "#000000", "#374151", "#38bdf8", "#0a0a0a", "#ffffff"],
         },
       },
     });

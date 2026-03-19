@@ -72,7 +72,7 @@ export default function PublishModal({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="창작물 제목을 입력하세요"
-              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#ff3d7f]"
+              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-black"
             />
           </div>
           <div>
@@ -82,7 +82,7 @@ export default function PublishModal({
               onChange={(e) => setDescription(e.target.value)}
               placeholder="창작물에 대해 설명해주세요"
               rows={3}
-              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#ff3d7f] resize-none"
+              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-black resize-none"
             />
           </div>
           <div>
@@ -91,7 +91,7 @@ export default function PublishModal({
               value={tags}
               onChange={(e) => setTags(e.target.value)}
               placeholder="예: 리믹스, BTS, 댄스팝"
-              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#ff3d7f]"
+              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-black"
             />
           </div>
         </div>
@@ -106,7 +106,7 @@ export default function PublishModal({
           <button
             onClick={handlePublish}
             disabled={!title.trim() || publishing}
-            className="flex-1 py-2.5 text-sm text-white bg-[#ff3d7f] rounded-xl hover:bg-[#e6356f] disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
+            className="flex-1 py-2.5 text-sm text-white bg-black rounded-xl hover:bg-gray-800 disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
           >
             {publishing && <Loader2 className="w-4 h-4 animate-spin" />}
             게시하기

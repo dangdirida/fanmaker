@@ -69,7 +69,7 @@ export default function ArtistSelector({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="아티스트 검색..."
-            className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-[#ff3d7f] transition-colors"
+            className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-black transition-colors"
           />
         </div>
 
@@ -79,7 +79,7 @@ export default function ArtistSelector({
             onSelect(null);
             onClose();
           }}
-          className="w-full mb-3 px-4 py-3 bg-gradient-to-r from-[#ff3d7f]/10 to-[#c084fc]/10 border border-[#ff3d7f]/30 rounded-xl text-sm text-white hover:border-[#ff3d7f]/50 transition-colors text-left"
+          className="w-full mb-3 px-4 py-3 bg-gradient-to-r from-black/10 to-gray-700/10 border border-black/30 rounded-xl text-sm text-white hover:border-black/50 transition-colors text-left"
         >
           <span className="font-medium">선택 안 함</span>
           <span className="text-gray-400 ml-2">(오리지널 창작)</span>
@@ -98,7 +98,7 @@ export default function ArtistSelector({
                     onSelect(artist);
                     onClose();
                   }}
-                  className="p-3 rounded-xl border border-gray-800 bg-gray-900/50 hover:border-[#ff3d7f]/50 hover:bg-[#ff3d7f]/5 transition-all text-center"
+                  className="p-3 rounded-xl border border-gray-800 bg-gray-900/50 hover:border-black/50 hover:bg-black/5 transition-all text-center"
                 >
                   <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gray-800 flex items-center justify-center text-base overflow-hidden">
                     {artist.groupImageUrl ? (

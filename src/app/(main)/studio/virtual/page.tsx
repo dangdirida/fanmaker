@@ -84,7 +84,7 @@ export default function VirtualStudioPage() {
         <div className="space-y-5">
           {selectedArtist && (
             <div className="flex items-center gap-2">
-              <span className="text-sm text-[#ff3d7f] bg-[#ff3d7f]/10 px-3 py-1 rounded-full">
+              <span className="text-sm text-black bg-black/10 px-3 py-1 rounded-full">
                 {selectedArtist.name}
               </span>
               <button onClick={() => setShowArtistSelector(true)} className="text-xs text-gray-500">변경</button>
@@ -100,7 +100,7 @@ export default function VirtualStudioPage() {
                   onClick={() => setGender(g.value)}
                   className={`flex-1 py-2 text-sm rounded-xl border transition-colors ${
                     gender === g.value
-                      ? "border-[#ff3d7f] bg-[#ff3d7f]/10 text-[#ff3d7f]"
+                      ? "border-black bg-black/10 text-black"
                       : "border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-600"
                   }`}
                 >
@@ -135,7 +135,7 @@ export default function VirtualStudioPage() {
                   onClick={() => setStylePreset(s.value)}
                   className={`py-2 text-sm rounded-xl border transition-colors ${
                     stylePreset === s.value
-                      ? "border-[#c084fc] bg-[#c084fc]/10 text-[#c084fc]"
+                      ? "border-gray-700 bg-black/10 text-gray-700"
                       : "border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-600"
                   }`}
                 >
@@ -152,14 +152,14 @@ export default function VirtualStudioPage() {
               onChange={(e) => setCustomPrompt(e.target.value)}
               placeholder="원하는 스타일을 자유롭게 설명해주세요 (한국어/영어)"
               rows={3}
-              className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#ff3d7f] resize-none"
+              className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-black resize-none"
             />
           </div>
 
           <button
             onClick={handleGenerate}
             disabled={generating}
-            className="w-full bg-[#ff3d7f] text-white py-3 rounded-xl hover:bg-[#e6356f] disabled:opacity-50 text-sm font-medium transition-colors"
+            className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 disabled:opacity-50 text-sm font-medium transition-colors"
           >
             이미지 생성
           </button>
@@ -183,7 +183,7 @@ export default function VirtualStudioPage() {
                 </button>
                 <button
                   onClick={() => setShowPublish(true)}
-                  className="flex-1 py-2.5 text-sm bg-[#ff3d7f] text-white rounded-xl hover:bg-[#e6356f]"
+                  className="flex-1 py-2.5 text-sm bg-black text-white rounded-xl hover:bg-gray-800"
                 >
                   피드에 게시
                 </button>

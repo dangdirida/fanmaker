@@ -85,8 +85,8 @@ function PricingContent() {
     <div className="min-h-screen bg-[#0a0a0a] px-4 py-12 md:py-20">
       {/* 데모 상태 안내 */}
       {status === "demo" && (
-        <div className="max-w-2xl mx-auto mb-8 p-4 bg-[#c084fc]/10 border border-[#c084fc]/30 rounded-xl text-center">
-          <p className="text-[#c084fc] text-sm">
+        <div className="max-w-2xl mx-auto mb-8 p-4 bg-black/10 border border-gray-700/30 rounded-xl text-center">
+          <p className="text-gray-700 text-sm">
             현재 데모 모드입니다. Stripe 연동 후 실제 결제가 가능합니다.
           </p>
         </div>
@@ -94,13 +94,13 @@ function PricingContent() {
 
       {/* 헤더 */}
       <div className="text-center mb-12 md:mb-16">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#ff3d7f]/10 border border-[#ff3d7f]/20 rounded-full mb-6">
-          <Crown className="w-4 h-4 text-[#ff3d7f]" />
-          <span className="text-sm text-[#ff3d7f] font-medium">PRO 플랜</span>
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-black/10 border border-black/20 rounded-full mb-6">
+          <Crown className="w-4 h-4 text-black" />
+          <span className="text-sm text-black font-medium">PRO 플랜</span>
         </div>
         <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
           창작의 한계를{" "}
-          <span className="bg-gradient-to-r from-[#ff3d7f] to-[#c084fc] bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent">
             없애세요
           </span>
         </h1>
@@ -138,24 +138,24 @@ function PricingContent() {
         </div>
 
         {/* Pro 플랜 */}
-        <div className="relative rounded-2xl border border-[#ff3d7f]/40 bg-[#111] p-8 flex flex-col overflow-hidden">
+        <div className="relative rounded-2xl border border-black/40 bg-[#111] p-8 flex flex-col overflow-hidden">
           {/* 그라데이션 글로우 */}
-          <div className="absolute -top-24 -right-24 w-48 h-48 bg-[#ff3d7f]/20 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-[#c084fc]/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-black/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-[#374151]/20 rounded-full blur-3xl pointer-events-none" />
 
           {/* 인기 뱃지 */}
-          <div className="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-[#ff3d7f] to-[#c084fc] rounded-full">
+          <div className="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-black to-gray-700 rounded-full">
             <span className="text-xs font-bold text-white">POPULAR</span>
           </div>
 
           <h3 className="text-xl font-bold text-white mb-1 flex items-center gap-2">
             {proPlan.name}
-            <Sparkles className="w-5 h-5 text-[#ff3d7f]" />
+            <Sparkles className="w-5 h-5 text-black" />
           </h3>
           <p className="text-gray-500 text-sm mb-6">{proPlan.description}</p>
 
           <div className="mb-8">
-            <span className="text-4xl font-bold bg-gradient-to-r from-[#ff3d7f] to-[#c084fc] bg-clip-text text-transparent">
+            <span className="text-4xl font-bold bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent">
               {proPlan.price}
             </span>
             <span className="text-gray-400 text-sm ml-1">원 / 월</span>
@@ -164,7 +164,7 @@ function PricingContent() {
           <ul className="space-y-3 mb-8 flex-1">
             {proPlan.features.map((feature) => (
               <li key={feature} className="flex items-center gap-3 text-gray-200 text-sm">
-                <div className="w-4 h-4 rounded-full bg-gradient-to-r from-[#ff3d7f] to-[#c084fc] flex items-center justify-center flex-shrink-0">
+                <div className="w-4 h-4 rounded-full bg-gradient-to-r from-black to-gray-700 flex items-center justify-center flex-shrink-0">
                   <Check className="w-2.5 h-2.5 text-white" />
                 </div>
                 {feature}
@@ -175,7 +175,7 @@ function PricingContent() {
           <button
             onClick={handleCheckout}
             disabled={loading}
-            className="relative w-full py-3 rounded-xl text-sm font-medium bg-gradient-to-r from-[#ff3d7f] to-[#c084fc] text-white hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
+            className="relative w-full py-3 rounded-xl text-sm font-medium bg-gradient-to-r from-black to-gray-700 text-white hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
           >
             {loading ? (
               <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

@@ -106,7 +106,7 @@ export default function PostCard({ post, onReaction }: PostCardProps) {
       <div className="p-4">
         {/* 아티스트 */}
         {post.artist && (
-          <p className="text-xs text-[#ff3d7f] font-medium mb-1">
+          <p className="text-xs text-black font-medium mb-1">
             {post.artist.name}
           </p>
         )}

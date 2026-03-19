@@ -107,7 +107,7 @@ function ArtistFilter({
             onClick={() => onSelect(a.id)}
             className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
               artistId === a.id
-                ? "bg-[#ff3d7f] text-white"
+                ? "bg-black text-white"
                 : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
@@ -291,13 +291,13 @@ export default function FeedPage() {
             onClick={() => setTab(t.key)}
             className={`px-4 py-2 font-medium transition-colors relative ${
               tab === t.key
-                ? "text-[#ff3d7f]"
+                ? "text-black"
                 : "text-gray-400 hover:text-gray-600 dark:hover:text-white"
             }`}
           >
             {t.label}
             {tab === t.key && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#ff3d7f]" />
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-black" />
             )}
           </button>
         ))}
@@ -313,7 +313,7 @@ export default function FeedPage() {
               onClick={() => setCategory(c.key)}
               className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
                 category === c.key
-                  ? "bg-[#ff3d7f] text-white"
+                  ? "bg-black text-white"
                   : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >

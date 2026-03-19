@@ -105,7 +105,7 @@ export default function FileUploader({
           onClick={() => inputRef.current?.click()}
           className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
             dragOver
-              ? "border-[#ff3d7f] bg-[#ff3d7f]/5"
+              ? "border-black bg-black/5"
               : "border-gray-700 hover:border-gray-600"
           }`}
         >
@@ -118,10 +118,10 @@ export default function FileUploader({
           />
           {uploading ? (
             <div className="space-y-3">
-              <Loader2 className="w-8 h-8 text-[#ff3d7f] animate-spin mx-auto" />
+              <Loader2 className="w-8 h-8 text-black animate-spin mx-auto" />
               <div className="w-48 mx-auto bg-gray-800 rounded-full h-2">
                 <div
-                  className="bg-[#ff3d7f] h-2 rounded-full transition-all duration-300"
+                  className="bg-black h-2 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}
                 />
               </div>

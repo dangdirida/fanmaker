@@ -23,7 +23,7 @@ export default function ConceptStudioPage() {
   const [customMood, setCustomMood] = useState("");
   const [keywords, setKeywords] = useState<string[]>([]);
   const [keywordInput, setKeywordInput] = useState("");
-  const [primaryColor, setPrimaryColor] = useState("#ff3d7f");
+  const [primaryColor, setPrimaryColor] = useState("#000000");
   const [generating, setGenerating] = useState(false);
   const [result, setResult] = useState<ConceptResult | null>(null);
   const [selectedLogo, setSelectedLogo] = useState(0);
@@ -104,7 +104,7 @@ export default function ConceptStudioPage() {
                   key={i}
                   onClick={() => setSelectedLogo(i)}
                   className={`aspect-square bg-gray-100 dark:bg-gray-900 rounded-xl border-2 flex items-center justify-center text-2xl transition-colors ${
-                    selectedLogo === i ? "border-[#ff3d7f]" : "border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700"
+                    selectedLogo === i ? "border-black" : "border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700"
                   }`}
                 >
                   🎨
@@ -148,7 +148,7 @@ export default function ConceptStudioPage() {
           <div className="flex gap-3">
             <button
               onClick={() => setShowPublish(true)}
-              className="bg-[#ff3d7f] text-white px-6 py-2.5 rounded-xl hover:bg-[#e6356f] text-sm"
+              className="bg-black text-white px-6 py-2.5 rounded-xl hover:bg-gray-800 text-sm"
             >
               피드에 게시
             </button>
@@ -175,7 +175,7 @@ export default function ConceptStudioPage() {
           {selectedArtist && (
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-400">선택된 아티스트:</span>
-              <span className="text-sm text-[#ff3d7f] bg-[#ff3d7f]/10 px-3 py-1 rounded-full">
+              <span className="text-sm text-black bg-black/10 px-3 py-1 rounded-full">
                 {selectedArtist.name}
               </span>
               <button onClick={() => setShowArtistSelector(true)} className="text-xs text-gray-500 hover:text-gray-300">
@@ -190,7 +190,7 @@ export default function ConceptStudioPage() {
               value={artistName}
               onChange={(e) => setArtistName(e.target.value)}
               placeholder="아티스트 이름"
-              className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#ff3d7f]"
+              className="w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-black"
             />
           </div>
 
@@ -203,7 +203,7 @@ export default function ConceptStudioPage() {
                   onClick={() => setMood(m)}
                   className={`px-4 py-2 text-sm rounded-full border transition-colors ${
                     mood === m
-                      ? "border-[#ff3d7f] bg-[#ff3d7f]/10 text-[#ff3d7f]"
+                      ? "border-black bg-black/10 text-black"
                       : "border-gray-300 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:border-gray-400 dark:hover:border-gray-600"
                   }`}
                 >
@@ -216,7 +216,7 @@ export default function ConceptStudioPage() {
                 value={customMood}
                 onChange={(e) => setCustomMood(e.target.value)}
                 placeholder="원하는 무드를 입력하세요"
-                className="mt-2 w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-[#ff3d7f]"
+                className="mt-2 w-full bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-black"
               />
             )}
           </div>
@@ -237,7 +237,7 @@ export default function ConceptStudioPage() {
                 onChange={(e) => setKeywordInput(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && addKeyword()}
                 placeholder="키워드 입력 후 Enter"
-                className="flex-1 bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-[#ff3d7f]"
+                className="flex-1 bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-black"
               />
             </div>
           </div>
@@ -255,7 +255,7 @@ export default function ConceptStudioPage() {
           <button
             onClick={handleGenerate}
             disabled={!artistName || !mood}
-            className="w-full bg-[#ff3d7f] text-white py-3 rounded-xl hover:bg-[#e6356f] disabled:opacity-50 text-sm font-medium transition-colors"
+            className="w-full bg-black text-white py-3 rounded-xl hover:bg-gray-800 disabled:opacity-50 text-sm font-medium transition-colors"
           >
             컨셉 키트 생성
           </button>

@@ -80,7 +80,7 @@ export default function SignupPage() {
       <div className="w-full max-w-md space-y-8">
         {/* 로고 */}
         <div className="text-center space-y-3">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-[#ff3d7f] to-[#c084fc] bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent">
             FanMaker
           </h1>
           <p className="text-gray-400">회원가입</p>
@@ -101,7 +101,7 @@ export default function SignupPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="이름을 입력하세요"
-              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#ff3d7f] transition-colors"
+              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black transition-colors"
             />
           </div>
 
@@ -112,7 +112,7 @@ export default function SignupPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="example@email.com"
-              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#ff3d7f] transition-colors"
+              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black transition-colors"
             />
           </div>
 
@@ -123,7 +123,7 @@ export default function SignupPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="6자 이상"
-              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#ff3d7f] transition-colors"
+              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black transition-colors"
             />
           </div>
 
@@ -134,14 +134,14 @@ export default function SignupPage() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="비밀번호를 다시 입력하세요"
-              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#ff3d7f] transition-colors"
+              className="w-full bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black transition-colors"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#ff3d7f] text-white font-medium py-3 px-4 rounded-xl hover:bg-[#e6356f] disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-black text-white font-medium py-3 px-4 rounded-xl hover:bg-gray-800 disabled:opacity-50 transition-colors flex items-center justify-center gap-2"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
             회원가입
@@ -178,7 +178,7 @@ export default function SignupPage() {
         {/* 로그인 링크 */}
         <p className="text-center text-gray-500 text-sm">
           이미 계정이 있나요?{" "}
-          <Link href="/login" className="text-[#ff3d7f] hover:underline">
+          <Link href="/login" className="text-black hover:underline">
             로그인
           </Link>
         </p>

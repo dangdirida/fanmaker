@@ -116,13 +116,13 @@ export default function PostDetailPage() {
 
       {/* 카테고리 + 아티스트 */}
       <div className="flex items-center gap-2 mb-3">
-        <span className="text-xs px-2.5 py-1 rounded-full bg-[#ff3d7f]/10 text-[#ff3d7f]">
+        <span className="text-xs px-2.5 py-1 rounded-full bg-black/10 text-black">
           {CATEGORY_LABELS[post.category] || post.category}
         </span>
         {post.artist && (
           <Link
             href={`/artist/${post.artist.id}`}
-            className="text-xs px-2.5 py-1 rounded-full bg-[#c084fc]/10 text-[#c084fc] hover:bg-[#c084fc]/20 transition-colors"
+            className="text-xs px-2.5 py-1 rounded-full bg-black/10 text-gray-700 hover:bg-[#374151]/20 transition-colors"
           >
             {post.artist.name}
           </Link>

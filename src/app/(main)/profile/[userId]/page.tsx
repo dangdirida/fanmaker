@@ -212,7 +212,7 @@ export default function ProfilePage() {
   if (!profile) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
-        <Loader2 className="w-8 h-8 text-[#ff3d7f] animate-spin" />
+        <Loader2 className="w-8 h-8 text-black animate-spin" />
       </div>
     );
   }
@@ -230,7 +230,7 @@ export default function ProfilePage() {
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
           {/* 아바타 */}
           <div className="relative">
-            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br from-[#ff3d7f] to-[#c084fc] p-[2px]">
+            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-gradient-to-br from-black to-gray-700 p-[2px]">
               <div className="w-full h-full rounded-full bg-[#0a0a0a] p-[2px]">
                 <div className="w-full h-full rounded-full bg-gray-800 overflow-hidden flex items-center justify-center">
                   {user.image ? (
@@ -248,7 +248,7 @@ export default function ProfilePage() {
               </div>
             </div>
             {user.isPro && (
-              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#ff3d7f] to-[#c084fc] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+              <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 bg-gradient-to-r from-black to-gray-700 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
                 PRO
               </span>
             )}
@@ -285,7 +285,7 @@ export default function ProfilePage() {
                     className={`inline-flex items-center gap-1.5 px-5 py-2 rounded-lg text-sm font-medium transition-all ${
                       profile.isFollowing
                         ? "bg-[#1a1a1a] border border-gray-700 text-gray-300 hover:border-red-500/50 hover:text-red-400"
-                        : "bg-[#ff3d7f] text-white hover:bg-[#e6356f] shadow-lg shadow-[#ff3d7f]/20"
+                        : "bg-black text-white hover:bg-gray-800 shadow-lg shadow-[#000000]/20"
                     }`}
                   >
                     {followLoading ? (
@@ -344,7 +344,7 @@ export default function ProfilePage() {
                 onClick={() => setTab(t.key)}
                 className={`flex-1 flex items-center justify-center gap-1.5 py-3.5 text-sm font-medium transition-colors border-b-2 ${
                   tab === t.key
-                    ? "text-[#ff3d7f] border-[#ff3d7f]"
+                    ? "text-black border-black"
                     : "text-gray-500 border-transparent hover:text-gray-300"
                 }`}
               >
@@ -360,7 +360,7 @@ export default function ProfilePage() {
       <div className="py-6">
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 className="w-6 h-6 text-[#ff3d7f] animate-spin" />
+            <Loader2 className="w-6 h-6 text-black animate-spin" />
           </div>
         ) : (
           <>
@@ -448,9 +448,9 @@ export default function ProfilePage() {
                     {badges.map((item) => (
                       <div
                         key={item.badgeId}
-                        className="bg-[#111] border border-gray-800 rounded-xl p-4 text-center hover:border-[#c084fc]/50 transition-colors"
+                        className="bg-[#111] border border-gray-800 rounded-xl p-4 text-center hover:border-gray-700/50 transition-colors"
                       >
-                        <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-[#ff3d7f]/20 to-[#c084fc]/20 flex items-center justify-center overflow-hidden">
+                        <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-black/20 to-gray-700/20 flex items-center justify-center overflow-hidden">
                           {item.badge.imageUrl ? (
                             <img
                               src={item.badge.imageUrl}
@@ -458,7 +458,7 @@ export default function ProfilePage() {
                               className="w-10 h-10 object-contain"
                             />
                           ) : (
-                            <Award className="w-8 h-8 text-[#c084fc]" />
+                            <Award className="w-8 h-8 text-gray-700" />
                           )}
                         </div>
                         <h4 className="text-sm font-medium text-white mb-1">

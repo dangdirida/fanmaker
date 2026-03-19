@@ -103,11 +103,11 @@ export default function AdminPostsPage() {
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
             placeholder="제목 검색..."
-            className="flex-1 max-w-md bg-[#141414] border border-[#333] rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-[#ff3d7f]"
+            className="flex-1 max-w-md bg-[#141414] border border-[#333] rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-black"
           />
           <button
             type="submit"
-            className="px-5 py-2 bg-[#ff3d7f] text-white rounded-lg font-medium hover:bg-[#ff3d7f]/80 transition-colors"
+            className="px-5 py-2 bg-black text-white rounded-lg font-medium hover:bg-black/80 transition-colors"
           >
             검색
           </button>
@@ -118,7 +118,7 @@ export default function AdminPostsPage() {
             setCategory(e.target.value);
             setPagination((prev) => ({ ...prev, page: 1 }));
           }}
-          className="bg-[#141414] border border-[#333] text-white rounded-lg px-4 py-2 focus:outline-none focus:border-[#c084fc]"
+          className="bg-[#141414] border border-[#333] text-white rounded-lg px-4 py-2 focus:outline-none focus:border-gray-700"
         >
           {CATEGORIES.map((c) => (
             <option key={c.value} value={c.value}>
@@ -167,7 +167,7 @@ export default function AdminPostsPage() {
                     {post.author?.nickname || "-"}
                   </td>
                   <td className="px-4 py-3">
-                    <span className="px-2 py-0.5 bg-[#c084fc]/15 text-[#c084fc] rounded text-xs">
+                    <span className="px-2 py-0.5 bg-[#374151]/15 text-gray-700 rounded text-xs">
                       {post.category}
                     </span>
                   </td>

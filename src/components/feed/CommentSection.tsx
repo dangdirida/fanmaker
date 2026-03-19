@@ -110,11 +110,11 @@ export default function CommentSection({ postId }: { postId: string }) {
             onChange={(e) => setReplyContent(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSubmit(comment.id)}
             placeholder="답글 입력..."
-            className="flex-1 bg-gray-900 border border-gray-700 text-white text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-[#ff3d7f]"
+            className="flex-1 bg-gray-900 border border-gray-700 text-white text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-black"
           />
           <button
             onClick={() => handleSubmit(comment.id)}
-            className="text-[#ff3d7f] hover:text-[#e6356f]"
+            className="text-black hover:text-[#1f2937]"
           >
             <Send className="w-4 h-4" />
           </button>
@@ -140,12 +140,12 @@ export default function CommentSection({ postId }: { postId: string }) {
             onChange={(e) => setContent(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
             placeholder="댓글을 남겨보세요..."
-            className="flex-1 bg-gray-900 border border-gray-700 text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-[#ff3d7f]"
+            className="flex-1 bg-gray-900 border border-gray-700 text-white text-sm rounded-xl px-4 py-2.5 focus:outline-none focus:border-black"
           />
           <button
             onClick={() => handleSubmit()}
             disabled={!content.trim()}
-            className="px-3 py-2 bg-[#ff3d7f] text-white rounded-xl hover:bg-[#e6356f] disabled:opacity-50 transition-colors"
+            className="px-3 py-2 bg-black text-white rounded-xl hover:bg-gray-800 disabled:opacity-50 transition-colors"
           >
             <Send className="w-4 h-4" />
           </button>

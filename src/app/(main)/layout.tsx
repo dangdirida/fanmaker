@@ -71,7 +71,7 @@ export default function MainLayout({
         {/* 로고 */}
         <div className="p-6 border-b border-gray-200 dark:border-gray-800">
           <Link href="/feed" className="flex items-center gap-2">
-            <Zap className="w-7 h-7 text-[#ff3d7f] fill-[#ff3d7f]" />
+            <Zap className="w-7 h-7 text-black fill-[#000000]" />
             <span className="text-xl font-bold">팬메이커</span>
           </Link>
         </div>
@@ -84,7 +84,7 @@ export default function MainLayout({
               href="/feed"
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                 pathname === "/feed"
-                  ? "bg-[#ff3d7f] text-white"
+                  ? "bg-black text-white"
                   : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
               }`}
             >
@@ -141,7 +141,7 @@ export default function MainLayout({
               href={session?.user ? `/profile/${session.user.id}` : "/profile"}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                 pathname.startsWith("/profile")
-                  ? "bg-[#ff3d7f] text-white"
+                  ? "bg-black text-white"
                   : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
               }`}
             >
@@ -241,7 +241,7 @@ export default function MainLayout({
                 <>
                   <button className="relative p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
                     <Bell className="w-5 h-5" />
-                    <span className="absolute top-1 right-1 w-2 h-2 bg-[#ff3d7f] rounded-full" />
+                    <span className="absolute top-1 right-1 w-2 h-2 bg-black rounded-full" />
                   </button>
                   <div className="relative">
                     <button
@@ -278,7 +278,7 @@ export default function MainLayout({
                               {session.user.email}
                             </p>
                             {session.user.isPro && (
-                              <span className="inline-block mt-1 px-2 py-0.5 bg-[#c084fc]/20 text-[#c084fc] rounded text-[10px] font-medium">
+                              <span className="inline-block mt-1 px-2 py-0.5 bg-[#374151]/20 text-gray-700 rounded text-[10px] font-medium">
                                 Pro
                               </span>
                             )}
@@ -318,7 +318,7 @@ export default function MainLayout({
               ) : (
                 <Link
                   href="/login"
-                  className="px-4 py-2 bg-[#ff3d7f] text-white text-sm font-medium rounded-lg hover:bg-[#e6356f] transition-colors"
+                  className="px-4 py-2 bg-black text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors"
                 >
                   로그인
                 </Link>
@@ -342,7 +342,7 @@ export default function MainLayout({
                 className="flex items-center gap-2 px-3 py-5 mb-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <Zap className="w-7 h-7 text-[#ff3d7f] fill-[#ff3d7f]" />
+                <Zap className="w-7 h-7 text-black fill-[#000000]" />
                 <span className="text-xl font-bold">팬메이커</span>
               </Link>
               <Link
@@ -397,7 +397,7 @@ export default function MainLayout({
                 key={menu.href}
                 href={menu.href}
                 className={`flex flex-col items-center justify-center py-3 px-6 flex-1 transition-colors ${
-                  isActive ? "text-[#ff3d7f]" : "text-gray-400"
+                  isActive ? "text-black" : "text-gray-400"
                 }`}
               >
                 <Icon className="w-6 h-6 mb-1" />

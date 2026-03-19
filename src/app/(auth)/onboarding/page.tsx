@@ -145,7 +145,7 @@ export default function OnboardingPage() {
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors ${
                 s <= step
-                  ? "bg-[#ff3d7f] text-white"
+                  ? "bg-black text-white"
                   : "bg-gray-800 text-gray-500"
               }`}
             >
@@ -154,7 +154,7 @@ export default function OnboardingPage() {
             {s < 3 && (
               <div
                 className={`w-12 h-0.5 ${
-                  s < step ? "bg-[#ff3d7f]" : "bg-gray-800"
+                  s < step ? "bg-black" : "bg-gray-800"
                 }`}
               />
             )}
@@ -186,7 +186,7 @@ export default function OnboardingPage() {
                   }}
                   placeholder="닉네임 입력 (2~20자)"
                   maxLength={20}
-                  className="flex-1 bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:border-[#ff3d7f] transition-colors"
+                  className="flex-1 bg-gray-900 border border-gray-700 text-white rounded-xl px-4 py-3 focus:outline-none focus:border-black transition-colors"
                 />
                 <button
                   onClick={checkNickname}
@@ -230,7 +230,7 @@ export default function OnboardingPage() {
                   onClick={() => toggleArtist(artist.id)}
                   className={`p-3 rounded-xl border text-center transition-all ${
                     selectedArtists.includes(artist.id)
-                      ? "border-[#ff3d7f] bg-[#ff3d7f]/10 text-white"
+                      ? "border-black bg-black/10 text-white"
                       : "border-gray-700 bg-gray-900 text-gray-400 hover:border-gray-600"
                   }`}
                 >
@@ -265,7 +265,7 @@ export default function OnboardingPage() {
                   onClick={() => setActivityType(type.value)}
                   className={`w-full p-4 rounded-xl border text-left transition-all flex items-center gap-4 ${
                     activityType === type.value
-                      ? "border-[#ff3d7f] bg-[#ff3d7f]/10"
+                      ? "border-black bg-black/10"
                       : "border-gray-700 bg-gray-900 hover:border-gray-600"
                   }`}
                 >
@@ -295,7 +295,7 @@ export default function OnboardingPage() {
             <button
               onClick={() => setStep((s) => s + 1)}
               disabled={!canNext()}
-              className="flex items-center gap-1 bg-[#ff3d7f] text-white px-6 py-2.5 rounded-xl hover:bg-[#e6356f] disabled:opacity-50 transition-colors"
+              className="flex items-center gap-1 bg-black text-white px-6 py-2.5 rounded-xl hover:bg-gray-800 disabled:opacity-50 transition-colors"
             >
               다음
               <ChevronRight className="w-4 h-4" />
@@ -304,7 +304,7 @@ export default function OnboardingPage() {
             <button
               onClick={handleComplete}
               disabled={!canNext() || submitting}
-              className="flex items-center gap-2 bg-[#ff3d7f] text-white px-6 py-2.5 rounded-xl hover:bg-[#e6356f] disabled:opacity-50 transition-colors"
+              className="flex items-center gap-2 bg-black text-white px-6 py-2.5 rounded-xl hover:bg-gray-800 disabled:opacity-50 transition-colors"
             >
               {submitting ? (
                 <Loader2 className="w-4 h-4 animate-spin" />

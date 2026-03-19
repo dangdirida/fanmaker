@@ -99,7 +99,7 @@ export default function AdminArtistsPage() {
         <h1 className="text-3xl font-bold text-white">아티스트 관리</h1>
         <button
           onClick={() => setShowModal(true)}
-          className="px-5 py-2 bg-[#ff3d7f] text-white rounded-lg font-medium hover:bg-[#ff3d7f]/80 transition-colors"
+          className="px-5 py-2 bg-black text-white rounded-lg font-medium hover:bg-black/80 transition-colors"
         >
           + 아티스트 추가
         </button>
@@ -180,7 +180,7 @@ export default function AdminArtistsPage() {
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, name: e.target.value }))
                   }
-                  className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#ff3d7f]"
+                  className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-black"
                   required
                 />
               </div>
@@ -194,7 +194,7 @@ export default function AdminArtistsPage() {
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, nameEn: e.target.value }))
                   }
-                  className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#ff3d7f]"
+                  className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-black"
                 />
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -212,7 +212,7 @@ export default function AdminArtistsPage() {
                       }))
                     }
                     placeholder="2020"
-                    className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#ff3d7f]"
+                    className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-black"
                   />
                 </div>
                 <div>
@@ -228,7 +228,7 @@ export default function AdminArtistsPage() {
                         memberCount: e.target.value,
                       }))
                     }
-                    className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#ff3d7f]"
+                    className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-black"
                   />
                 </div>
               </div>
@@ -242,7 +242,7 @@ export default function AdminArtistsPage() {
                   onChange={(e) =>
                     setForm((prev) => ({ ...prev, company: e.target.value }))
                   }
-                  className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-[#ff3d7f]"
+                  className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg px-4 py-2 text-white focus:outline-none focus:border-black"
                 />
               </div>
               <div className="flex gap-3 pt-2">
@@ -256,7 +256,7 @@ export default function AdminArtistsPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="flex-1 px-4 py-2 bg-[#ff3d7f] text-white rounded-lg font-medium hover:bg-[#ff3d7f]/80 disabled:opacity-50 transition-colors"
+                  className="flex-1 px-4 py-2 bg-black text-white rounded-lg font-medium hover:bg-black/80 disabled:opacity-50 transition-colors"
                 >
                   {submitting ? "추가 중..." : "추가"}
                 </button>

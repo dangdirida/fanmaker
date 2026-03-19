@@ -96,11 +96,11 @@ export default function AdminUsersPage() {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           placeholder="닉네임 또는 이메일 검색..."
-          className="flex-1 max-w-md bg-[#141414] border border-[#333] rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-[#ff3d7f]"
+          className="flex-1 max-w-md bg-[#141414] border border-[#333] rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-black"
         />
         <button
           type="submit"
-          className="px-5 py-2 bg-[#ff3d7f] text-white rounded-lg font-medium hover:bg-[#ff3d7f]/80 transition-colors"
+          className="px-5 py-2 bg-black text-white rounded-lg font-medium hover:bg-black/80 transition-colors"
         >
           검색
         </button>
@@ -165,7 +165,7 @@ export default function AdminUsersPage() {
                         handleRoleChange(user.id, e.target.value);
                       }}
                       onClick={(e) => e.stopPropagation()}
-                      className="bg-[#222] border border-[#333] text-white rounded px-2 py-1 text-xs focus:outline-none focus:border-[#c084fc]"
+                      className="bg-[#222] border border-[#333] text-white rounded px-2 py-1 text-xs focus:outline-none focus:border-gray-700"
                     >
                       <option value="USER">USER</option>
                       <option value="ADMIN">ADMIN</option>
@@ -173,7 +173,7 @@ export default function AdminUsersPage() {
                   </td>
                   <td className="px-4 py-3">
                     {user.isPro ? (
-                      <span className="px-2 py-0.5 bg-[#c084fc]/20 text-[#c084fc] rounded text-xs font-medium">
+                      <span className="px-2 py-0.5 bg-[#374151]/20 text-gray-700 rounded text-xs font-medium">
                         Pro
                       </span>
                     ) : (

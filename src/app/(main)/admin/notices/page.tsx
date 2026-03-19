@@ -80,7 +80,7 @@ export default function AdminNoticesPage() {
         <h1 className="text-3xl font-bold text-white">공지사항 관리</h1>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="px-5 py-2 bg-[#ff3d7f] text-white rounded-lg font-medium hover:bg-[#ff3d7f]/80 transition-colors"
+          className="px-5 py-2 bg-black text-white rounded-lg font-medium hover:bg-black/80 transition-colors"
         >
           {showForm ? "닫기" : "+ 공지 작성"}
         </button>
@@ -101,7 +101,7 @@ export default function AdminNoticesPage() {
                 setForm((prev) => ({ ...prev, title: e.target.value }))
               }
               placeholder="공지사항 제목"
-              className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-[#ff3d7f]"
+              className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-black"
               required
             />
           </div>
@@ -114,7 +114,7 @@ export default function AdminNoticesPage() {
               }
               placeholder="공지사항 내용을 입력하세요..."
               rows={5}
-              className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#ff3d7f] resize-none"
+              className="w-full bg-[#0a0a0a] border border-[#333] rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-black resize-none"
               required
             />
           </div>
@@ -126,7 +126,7 @@ export default function AdminNoticesPage() {
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, isPinned: e.target.checked }))
               }
-              className="w-4 h-4 accent-[#ff3d7f]"
+              className="w-4 h-4 accent-[#000000]"
             />
             <label htmlFor="isPinned" className="text-sm text-gray-300">
               공개 (고정)
@@ -135,7 +135,7 @@ export default function AdminNoticesPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="px-6 py-2 bg-[#c084fc] text-white rounded-lg font-medium hover:bg-[#c084fc]/80 disabled:opacity-50 transition-colors"
+            className="px-6 py-2 bg-[#374151] text-white rounded-lg font-medium hover:bg-[#374151]/80 disabled:opacity-50 transition-colors"
           >
             {submitting ? "작성 중..." : "공지 등록"}
           </button>
@@ -163,7 +163,7 @@ export default function AdminNoticesPage() {
                       {notice.title}
                     </h3>
                     {notice.isPublic && (
-                      <span className="px-2 py-0.5 bg-[#ff3d7f]/15 text-[#ff3d7f] rounded text-xs shrink-0">
+                      <span className="px-2 py-0.5 bg-black/15 text-black rounded text-xs shrink-0">
                         공개
                       </span>
                     )}

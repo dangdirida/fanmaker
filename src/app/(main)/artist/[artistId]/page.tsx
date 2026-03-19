@@ -141,7 +141,7 @@ export default function ArtistPage() {
             className={`px-6 py-2 rounded-full text-sm font-medium transition-colors ${
               artist.isFollowing
                 ? "bg-gray-700 text-gray-300 hover:bg-gray-600"
-                : "bg-[#ff3d7f] text-white hover:bg-[#e6356f]"
+                : "bg-black text-white hover:bg-gray-800"
             }`}
           >
             {artist.isFollowing ? "팔로잉" : "팔로우"}
@@ -158,7 +158,7 @@ export default function ArtistPage() {
               onClick={() => setTab(t.key)}
               className={`flex-1 py-3 text-sm font-medium text-center transition-colors border-b-2 ${
                 tab === t.key
-                  ? "text-[#ff3d7f] border-[#ff3d7f]"
+                  ? "text-black border-black"
                   : "text-gray-500 border-transparent hover:text-gray-300"
               }`}
             >
