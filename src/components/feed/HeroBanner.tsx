@@ -7,7 +7,7 @@ const slides = [
   {
     tag: "🎵 AI 리믹스",
     title: "내가 직접 만드는\nK-pop 리믹스",
-    sub: "좋아하는 아이돌 음원을 AI로 재탄생시켜 보세요",
+    sub: "좋아하는 아이돌 음원을 AI로 재탄생시켜 보세요"
     cta: "리믹스 시작하기 →",
     href: "/studio/remix",
     icon: "🎧",
@@ -59,7 +59,7 @@ const slides = [
 export default function HeroBanner() {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [direction, setDirection] = useState<"left" | "right">("right");
+  const [_direction, setDirection] = useState<"left" | "right">("right");
   const [animating, setAnimating] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
