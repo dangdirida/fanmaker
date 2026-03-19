@@ -17,20 +17,20 @@ interface ArtistSelectorProps {
 }
 
 const artistImages: Record<string, string> = {
-  "(G)I-DLE": "/images/1.jpg",
-  "aespa": "/images/2.jpg",
-  "BLACKPINK": "/images/3.jpg",
-  "BTS": "/images/4.jpg",
+  "(G)I-DLE": "/images/1.jpeg",
+  "aespa": "/images/2.webp",
+  "BLACKPINK": "/images/3.jpeg",
+  "BTS": "/images/4.png",
   "ENHYPEN": "/images/5.jpg",
   "EXO": "/images/6.jpg",
   "IVE": "/images/7.jpg",
   "LE SSERAFIM": "/images/8.jpg",
-  "LNGSHOT": "/images/9.jpg",
+  "LNGSHOT": "/images/9.jpeg",
   "NCT WISH": "/images/10.jpg",
   "NewJeans": "/images/11.jpg",
   "Red Velvet": "/images/12.jpg",
   "SEVENTEEN": "/images/13.jpg",
-  "SHINee": "/images/14.jpg",
+  "SHINee": "/images/14.png",
   "Stray Kids": "/images/15.jpg",
   "TWICE": "/images/16.jpg",
 };
