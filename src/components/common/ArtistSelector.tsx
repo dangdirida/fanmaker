@@ -16,6 +16,25 @@ interface ArtistSelectorProps {
   onSelect: (artist: Artist | null) => void;
 }
 
+const artistImages: Record<string, string> = {
+  "(G)I-DLE": "/images/1.jpg",
+  "aespa": "/images/2.jpg",
+  "BLACKPINK": "/images/3.jpg",
+  "BTS": "/images/4.jpg",
+  "ENHYPEN": "/images/5.jpg",
+  "EXO": "/images/6.jpg",
+  "IVE": "/images/7.jpg",
+  "LE SSERAFIM": "/images/8.jpg",
+  "LNGSHOT": "/images/9.jpg",
+  "NCT WISH": "/images/10.jpg",
+  "NewJeans": "/images/11.jpg",
+  "Red Velvet": "/images/12.jpg",
+  "SEVENTEEN": "/images/13.jpg",
+  "SHINee": "/images/14.jpg",
+  "Stray Kids": "/images/15.jpg",
+  "TWICE": "/images/16.jpg",
+};
+
 export default function ArtistSelector({
   isOpen,
   onClose,
@@ -101,11 +120,17 @@ export default function ArtistSelector({
                   className="p-3 rounded-xl border border-gray-800 bg-gray-900/50 hover:border-black/50 hover:bg-black/5 transition-all text-center"
                 >
                   <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gray-800 flex items-center justify-center text-base overflow-hidden">
-                    {artist.groupImageUrl ? (
+                    {artistImages[artist.name] ? (
+                      <img
+                        src={artistImages[artist.name]}
+                        alt={artist.name}
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : artist.groupImageUrl ? (
                       <img
                         src={artist.groupImageUrl}
                         alt={artist.name}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full rounded-full object-cover"
                       />
                     ) : (
                       <span className="text-gray-400">
