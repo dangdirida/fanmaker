@@ -18,7 +18,7 @@ const HAIR_COLORS = [
 ];
 
 const SKIN_TONES = [
-  { color: "#FAD7C0", label: "밝은 피치" }, { color: "#F5C5A3", label: "살구" },
+  { color: "#FFF0E8", label: "밝은 피치" }, { color: "#FAD4B8", label: "살구" },
   { color: "#D4A574", label: "황금빛" }, { color: "#C18E60", label: "카라멜" },
   { color: "#8D5E3C", label: "갈색" }, { color: "#5C3A21", label: "진한 갈색" },
 ];

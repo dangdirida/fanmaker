@@ -116,8 +116,8 @@ function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender }: {
 
         // 카메라
         const camera = new THREE.PerspectiveCamera(28, w / h, 0.1, 100);
-        camera.position.set(0, 1.4, 2.0);
-        camera.lookAt(0, 1.3, 0);
+        camera.position.set(0, 1.45, 1.8);
+        camera.lookAt(0, 1.4, 0);
 
         // 조명
         scene.add(new THREE.AmbientLight(0xffffff, 1.5));
@@ -130,7 +130,7 @@ function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender }: {
 
         // OrbitControls
         const controls = new OrbitControls(camera, renderer.domElement);
-        controls.target.set(0, 1.3, 0);
+        controls.target.set(0, 1.4, 0);
         controls.enablePan = false;
         controls.minDistance = 1.2;
         controls.maxDistance = 3.5;
@@ -188,8 +188,6 @@ function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender }: {
           const vrm = vrmRef.current;
           if (vrm) {
             try {
-              const chest = vrm.humanoid.getNormalizedBoneNode("chest");
-              if (chest) chest.rotation.x = Math.sin(t * 0.8) * 0.015;
               const head = vrm.humanoid.getNormalizedBoneNode("head");
               if (head) {
                 head.rotation.y = Math.sin(t * 0.3) * 0.04;
@@ -296,9 +294,12 @@ function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender }: {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         mats.forEach((m: any) => {
           if (!m?.color) return;
-          const name = (obj.name + (m.name || "")).toLowerCase();
-          if (name.includes("eye") || name.includes("iris") ||
-              name.includes("目") || name.includes("瞳")) {
+          const name = (obj.name + "|" + (m.name || "")).toLowerCase();
+          const isEye = name.includes("iris") || name.includes("pupil") ||
+                        name.includes("eye") || name.includes("目");
+          const isWhite = name.includes("white") || name.includes("sclera") ||
+                          name.includes("眼白") || name.includes("白目");
+          if (isEye && !isWhite) {
             m.color.set(eyeColor);
             m.needsUpdate = true;
           }
