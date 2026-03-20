@@ -1,79 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
-
-const REPLICATE_API_TOKEN = process.env.REPLICATE_API_TOKEN;
+import Anthropic from "@anthropic-ai/sdk";
 
 const STYLE_PROMPTS: Record<string, string> = {
-  idol: "glamorous K-pop idol, trendy fashion, sparkling, stage-ready",
-  pure: "soft and pure aesthetic, gentle expression, clean natural look",
-  powerful: "powerful charismatic look, bold confident expression, fierce",
-  dark: "dark mysterious aesthetic, dramatic lighting, gothic undertones",
-  fantasy: "ethereal fantasy aesthetic, dreamy atmosphere, surreal beauty",
-  retro: "retro vintage aesthetic, 80s 90s inspired, nostalgic mood",
+  idol: "화려하고 트렌디한 K-pop 아이돌 무대 스타일, 글리터, 반짝이는 의상",
+  pure: "맑고 청순한 분위기, 자연스러운 메이크업, 화이트/파스텔 의상",
+  powerful: "강렬하고 카리스마 넘치는, 자신감 있는 눈빛, 다크 포인트 컬러",
+  dark: "다크하고 신비로운, 드라마틱 조명, 고딕 요소",
+  fantasy: "몽환적인 판타지, 비현실적 아름다움, 빛나는 이펙트",
+  retro: "80-90년대 레트로 감성, 빈티지 스타일",
 };
 
-const GENDER_PROMPTS: Record<string, string> = {
-  female: "beautiful young woman",
-  male: "handsome young man",
-  neutral: "androgynous young person, gender-neutral beauty",
+const GENDER_KO: Record<string, string> = {
+  female: "여성",
+  male: "남성",
+  neutral: "중성적인",
 };
 
-async function generateWithReplicate(prompt: string): Promise<string> {
-  // 1) 프레딕션 생성
-  const createRes = await fetch("https://api.replicate.com/v1/predictions", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${REPLICATE_API_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model: "black-forest-labs/flux-schnell",
-      input: {
-        prompt,
-        num_outputs: 1,
-        aspect_ratio: "3:4",
-        output_format: "jpg",
-        output_quality: 90,
-      },
-    }),
-  });
-
-  if (!createRes.ok) {
-    const err = await createRes.text();
-    throw new Error(`Replicate create failed: ${createRes.status} ${err}`);
-  }
-
-  const prediction = await createRes.json();
-  const predictionId = prediction.id;
-
-  // 2) 완료될 때까지 폴링 (최대 60초)
-  const maxAttempts = 30;
-  for (let i = 0; i < maxAttempts; i++) {
-    await new Promise((r) => setTimeout(r, 2000));
-
-    const pollRes = await fetch(
-      `https://api.replicate.com/v1/predictions/${predictionId}`,
-      {
-        headers: { Authorization: `Bearer ${REPLICATE_API_TOKEN}` },
-      }
-    );
-    const result = await pollRes.json();
-
-    if (result.status === "succeeded") {
-      const output = result.output;
-      if (Array.isArray(output) && output.length > 0) return output[0];
-      if (typeof output === "string") return output;
-      throw new Error("Unexpected output format");
-    }
-
-    if (result.status === "failed" || result.status === "canceled") {
-      throw new Error(`Replicate prediction ${result.status}: ${result.error || "unknown"}`);
-    }
-  }
-
-  throw new Error("Replicate prediction timed out");
-}
+const HAIR_COLOR_KO: Record<string, string> = {
+  black: "블랙", brown: "브라운", blonde: "블론드", pink: "핑크",
+  blue: "파란", purple: "보라", red: "레드", white: "화이트",
+};
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -84,59 +31,75 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { gender, skinTone, stylePreset, customPrompt } = await req.json();
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey || apiKey === "your-anthropic-api-key") {
+    return NextResponse.json(
+      { success: false, error: "ANTHROPIC_API_KEY가 설정되지 않았습니다" },
+      { status: 500 }
+    );
+  }
 
-  const job = await prisma.aIJob.create({
-    data: {
-      userId: session.user.id,
-      type: "VIRTUAL_GENERATE",
-      status: "PROCESSING",
-      inputData: { gender, skinTone, stylePreset, customPrompt },
-    },
-  });
+  const { gender, skinTone, stylePreset, customPrompt, hairLength, hairColor } =
+    await req.json();
 
-  // 백그라운드에서 AI 이미지 생성
-  (async () => {
-    try {
-      if (!REPLICATE_API_TOKEN || REPLICATE_API_TOKEN === "your-replicate-token") {
-        throw new Error("REPLICATE_API_TOKEN not configured");
-      }
+  const genderKo = GENDER_KO[gender] || "여성";
+  const styleDesc = STYLE_PROMPTS[stylePreset] || STYLE_PROMPTS.idol;
+  const hairColorKo = HAIR_COLOR_KO[hairColor] || "";
 
-      const genderDesc = GENDER_PROMPTS[gender] || GENDER_PROMPTS.female;
-      const styleDesc = STYLE_PROMPTS[stylePreset] || STYLE_PROMPTS.idol;
-      const skinDesc = skinTone ? `skin tone ${skinTone}` : "";
+  const systemPrompt = `당신은 K-pop 버추얼 아이돌 캐릭터 디자이너입니다.
+주어진 옵션으로 상세한 버추얼 아이돌 캐릭터 묘사를 JSON 형태로 반환하세요.
+반드시 아래 JSON 형식만 반환하고 다른 텍스트는 포함하지 마세요:
+{
+  "name": "캐릭터 이름 (영어+한글, 예: ARIA 아리아)",
+  "concept": "핵심 컨셉 한 줄 (예: 빛의 여신, 어둠의 퀸)",
+  "description": "외모 상세 묘사 2-3문장 (헤어, 눈, 의상, 분위기)",
+  "personality": "성격 특징 2가지",
+  "specialty": "특기 (예: 래핑, 댄스, 보컬)",
+  "imagePrompt": "영어로 된 상세 이미지 생성 프롬프트 (Stable Diffusion 스타일)",
+  "colorPalette": ["#hex1", "#hex2", "#hex3"],
+  "styleKeywords": ["키워드1", "키워드2", "키워드3"]
+}`;
 
-      const prompt = [
-        `Professional portrait photo of a ${genderDesc}`,
-        styleDesc,
-        skinDesc,
-        customPrompt,
-        "K-pop idol, studio lighting, high quality, detailed face, 4k, photorealistic",
-      ]
-        .filter(Boolean)
-        .join(", ");
+  const userMessage = `다음 옵션으로 버추얼 아이돌을 만들어줘:
+- 성별: ${genderKo}
+- 헤어: ${hairColorKo} ${hairLength || "미디엄"} 헤어
+- 스타일: ${styleDesc}
+- 추가 묘사: ${customPrompt || "없음"}`;
 
-      const imageUrl = await generateWithReplicate(prompt);
+  try {
+    const client = new Anthropic({ apiKey });
 
-      await prisma.aIJob.update({
-        where: { id: job.id },
-        data: {
-          status: "COMPLETED",
-          outputData: { imageUrl },
+    const message = await client.messages.create({
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1000,
+      messages: [{ role: "user", content: userMessage }],
+      system: systemPrompt,
+    });
+
+    const text =
+      message.content[0].type === "text" ? message.content[0].text : "";
+    const cleaned = text.replace(/```json|```/g, "").trim();
+    const characterData = JSON.parse(cleaned);
+
+    return NextResponse.json({
+      success: true,
+      data: {
+        character: characterData,
+        options: {
+          gender,
+          skinTone,
+          stylePreset,
+          hairColor,
+          hairLength,
+          customPrompt,
         },
-      });
-    } catch (error: unknown) {
-      console.error("[virtual/generate] AI generation failed:", error);
-      const message = error instanceof Error ? error.message : "이미지 생성에 실패했습니다";
-      await prisma.aIJob.update({
-        where: { id: job.id },
-        data: {
-          status: "FAILED",
-          error: message,
-        },
-      });
-    }
-  })();
-
-  return NextResponse.json({ success: true, data: { jobId: job.id } });
+      },
+    });
+  } catch (error) {
+    console.error("[virtual/generate] failed:", error);
+    return NextResponse.json(
+      { success: false, error: "캐릭터 생성에 실패했습니다" },
+      { status: 500 }
+    );
+  }
 }

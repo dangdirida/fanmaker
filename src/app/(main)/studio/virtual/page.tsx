@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import Image from "next/image";
+import { useState } from "react";
 import {
   User,
   UserRound,
@@ -26,6 +25,17 @@ type Artist = {
   name: string;
   nameEn: string | null;
   groupImageUrl: string | null;
+};
+
+type CharacterData = {
+  name: string;
+  concept: string;
+  description: string;
+  personality: string;
+  specialty: string;
+  imagePrompt: string;
+  colorPalette: string[];
+  styleKeywords: string[];
 };
 
 const GENDERS = [
@@ -53,14 +63,7 @@ const HAIR_LENGTHS = [
     value: "short",
     label: "숏컷",
     svg: (
-      <svg
-        viewBox="0 0 48 48"
-        fill="none"
-        className="w-10 h-10"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-      >
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round">
         <circle cx="24" cy="20" r="8" />
         <path d="M16 18c0-6 3.5-10 8-10s8 4 8 10" />
         <path d="M15 20c-1 1-2 3-1.5 5" />
@@ -72,14 +75,7 @@ const HAIR_LENGTHS = [
     value: "medium",
     label: "미디엄",
     svg: (
-      <svg
-        viewBox="0 0 48 48"
-        fill="none"
-        className="w-10 h-10"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-      >
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round">
         <circle cx="24" cy="20" r="8" />
         <path d="M16 18c0-6 3.5-10 8-10s8 4 8 10" />
         <path d="M15 20c-2 3-3 8-2 14" />
@@ -91,14 +87,7 @@ const HAIR_LENGTHS = [
     value: "long",
     label: "롱",
     svg: (
-      <svg
-        viewBox="0 0 48 48"
-        fill="none"
-        className="w-10 h-10"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-      >
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round">
         <circle cx="24" cy="20" r="8" />
         <path d="M16 18c0-6 3.5-10 8-10s8 4 8 10" />
         <path d="M14 20c-3 5-4 14-2 22" />
@@ -112,14 +101,7 @@ const HAIR_LENGTHS = [
     value: "twintail",
     label: "트윈테일",
     svg: (
-      <svg
-        viewBox="0 0 48 48"
-        fill="none"
-        className="w-10 h-10"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-      >
+      <svg viewBox="0 0 48 48" fill="none" className="w-10 h-10" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round">
         <circle cx="24" cy="20" r="8" />
         <path d="M16 18c0-6 3.5-10 8-10s8 4 8 10" />
         <path d="M16 17c-4 2-8 8-9 18" />
@@ -143,53 +125,17 @@ const HAIR_COLORS = [
 ];
 
 const STYLE_PRESETS = [
-  {
-    value: "idol",
-    label: "아이돌",
-    desc: "화려하고 트렌디한",
-    icon: Sparkles,
-  },
-  {
-    value: "pure",
-    label: "청순",
-    desc: "맑고 깨끗한 분위기",
-    icon: Flower2,
-  },
-  {
-    value: "powerful",
-    label: "파워풀",
-    desc: "강렬하고 카리스마",
-    icon: Zap,
-  },
-  {
-    value: "dark",
-    label: "다크",
-    desc: "어둡고 신비로운",
-    icon: Moon,
-  },
-  {
-    value: "fantasy",
-    label: "판타지",
-    desc: "비현실적 몽환미",
-    icon: Crown,
-  },
-  {
-    value: "retro",
-    label: "레트로",
-    desc: "복고풍 감성",
-    icon: Music,
-  },
+  { value: "idol", label: "아이돌", desc: "화려하고 트렌디한", icon: Sparkles },
+  { value: "pure", label: "청순", desc: "맑고 깨끗한 분위기", icon: Flower2 },
+  { value: "powerful", label: "파워풀", desc: "강렬하고 카리스마", icon: Zap },
+  { value: "dark", label: "다크", desc: "어둡고 신비로운", icon: Moon },
+  { value: "fantasy", label: "판타지", desc: "비현실적 몽환미", icon: Crown },
+  { value: "retro", label: "레트로", desc: "복고풍 감성", icon: Music },
 ];
 
 const QUICK_TAGS = [
-  "안경",
-  "보조개",
-  "큰 눈",
-  "날카로운 눈매",
-  "고양이상",
-  "강아지상",
-  "쌍꺼풀",
-  "긴 속눈썹",
+  "안경", "보조개", "큰 눈", "날카로운 눈매",
+  "고양이상", "강아지상", "쌍꺼풀", "긴 속눈썹",
 ];
 
 export default function VirtualStudioPage() {
@@ -204,8 +150,8 @@ export default function VirtualStudioPage() {
   const [customPrompt, setCustomPrompt] = useState("");
 
   const [generating, setGenerating] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [resultImage, setResultImage] = useState<string | null>(null);
+  const [characterData, setCharacterData] = useState<CharacterData | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [showPublish, setShowPublish] = useState(false);
 
   const handleArtistSelect = (artist: Artist | null) => {
@@ -220,35 +166,10 @@ export default function VirtualStudioPage() {
     });
   };
 
-  const pollJob = useCallback(async (jobId: string) => {
-    const interval = setInterval(async () => {
-      const res = await fetch(`/api/ai/jobs/${jobId}`);
-      const data = await res.json();
-      if (data.success && data.data.status === "COMPLETED") {
-        clearInterval(interval);
-        setResultImage(data.data.outputData?.imageUrl || null);
-        setGenerating(false);
-        setProgress(100);
-      } else if (data.data?.status === "FAILED") {
-        clearInterval(interval);
-        setGenerating(false);
-        setProgress(0);
-      }
-    }, 3000);
-  }, []);
-
   const handleGenerate = async () => {
     setGenerating(true);
-    setResultImage(null);
-    setProgress(0);
-
-    // 프로그레스 시뮬레이션
-    const progressInterval = setInterval(() => {
-      setProgress((p) => (p >= 90 ? 90 : p + Math.random() * 8));
-    }, 500);
-
-    const hairDesc = `${HAIR_COLORS.find((h) => h.value === hairColor)?.label || ""} ${HAIR_LENGTHS.find((h) => h.value === hairLength)?.label || ""} 헤어`;
-    const fullPrompt = [hairDesc, customPrompt].filter(Boolean).join(", ");
+    setCharacterData(null);
+    setError(null);
 
     try {
       const res = await fetch("/api/ai/virtual/generate", {
@@ -258,32 +179,29 @@ export default function VirtualStudioPage() {
           gender,
           skinTone,
           stylePreset,
-          customPrompt: fullPrompt,
+          hairLength,
+          hairColor,
+          customPrompt,
         }),
       });
       const data = await res.json();
       if (data.success) {
-        pollJob(data.data.jobId);
+        setCharacterData(data.data.character);
       } else {
-        setGenerating(false);
-        clearInterval(progressInterval);
+        setError(data.error || "캐릭터 생성에 실패했습니다");
       }
     } catch {
+      setError("네트워크 오류가 발생했습니다");
+    } finally {
       setGenerating(false);
-      clearInterval(progressInterval);
     }
   };
 
-  const selectedGenderLabel =
-    GENDERS.find((g) => g.value === gender)?.label || "";
-  const selectedSkinLabel =
-    SKIN_TONES.find((s) => s.color === skinTone)?.label || "";
-  const selectedHairLenLabel =
-    HAIR_LENGTHS.find((h) => h.value === hairLength)?.label || "";
-  const selectedHairColLabel =
-    HAIR_COLORS.find((h) => h.value === hairColor)?.label || "";
-  const selectedStyleLabel =
-    STYLE_PRESETS.find((s) => s.value === stylePreset)?.label || "";
+  const selectedGenderLabel = GENDERS.find((g) => g.value === gender)?.label || "";
+  const selectedSkinLabel = SKIN_TONES.find((s) => s.color === skinTone)?.label || "";
+  const selectedHairLenLabel = HAIR_LENGTHS.find((h) => h.value === hairLength)?.label || "";
+  const selectedHairColLabel = HAIR_COLORS.find((h) => h.value === hairColor)?.label || "";
+  const selectedStyleLabel = STYLE_PRESETS.find((s) => s.value === stylePreset)?.label || "";
 
   return (
     <div className="min-h-screen bg-white">
@@ -323,68 +241,40 @@ export default function VirtualStudioPage() {
             {/* 섹션 1: 캐릭터 기본 */}
             <section>
               <div className="flex items-center gap-3 mb-5">
-                <span className="w-7 h-7 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center">
-                  1
-                </span>
-                <h2 className="text-lg font-bold text-gray-900">
-                  캐릭터 기본
-                </h2>
+                <span className="w-7 h-7 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center">1</span>
+                <h2 className="text-lg font-bold text-gray-900">캐릭터 기본</h2>
               </div>
 
-              {/* 성별 */}
               <p className="text-sm font-medium text-gray-700 mb-3">성별</p>
               <div className="grid grid-cols-3 gap-3 mb-6">
                 {GENDERS.map((g) => {
                   const Icon = g.icon;
                   const selected = gender === g.value;
                   return (
-                    <button
-                      key={g.value}
-                      onClick={() => setGender(g.value)}
+                    <button key={g.value} onClick={() => setGender(g.value)}
                       className={`flex flex-col items-center gap-2 py-4 px-3 rounded-2xl border-2 transition-all duration-200 ${
-                        selected
-                          ? "border-black bg-black text-white scale-[1.02]"
-                          : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
-                      }`}
-                    >
+                        selected ? "border-black bg-black text-white scale-[1.02]" : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                      }`}>
                       <Icon className="w-6 h-6" />
                       <span className="text-sm font-semibold">{g.label}</span>
-                      <span
-                        className={`text-[11px] ${selected ? "text-gray-300" : "text-gray-400"}`}
-                      >
-                        {g.desc}
-                      </span>
+                      <span className={`text-[11px] ${selected ? "text-gray-300" : "text-gray-400"}`}>{g.desc}</span>
                     </button>
                   );
                 })}
               </div>
 
-              {/* 피부톤 */}
               <p className="text-sm font-medium text-gray-700 mb-3">피부톤</p>
               <div className="flex gap-3">
                 {SKIN_TONES.map((tone) => {
                   const selected = skinTone === tone.color;
                   return (
-                    <button
-                      key={tone.color}
-                      onClick={() => setSkinTone(tone.color)}
-                      className="group relative flex flex-col items-center gap-1.5"
-                    >
-                      <div
-                        className={`w-11 h-11 rounded-full transition-all duration-200 flex items-center justify-center ${
-                          selected
-                            ? "ring-2 ring-black ring-offset-2 scale-110"
-                            : "hover:scale-105"
-                        }`}
-                        style={{ backgroundColor: tone.color }}
-                      >
-                        {selected && (
-                          <Check className="w-4 h-4 text-white drop-shadow-md" />
-                        )}
+                    <button key={tone.color} onClick={() => setSkinTone(tone.color)} className="group relative flex flex-col items-center gap-1.5">
+                      <div className={`w-11 h-11 rounded-full transition-all duration-200 flex items-center justify-center ${
+                        selected ? "ring-2 ring-black ring-offset-2 scale-110" : "hover:scale-105"
+                      }`} style={{ backgroundColor: tone.color }}>
+                        {selected && <Check className="w-4 h-4 text-white drop-shadow-md" />}
                       </div>
-                      <span className="text-[10px] text-gray-400">
-                        {tone.label}
-                      </span>
+                      <span className="text-[10px] text-gray-400">{tone.label}</span>
                     </button>
                   );
                 })}
@@ -394,31 +284,19 @@ export default function VirtualStudioPage() {
             {/* 섹션 2: 헤어스타일 */}
             <section>
               <div className="flex items-center gap-3 mb-5">
-                <span className="w-7 h-7 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center">
-                  2
-                </span>
-                <h2 className="text-lg font-bold text-gray-900">
-                  헤어스타일
-                </h2>
+                <span className="w-7 h-7 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center">2</span>
+                <h2 className="text-lg font-bold text-gray-900">헤어스타일</h2>
               </div>
 
-              {/* 헤어 길이 */}
-              <p className="text-sm font-medium text-gray-700 mb-3">
-                헤어 길이
-              </p>
+              <p className="text-sm font-medium text-gray-700 mb-3">헤어 길이</p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
                 {HAIR_LENGTHS.map((h) => {
                   const selected = hairLength === h.value;
                   return (
-                    <button
-                      key={h.value}
-                      onClick={() => setHairLength(h.value)}
+                    <button key={h.value} onClick={() => setHairLength(h.value)}
                       className={`flex flex-col items-center gap-2 py-4 px-3 rounded-2xl border-2 transition-all duration-200 ${
-                        selected
-                          ? "border-black bg-black text-white scale-[1.02]"
-                          : "border-gray-200 bg-white text-gray-500 hover:border-gray-300"
-                      }`}
-                    >
+                        selected ? "border-black bg-black text-white scale-[1.02]" : "border-gray-200 bg-white text-gray-500 hover:border-gray-300"
+                      }`}>
                       {h.svg}
                       <span className="text-sm font-semibold">{h.label}</span>
                     </button>
@@ -426,36 +304,18 @@ export default function VirtualStudioPage() {
                 })}
               </div>
 
-              {/* 헤어 컬러 */}
-              <p className="text-sm font-medium text-gray-700 mb-3">
-                헤어 컬러
-              </p>
+              <p className="text-sm font-medium text-gray-700 mb-3">헤어 컬러</p>
               <div className="flex flex-wrap gap-3">
                 {HAIR_COLORS.map((h) => {
                   const selected = hairColor === h.value;
                   return (
-                    <button
-                      key={h.value}
-                      onClick={() => setHairColor(h.value)}
-                      className="group relative flex flex-col items-center gap-1.5"
-                    >
-                      <div
-                        className={`w-9 h-9 rounded-full transition-all duration-200 flex items-center justify-center ${
-                          selected
-                            ? "ring-2 ring-black ring-offset-2 scale-110"
-                            : "hover:scale-105"
-                        } ${h.value === "white" ? "border border-gray-200" : ""}`}
-                        style={{ backgroundColor: h.color }}
-                      >
-                        {selected && (
-                          <Check
-                            className={`w-3.5 h-3.5 drop-shadow-md ${h.value === "white" || h.value === "blonde" ? "text-gray-800" : "text-white"}`}
-                          />
-                        )}
+                    <button key={h.value} onClick={() => setHairColor(h.value)} className="group relative flex flex-col items-center gap-1.5">
+                      <div className={`w-9 h-9 rounded-full transition-all duration-200 flex items-center justify-center ${
+                        selected ? "ring-2 ring-black ring-offset-2 scale-110" : "hover:scale-105"
+                      } ${h.value === "white" ? "border border-gray-200" : ""}`} style={{ backgroundColor: h.color }}>
+                        {selected && <Check className={`w-3.5 h-3.5 drop-shadow-md ${h.value === "white" || h.value === "blonde" ? "text-gray-800" : "text-white"}`} />}
                       </div>
-                      <span className="text-[10px] text-gray-400">
-                        {h.label}
-                      </span>
+                      <span className="text-[10px] text-gray-400">{h.label}</span>
                     </button>
                   );
                 })}
@@ -465,12 +325,8 @@ export default function VirtualStudioPage() {
             {/* 섹션 3: 스타일 무드 */}
             <section>
               <div className="flex items-center gap-3 mb-5">
-                <span className="w-7 h-7 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center">
-                  3
-                </span>
-                <h2 className="text-lg font-bold text-gray-900">
-                  스타일 무드
-                </h2>
+                <span className="w-7 h-7 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center">3</span>
+                <h2 className="text-lg font-bold text-gray-900">스타일 무드</h2>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -478,24 +334,13 @@ export default function VirtualStudioPage() {
                   const Icon = s.icon;
                   const selected = stylePreset === s.value;
                   return (
-                    <button
-                      key={s.value}
-                      onClick={() => setStylePreset(s.value)}
+                    <button key={s.value} onClick={() => setStylePreset(s.value)}
                       className={`flex flex-col items-start gap-1.5 p-4 rounded-2xl border-2 transition-all duration-200 text-left ${
-                        selected
-                          ? "border-black bg-black text-white scale-[1.02]"
-                          : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
-                      }`}
-                    >
-                      <Icon
-                        className={`w-5 h-5 ${selected ? "text-white" : "text-gray-400"}`}
-                      />
+                        selected ? "border-black bg-black text-white scale-[1.02]" : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                      }`}>
+                      <Icon className={`w-5 h-5 ${selected ? "text-white" : "text-gray-400"}`} />
                       <span className="text-sm font-bold">{s.label}</span>
-                      <span
-                        className={`text-[11px] leading-tight ${selected ? "text-gray-300" : "text-gray-400"}`}
-                      >
-                        {s.desc}
-                      </span>
+                      <span className={`text-[11px] leading-tight ${selected ? "text-gray-300" : "text-gray-400"}`}>{s.desc}</span>
                     </button>
                   );
                 })}
@@ -505,12 +350,8 @@ export default function VirtualStudioPage() {
             {/* 섹션 4: 추가 묘사 */}
             <section>
               <div className="flex items-center gap-3 mb-5">
-                <span className="w-7 h-7 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center">
-                  4
-                </span>
-                <h2 className="text-lg font-bold text-gray-900">
-                  추가 묘사
-                </h2>
+                <span className="w-7 h-7 rounded-full bg-black text-white text-xs font-bold flex items-center justify-center">4</span>
+                <h2 className="text-lg font-bold text-gray-900">추가 묘사</h2>
                 <span className="text-xs text-gray-400 ml-1">선택사항</span>
               </div>
 
@@ -526,15 +367,10 @@ export default function VirtualStudioPage() {
                 {QUICK_TAGS.map((tag) => {
                   const isActive = customPrompt.includes(tag);
                   return (
-                    <button
-                      key={tag}
-                      onClick={() => addTag(tag)}
+                    <button key={tag} onClick={() => addTag(tag)}
                       className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200 ${
-                        isActive
-                          ? "border-black bg-black text-white"
-                          : "border-gray-200 bg-white text-gray-500 hover:border-gray-400"
-                      }`}
-                    >
+                        isActive ? "border-black bg-black text-white" : "border-gray-200 bg-white text-gray-500 hover:border-gray-400"
+                      }`}>
                       {tag}
                     </button>
                   );
@@ -546,132 +382,105 @@ export default function VirtualStudioPage() {
           {/* 오른쪽: 프리뷰 (sticky) */}
           <div className="lg:w-[400px] flex-shrink-0">
             <div className="lg:sticky lg:top-24 space-y-5">
-              <p className="text-sm font-bold text-gray-900">
-                나의 버추얼 아이돌
-              </p>
+              <p className="text-sm font-bold text-gray-900">나의 버추얼 아이돌</p>
 
               {/* 프리뷰 영역 */}
               <div className="aspect-[3/4] rounded-2xl overflow-hidden relative">
                 {generating ? (
-                  /* 생성 중 */
                   <div className="w-full h-full bg-gray-950 flex flex-col items-center justify-center gap-5 px-8">
                     <Loader2 className="w-10 h-10 text-white animate-spin" />
-                    <p className="text-white text-sm font-medium">
-                      AI가 아이돌을 창조하는 중...
-                    </p>
-                    <div className="w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
-                      <div
-                        className="h-full bg-white rounded-full transition-all duration-500 ease-out"
-                        style={{ width: `${progress}%` }}
-                      />
-                    </div>
-                    <p className="text-gray-500 text-xs">
-                      {Math.round(progress)}%
-                    </p>
+                    <p className="text-white text-sm font-medium">AI가 아이돌을 창조하는 중...</p>
                   </div>
-                ) : resultImage ? (
-                  /* 생성 완료 */
-                  <Image
-                    src={resultImage}
-                    alt="Generated virtual idol"
-                    width={640}
-                    height={640}
-                    className="w-full h-full object-cover rounded-2xl"
-                    unoptimized
-                  />
+                ) : characterData ? (
+                  <div className="w-full h-full bg-gradient-to-br from-gray-900 to-black p-5 flex flex-col justify-between rounded-2xl">
+                    {/* 상단: 컬러 팔레트 */}
+                    <div className="flex gap-2">
+                      {characterData.colorPalette.map((color, i) => (
+                        <div key={i} className="w-8 h-8 rounded-full border-2 border-white/20" style={{ backgroundColor: color }} />
+                      ))}
+                    </div>
+
+                    {/* 중앙: 캐릭터 아이콘 + 이름 */}
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-32 h-32 rounded-full flex items-center justify-center"
+                        style={{ background: `linear-gradient(135deg, ${characterData.colorPalette[0]}, ${characterData.colorPalette[1] || characterData.colorPalette[0]})` }}>
+                        <span className="text-5xl">
+                          {gender === "female" ? "\uD83D\uDC69\u200D\uD83C\uDFA4" : gender === "male" ? "\uD83D\uDC68\u200D\uD83C\uDFA4" : "\uD83E\uDDD1\u200D\uD83C\uDFA4"}
+                        </span>
+                      </div>
+                      <div className="text-center">
+                        <h3 className="text-white text-xl font-bold">{characterData.name}</h3>
+                        <p className="text-white/60 text-sm mt-1">{characterData.concept}</p>
+                      </div>
+                    </div>
+
+                    {/* 하단: 키워드 */}
+                    <div className="flex flex-wrap gap-1.5 justify-center">
+                      {characterData.styleKeywords.map((kw, i) => (
+                        <span key={i} className="px-2 py-0.5 rounded-full bg-white/10 text-white/70 text-xs">
+                          #{kw}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 ) : (
-                  /* 생성 전: 플레이스홀더 */
                   <div className="w-full h-full bg-gray-950 flex flex-col items-center justify-center relative">
                     <User className="w-20 h-20 text-white/10" />
-                    <p className="text-white/30 text-xs mt-4">
-                      캐릭터가 여기에 나타납니다
-                    </p>
-                    {/* 별빛 pulse */}
-                    <div
-                      className="absolute w-1.5 h-1.5 bg-white/20 rounded-full"
-                      style={{
-                        top: "20%",
-                        left: "25%",
-                        animation: "starPulse 2s ease-in-out infinite",
-                      }}
-                    />
-                    <div
-                      className="absolute w-1 h-1 bg-white/15 rounded-full"
-                      style={{
-                        top: "35%",
-                        right: "20%",
-                        animation: "starPulse 2.5s ease-in-out infinite 0.5s",
-                      }}
-                    />
-                    <div
-                      className="absolute w-2 h-2 bg-white/10 rounded-full"
-                      style={{
-                        bottom: "30%",
-                        left: "35%",
-                        animation: "starPulse 3s ease-in-out infinite 1s",
-                      }}
-                    />
-                    <div
-                      className="absolute w-1 h-1 bg-white/20 rounded-full"
-                      style={{
-                        bottom: "20%",
-                        right: "30%",
-                        animation: "starPulse 2.2s ease-in-out infinite 1.5s",
-                      }}
-                    />
+                    <p className="text-white/30 text-xs mt-4">캐릭터가 여기에 나타납니다</p>
+                    <div className="absolute w-1.5 h-1.5 bg-white/20 rounded-full" style={{ top: "20%", left: "25%", animation: "starPulse 2s ease-in-out infinite" }} />
+                    <div className="absolute w-1 h-1 bg-white/15 rounded-full" style={{ top: "35%", right: "20%", animation: "starPulse 2.5s ease-in-out infinite 0.5s" }} />
+                    <div className="absolute w-2 h-2 bg-white/10 rounded-full" style={{ bottom: "30%", left: "35%", animation: "starPulse 3s ease-in-out infinite 1s" }} />
+                    <div className="absolute w-1 h-1 bg-white/20 rounded-full" style={{ bottom: "20%", right: "30%", animation: "starPulse 2.2s ease-in-out infinite 1.5s" }} />
                   </div>
                 )}
               </div>
 
+              {/* 캐릭터 정보 카드 */}
+              {characterData && !generating && (
+                <div className="bg-gray-50 rounded-2xl p-4 space-y-2">
+                  <p className="text-xs text-gray-500 font-medium">캐릭터 정보</p>
+                  <p className="text-sm text-gray-700 leading-relaxed">{characterData.description}</p>
+                  <div className="flex gap-4 pt-1">
+                    <span className="text-xs text-gray-500">&#10022; {characterData.personality}</span>
+                    <span className="text-xs text-gray-500">&#127925; {characterData.specialty}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* 에러 메시지 */}
+              {error && (
+                <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm">
+                  {error}
+                </div>
+              )}
+
               {/* 선택사항 요약 배지 */}
               <div className="flex flex-wrap gap-1.5">
-                <span className="px-2.5 py-1 rounded-full bg-gray-100 text-gray-600 text-[11px] font-medium">
-                  {selectedGenderLabel}
-                </span>
-                <span className="px-2.5 py-1 rounded-full bg-gray-100 text-gray-600 text-[11px] font-medium">
-                  {selectedSkinLabel}
-                </span>
-                <span className="px-2.5 py-1 rounded-full bg-gray-100 text-gray-600 text-[11px] font-medium">
-                  {selectedHairColLabel} {selectedHairLenLabel}
-                </span>
-                <span className="px-2.5 py-1 rounded-full bg-gray-100 text-gray-600 text-[11px] font-medium">
-                  {selectedStyleLabel}
-                </span>
+                <span className="px-2.5 py-1 rounded-full bg-gray-100 text-gray-600 text-[11px] font-medium">{selectedGenderLabel}</span>
+                <span className="px-2.5 py-1 rounded-full bg-gray-100 text-gray-600 text-[11px] font-medium">{selectedSkinLabel}</span>
+                <span className="px-2.5 py-1 rounded-full bg-gray-100 text-gray-600 text-[11px] font-medium">{selectedHairColLabel} {selectedHairLenLabel}</span>
+                <span className="px-2.5 py-1 rounded-full bg-gray-100 text-gray-600 text-[11px] font-medium">{selectedStyleLabel}</span>
               </div>
 
               {/* 생성 / 하단 버튼 */}
-              {resultImage ? (
+              {characterData ? (
                 <div className="flex gap-3">
-                  <button
-                    onClick={handleGenerate}
-                    disabled={generating}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-semibold border-2 border-black text-black rounded-2xl hover:bg-gray-50 transition-all duration-200 hover:scale-[1.02] disabled:opacity-50"
-                  >
+                  <button onClick={handleGenerate} disabled={generating}
+                    className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-semibold border-2 border-black text-black rounded-2xl hover:bg-gray-50 transition-all duration-200 hover:scale-[1.02] disabled:opacity-50">
                     <RefreshCw className="w-4 h-4" />
                     재생성
                   </button>
-                  <button
-                    onClick={() => setShowPublish(true)}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-semibold bg-black text-white rounded-2xl hover:bg-gray-800 transition-all duration-200 hover:scale-[1.02]"
-                  >
+                  <button onClick={() => setShowPublish(true)}
+                    className="flex-1 flex items-center justify-center gap-2 py-3 text-sm font-semibold bg-black text-white rounded-2xl hover:bg-gray-800 transition-all duration-200 hover:scale-[1.02]">
                     <Send className="w-4 h-4" />
                     피드에 게시
                   </button>
                 </div>
               ) : (
-                <button
-                  onClick={handleGenerate}
-                  disabled={generating}
-                  className="w-full flex items-center justify-center gap-2 py-3.5 text-sm font-bold bg-black text-white rounded-2xl hover:bg-gray-800 transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:hover:scale-100"
-                >
-                  {generating ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <Wand2 className="w-4 h-4" />
-                  )}
-                  {generating
-                    ? "생성 중..."
-                    : "버추얼 아이돌 생성하기"}
+                <button onClick={handleGenerate} disabled={generating}
+                  className="w-full flex items-center justify-center gap-2 py-3.5 text-sm font-bold bg-black text-white rounded-2xl hover:bg-gray-800 transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:hover:scale-100">
+                  {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Wand2 className="w-4 h-4" />}
+                  {generating ? "생성 중..." : "버추얼 아이돌 생성하기"}
                 </button>
               )}
             </div>
@@ -685,26 +494,19 @@ export default function VirtualStudioPage() {
         category="VIRTUAL"
         artistId={selectedArtist?.id}
         contentData={{
-          imageUrl: resultImage,
+          ...characterData,
+          imagePrompt: characterData?.imagePrompt,
           gender,
           skinTone,
           stylePreset,
         }}
-        thumbnailUrl={resultImage || undefined}
+        fileUrls={[]}
       />
 
-      {/* 별빛 pulse 애니메이션 */}
       <style jsx>{`
         @keyframes starPulse {
-          0%,
-          100% {
-            opacity: 0.2;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 0.8;
-            transform: scale(1.8);
-          }
+          0%, 100% { opacity: 0.2; transform: scale(1); }
+          50% { opacity: 0.8; transform: scale(1.8); }
         }
       `}</style>
     </div>
