@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Send, Save, Loader2, Check } from "lucide-react";
+import Link from "next/link";
+import { Send, Save, Loader2, Check, Camera } from "lucide-react";
 
 const VOICE_LABELS: Record<string, string> = {
   clear: "맑고 청량한", powerful: "파워풀 & 강렬한", husky: "낮고 허스키한",
@@ -133,6 +134,14 @@ export default function Step4_Publish({ idol, onPrev }: Props) {
             className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black resize-none transition-colors" />
         </div>
       </section>
+
+      <Link
+        href={`/studio/virtual/${idol.id}/webcam`}
+        className="w-full flex items-center justify-center gap-2 py-3 bg-purple-600 text-white rounded-xl text-sm font-bold hover:bg-purple-700 transition-all"
+      >
+        <Camera className="w-4 h-4" />
+        내 버추얼 아이돌 직접 체험하기
+      </Link>
 
       <p className="text-xs text-gray-400 text-center">피드에 게시하면 다른 팬들이 볼 수 있어요</p>
 

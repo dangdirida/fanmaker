@@ -1,19 +1,7 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { Loader2, Check, AlertCircle } from "lucide-react";
-
-const VRMPreviewCanvas = dynamic(() => import("./VRMPreviewCanvas"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full flex items-center justify-center bg-gray-50 rounded-xl">
-      <div className="text-center">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-300 mx-auto mb-2" />
-        <p className="text-xs text-gray-400">3D 캐릭터 로딩 중...</p>
-      </div>
-    </div>
-  ),
-});
+import CharacterSilhouette from "./CharacterSilhouette";
 
 const STEP_LABELS = ["", "기본 정보", "외모 커스터마이즈", "목소리 & 특성", "완성 & 게시"];
 
@@ -56,7 +44,7 @@ export default function LivePreviewPanel({ idol, saving }: Props) {
         )}
       </div>
 
-      {/* 3D 캐릭터 프리뷰 카드 */}
+      {/* 캐릭터 프리뷰 카드 */}
       <div className="aspect-[3/4] rounded-2xl bg-white border border-gray-100 shadow-sm overflow-hidden relative">
         <div className="absolute top-3 left-0 right-0 flex justify-center z-10">
           <span className="px-3 py-0.5 rounded-full bg-black/5 text-gray-400 text-[9px] font-medium tracking-widest uppercase">
@@ -64,15 +52,24 @@ export default function LivePreviewPanel({ idol, saving }: Props) {
           </span>
         </div>
 
-        <div className="w-full h-full">
-          <VRMPreviewCanvas
-            hairColor={idol.hairColor}
-            skinTone={idol.skinTone}
-            eyeColor={idol.eyeColor}
-            gender={idol.gender}
-          />
+        {/* SVG 캐릭터 프리뷰 */}
+        <div className="w-full h-full flex items-center justify-center pt-8 pb-16">
+          <div className="w-full h-full max-w-[240px]">
+            <CharacterSilhouette
+              key={`${idol.hairColor}-${idol.hairLength}-${idol.skinTone}-${idol.eyeColor}-${idol.outfitStyle}-${idol.gender}-${idol.accessories.join(",")}`}
+              hairColor={idol.hairColor}
+              hairLength={idol.hairLength}
+              skinTone={idol.skinTone}
+              eyeColor={idol.eyeColor}
+              outfitStyle={idol.outfitStyle}
+              accessories={idol.accessories}
+              gender={idol.gender}
+              stylePreset={idol.stylePreset}
+            />
+          </div>
         </div>
 
+        {/* 이름 + 컨셉 오버레이 */}
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white/95 to-transparent px-4 pt-6 pb-3">
           <h3 className="text-gray-900 text-base font-bold truncate text-center">
             {!idol.name || idol.name === "미설정"
