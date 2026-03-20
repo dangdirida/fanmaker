@@ -4,10 +4,13 @@ import { NextResponse } from "next/server";
 // 인증 필요 경로
 const protectedPaths = [
   "/studio",
-  "/profile",
   "/admin",
   "/onboarding",
 ];
+
+// /profile 단독 경로만 보호 (로그인 후 리다이렉트용)
+// /profile/[userId] 는 공개 접근 가능
+const exactProtectedPaths = ["/profile"];
 
 const protectedApiPaths = [
   "/api/ai/",
@@ -20,12 +23,13 @@ export default auth((req) => {
   const isProtectedPage = protectedPaths.some((path) =>
     pathname.startsWith(path)
   );
+  const isExactProtected = exactProtectedPaths.includes(pathname);
   const isProtectedApi = protectedApiPaths.some((path) =>
     pathname.startsWith(path)
   );
   const isPostApi = req.method === "POST" && pathname === "/api/posts";
 
-  const needsAuth = isProtectedPage || isProtectedApi || isPostApi;
+  const needsAuth = isProtectedPage || isExactProtected || isProtectedApi || isPostApi;
 
   if (needsAuth && !req.auth) {
     const loginUrl = new URL("/login", req.url);

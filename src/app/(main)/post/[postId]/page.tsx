@@ -15,6 +15,26 @@ import {
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import CommentSection from "@/components/feed/CommentSection";
+import { MOCK_POSTS, type MockPost } from "@/lib/mockPosts";
+
+function mockToPostDetail(mock: MockPost): PostDetail {
+  return {
+    id: mock.id,
+    title: mock.title,
+    description: mock.description,
+    category: mock.category,
+    thumbnailUrl: mock.thumbnailUrl,
+    contentData: {},
+    fileUrls: [],
+    tags: [],
+    viewCount: mock.viewCount,
+    createdAt: mock.createdAt,
+    author: mock.author,
+    artist: mock.artist ? { ...mock.artist, nameEn: null } : null,
+    _count: { reactions: mock.reactionCount, comments: mock.commentCount },
+    myReactions: mock.myReactions,
+  };
+}
 
 const CATEGORY_LABELS: Record<string, string> = {
   REMIX: "리믹스",
@@ -50,6 +70,13 @@ export default function PostDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (postId.startsWith("mock-")) {
+      const mockPost = MOCK_POSTS.find((p) => p.id === postId);
+      if (mockPost) setPost(mockToPostDetail(mockPost));
+      setLoading(false);
+      return;
+    }
+
     fetch(`/api/posts/${postId}`)
       .then((res) => res.json())
       .then((data) => {
@@ -60,6 +87,22 @@ export default function PostDetailPage() {
 
   const handleReaction = async (type: string) => {
     if (!session?.user || !post) return;
+
+    // mock post는 로컬에서만 토글
+    if (postId.startsWith("mock-")) {
+      const has = post.myReactions.includes(type);
+      setPost({
+        ...post,
+        _count: {
+          ...post._count,
+          reactions: post._count.reactions + (has ? -1 : 1),
+        },
+        myReactions: has
+          ? post.myReactions.filter((r) => r !== type)
+          : [...post.myReactions, type],
+      });
+      return;
+    }
 
     const res = await fetch(`/api/posts/${postId}/reactions`, {
       method: "POST",
