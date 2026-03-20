@@ -40,6 +40,7 @@ model User {
   artistFollows    ArtistFollow[]
   votes            Vote[]
   aiJobs           AIJob[]
+  virtualIdols     VirtualIdol[]
 }
 
 enum ActivityType {
@@ -126,6 +127,7 @@ model Post {
   reactions    Reaction[]
   comments     Comment[]
   votes        Vote[]
+  virtualIdol  VirtualIdol?
 }
 
 enum PostCategory {
@@ -259,6 +261,36 @@ model Notice {
   isPinned  Boolean  @default(false)
   createdAt DateTime @default(now())
   artist    Artist?  @relation(fields: [artistId], references: [id])
+}
+
+model VirtualIdol {
+  id           String   @id @default(cuid())
+  userId       String
+  name         String   @default("미설정")
+  concept      String?
+  personality  String?
+  voiceType    String   @default("clear")
+  voiceDesc    String?
+  positions    String[]
+  genres       String[]
+  gender       String   @default("female")
+  stylePreset  String   @default("idol")
+  hairColor    String   @default("#1a1a1a")
+  hairLength   String   @default("medium")
+  skinTone     String   @default("#F5C5A3")
+  eyeColor     String   @default("#4a3728")
+  outfitStyle  String   @default("stage")
+  accessories  String[]
+  baseModel    String   @default("sample1")
+  thumbnailUrl String?
+  vrmFileUrl   String?
+  isDraft      Boolean  @default(true)
+  postId       String?  @unique
+  step         Int      @default(1)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post         Post?    @relation(fields: [postId], references: [id])
 }
 
 model VerificationToken {

@@ -38,6 +38,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "arweave.net",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.jsdelivr.net",
+      },
     ],
   },
   async headers() {
