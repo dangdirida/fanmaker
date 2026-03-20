@@ -44,8 +44,14 @@ const nextConfig = {
       },
     ],
   },
-  webpack: (config) => {
-    config.experiments = { ...config.experiments, asyncWebAssembly: true };
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.experiments = {
+        ...config.experiments,
+        asyncWebAssembly: true,
+        layers: true,
+      };
+    }
     return config;
   },
   async headers() {
