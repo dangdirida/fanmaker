@@ -141,8 +141,12 @@ function VRMCanvasInner({ hairColor, gender }: { hairColor: string; gender: stri
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         loader.register((parser: any) => new VRMLoaderPlugin(parser));
 
+        const modelUrl = gender === "male"
+          ? "/models/base_male.vrm"
+          : "/models/base_female.vrm";
+
         loader.load(
-          "/models/base_female.vrm",
+          modelUrl,
           (gltf) => {
             if (disposed) return;
             const vrm = gltf.userData.vrm;
@@ -232,7 +236,7 @@ function VRMCanvasInner({ hairColor, gender }: { hairColor: string; gender: stri
         }
       }
     };
-  }, []);
+  }, [gender]);
 
   // 머리카락 색상 변경
   useEffect(() => {
