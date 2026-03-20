@@ -65,6 +65,23 @@ function applyGenderMorph(vrm: any, gender: string) {
   }
 }
 
+// 정확한 재질명으로 색상 적용
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function applyMatColor(vrm: any, matKey: string, color: string, THREE: any) {
+  vrm.scene.traverse((obj: InstanceType<typeof THREE.Object3D>) => {
+    if (!(obj instanceof THREE.Mesh)) return;
+    const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mats.forEach((m: any) => {
+      if (m?.name?.includes(matKey) && m.color) {
+        m.color.set(color);
+        if (m.emissive) m.emissive.set(color).multiplyScalar(0.02);
+        m.needsUpdate = true;
+      }
+    });
+  });
+}
+
 function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender }: {
   hairColor: string; skinTone: string; eyeColor: string; gender: string;
 }) {
@@ -156,15 +173,11 @@ function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender }: {
             vrmRef.current = vrm;
             applyGenderMorph(vrm, gender);
 
-            // 메시 이름 디버그 출력
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            vrm.scene.traverse((obj: any) => {
-              if (obj.isMesh) {
-                const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                console.log("VRM MESH:", obj.name, "| MAT:", mats.map((m: any) => m?.name || "unnamed").join(", "));
-              }
-            });
+            // 초기 색상 적용 (정확한 재질명)
+            applyMatColor(vrm, "HairBack_00_HAIR", hairColor, THREE);
+            applyMatColor(vrm, "EyeIris_00_EYE", eyeColor, THREE);
+            applyMatColor(vrm, "Face_00_SKIN", skinTone, THREE);
+            applyMatColor(vrm, "Body_00_SKIN", skinTone, THREE);
 
             setStatus("ready");
           },
@@ -231,26 +244,12 @@ function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender }: {
     };
   }, [gender]);
 
-  // 머리카락 색상
+  // 헤어 색상
   useEffect(() => {
     const vrm = vrmRef.current;
     if (!vrm) return;
     import("three").then((THREE) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      vrm.scene.traverse((obj: any) => {
-        if (!(obj instanceof THREE.Mesh)) return;
-        const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        mats.forEach((m: any) => {
-          if (!m?.color) return;
-          const n = (obj.name + "|" + (m.name || "")).toLowerCase();
-          if (n.includes("hair") || n.includes("髪") || n.includes("head")) {
-            m.color.set(hairColor);
-            if (m.emissive) m.emissive.set(hairColor).multiplyScalar(0.05);
-            m.needsUpdate = true;
-          }
-        });
-      });
+      applyMatColor(vrm, "HairBack_00_HAIR", hairColor, THREE);
     });
   }, [hairColor]);
 
@@ -259,48 +258,17 @@ function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender }: {
     const vrm = vrmRef.current;
     if (!vrm) return;
     import("three").then((THREE) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      vrm.scene.traverse((obj: any) => {
-        if (!(obj instanceof THREE.Mesh)) return;
-        const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        mats.forEach((m: any) => {
-          if (!m?.color) return;
-          const n = (obj.name + "|" + (m.name || "")).toLowerCase();
-          if (n.includes("face") || n.includes("skin") || n.includes("body") ||
-              n.includes("顔") || n.includes("肌") || n.includes("体") ||
-              n.includes("leg") || n.includes("arm")) {
-            m.color.set(skinTone);
-            m.needsUpdate = true;
-          }
-        });
-      });
+      applyMatColor(vrm, "Face_00_SKIN", skinTone, THREE);
+      applyMatColor(vrm, "Body_00_SKIN", skinTone, THREE);
     });
   }, [skinTone]);
 
-  // 눈동자 색상 (흰자 제외)
+  // 눈동자 (흰자 EyeWhite 절대 건드리지 않음)
   useEffect(() => {
     const vrm = vrmRef.current;
     if (!vrm) return;
     import("three").then((THREE) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      vrm.scene.traverse((obj: any) => {
-        if (!(obj instanceof THREE.Mesh)) return;
-        const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        mats.forEach((m: any) => {
-          if (!m?.color) return;
-          const n = (obj.name + "|" + (m.name || "")).toLowerCase();
-          const isEye = n.includes("iris") || n.includes("pupil") ||
-                        n.includes("eye") || n.includes("目");
-          const isWhite = n.includes("white") || n.includes("sclera") ||
-                          n.includes("highlight") || n.includes("眼白") || n.includes("ハイ");
-          if (isEye && !isWhite) {
-            m.color.set(eyeColor);
-            m.needsUpdate = true;
-          }
-        });
-      });
+      applyMatColor(vrm, "EyeIris_00_EYE", eyeColor, THREE);
     });
   }, [eyeColor]);
 

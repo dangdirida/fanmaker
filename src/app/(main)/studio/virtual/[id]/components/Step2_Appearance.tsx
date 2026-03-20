@@ -95,7 +95,8 @@ export default function Step2_Appearance({ idol, onUpdate, onPrev, onNext }: Pro
     <div className="space-y-8">
       {/* 헤어 길이 */}
       <section>
-        <h3 className="text-sm font-bold text-gray-900 mb-3">헤어 길이</h3>
+        <h3 className="text-sm font-bold text-gray-900 mb-1">헤어 길이</h3>
+        <p className="text-[11px] text-amber-500 mb-3">헤어 컬러만 3D 프리뷰에 반영됩니다</p>
         <div className="flex flex-wrap gap-2">
           {HAIR_LENGTHS.map((h) => (
             <button key={h.value} onClick={() => onUpdate({ hairLength: h.value })}
@@ -147,7 +148,8 @@ export default function Step2_Appearance({ idol, onUpdate, onPrev, onNext }: Pro
 
       {/* 의상 */}
       <section>
-        <h3 className="text-sm font-bold text-gray-900 mb-3">의상 스타일</h3>
+        <h3 className="text-sm font-bold text-gray-900 mb-1">의상 스타일</h3>
+        <p className="text-[11px] text-amber-500 mb-3">3D 프리뷰에 반영되지 않습니다</p>
         <div className="flex flex-wrap gap-2">
           {OUTFIT_STYLES.map((o) => (
             <button key={o.value} onClick={() => onUpdate({ outfitStyle: o.value })}
