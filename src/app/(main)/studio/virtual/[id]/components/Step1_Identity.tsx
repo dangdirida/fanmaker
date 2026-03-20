@@ -1,11 +1,10 @@
 "use client";
 
-import { UserRound, User, Users } from "lucide-react";
+import { UserRound, User } from "lucide-react";
 
 const GENDERS = [
   { value: "female", label: "여성", icon: UserRound, desc: "여성형 캐릭터" },
   { value: "male", label: "남성", icon: User, desc: "남성형 캐릭터" },
-  { value: "neutral", label: "중성", icon: Users, desc: "중성적 캐릭터" },
 ];
 
 const CONCEPTS = [
@@ -77,7 +76,7 @@ export default function Step1_Identity({ idol, onUpdate, onNext }: Props) {
       {/* 성별 */}
       <section>
         <h3 className="text-sm font-bold text-gray-900 mb-3">성별</h3>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3">
           {GENDERS.map((g) => {
             const Icon = g.icon;
             const sel = idol.gender === g.value;

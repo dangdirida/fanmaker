@@ -17,6 +17,15 @@ const VRMPreviewCanvas = dynamic(() => import("./VRMPreviewCanvas"), {
 
 const STEP_LABELS = ["", "기본 정보", "외모 커스터마이즈", "목소리 & 특성", "완성 & 게시"];
 
+const HAIR_LENGTH_LABELS: Record<string, string> = {
+  short: "숏컷", bob: "단발", medium: "중단발", long: "롱",
+  twintail: "트윈테일", ponytail: "포니테일", updo: "업스타일",
+};
+const OUTFIT_LABELS: Record<string, string> = {
+  stage: "무대복", casual: "캐주얼", uniform: "교복",
+  training: "훈련복", fantasy: "판타지", street: "스트릿", hanbok: "한복",
+};
+
 interface IdolData {
   name: string;
   concept: string | null;
@@ -97,6 +106,30 @@ export default function LivePreviewPanel({ idol, saving }: Props) {
               ))}
             </div>
           )}
+          {/* 외모 옵션 표시 */}
+          <div className="flex flex-wrap gap-1 justify-center mt-1.5">
+            {idol.hairLength && (
+              <span className="px-1.5 py-0.5 rounded bg-gray-50 text-gray-400 text-[9px] border border-gray-100">
+                {HAIR_LENGTH_LABELS[idol.hairLength] || idol.hairLength}
+              </span>
+            )}
+            {idol.hairColor && (
+              <span className="px-1.5 py-0.5 rounded bg-gray-50 text-gray-400 text-[9px] border border-gray-100 flex items-center gap-0.5">
+                <span className="w-2 h-2 rounded-full inline-block" style={{ backgroundColor: idol.hairColor }} />
+                헤어
+              </span>
+            )}
+            {idol.outfitStyle && (
+              <span className="px-1.5 py-0.5 rounded bg-gray-50 text-gray-400 text-[9px] border border-gray-100">
+                {OUTFIT_LABELS[idol.outfitStyle] || idol.outfitStyle}
+              </span>
+            )}
+            {idol.accessories?.slice(0, 2).map((a) => (
+              <span key={a} className="px-1.5 py-0.5 rounded bg-gray-50 text-gray-400 text-[9px] border border-gray-100">
+                {a}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 

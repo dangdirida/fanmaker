@@ -40,15 +40,7 @@ const ACCESSORIES = [
   "귀걸이", "목걸이", "헤어핀", "안경", "리본", "왕관", "마스크", "고양이귀", "날개",
 ];
 
-const BASE_MODELS = [
-  { value: "sample_f", label: "소녀형", desc: "사이버걸" },
-  { value: "sample_1", label: "청순형", desc: "기본 여성" },
-  { value: "sample_3", label: "소년형", desc: "남성형" },
-  { value: "sample_2", label: "중성형", desc: "긴 머리" },
-];
-
 interface IdolAppearance {
-  baseModel: string;
   hairColor: string;
   hairLength: string;
   skinTone: string;
@@ -101,26 +93,6 @@ export default function Step2_Appearance({ idol, onUpdate, onPrev, onNext }: Pro
 
   return (
     <div className="space-y-8">
-      {/* 베이스 모델 */}
-      <section>
-        <h3 className="text-sm font-bold text-gray-900 mb-3">베이스 모델</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {BASE_MODELS.map((m) => {
-            const sel = idol.baseModel === m.value;
-            return (
-              <button key={m.value} onClick={() => onUpdate({ baseModel: m.value })}
-                className={`p-3 rounded-2xl border-2 text-center transition-all ${
-                  sel ? "border-black bg-black text-white" : "border-gray-200 text-gray-600 hover:border-gray-300"
-                }`}>
-                <div className="w-8 h-8 mx-auto mb-1 rounded-full bg-gray-200" />
-                <p className="text-xs font-bold">{m.label}</p>
-                <p className={`text-[10px] ${sel ? "text-gray-300" : "text-gray-400"}`}>{m.desc}</p>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
       {/* 헤어 길이 */}
       <section>
         <h3 className="text-sm font-bold text-gray-900 mb-3">헤어 길이</h3>

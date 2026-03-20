@@ -248,8 +248,10 @@ function VRMCanvasInner({ hairColor, gender }: { hairColor: string; gender: stri
         const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         mats.forEach((m: any) => {
-          if (obj.name.toLowerCase().includes("hair") && m?.color) {
+          const name = (obj.name + (m.name || "")).toLowerCase();
+          if ((name.includes("hair") || name.includes("髪") || name.includes("head")) && m?.color) {
             m.color.set(hairColor);
+            m.needsUpdate = true;
           }
         });
       });
