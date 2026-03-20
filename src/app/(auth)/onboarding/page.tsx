@@ -12,6 +12,25 @@ type Artist = {
   groupImageUrl: string | null;
 };
 
+const artistImages: Record<string, string> = {
+  "(G)I-DLE": "/images/1.png",
+  "aespa": "/images/2.png",
+  "BLACKPINK": "/images/3.png",
+  "BTS": "/images/4.png",
+  "ENHYPEN": "/images/5.jpg",
+  "EXO": "/images/6.jpg",
+  "IVE": "/images/7.jpg",
+  "LE SSERAFIM": "/images/8.jpg",
+  "LNGSHOT": "/images/9.png",
+  "NCT WISH": "/images/10.jpg",
+  "NewJeans": "/images/11.jpg",
+  "Red Velvet": "/images/12.jpg",
+  "SEVENTEEN": "/images/13.jpg",
+  "SHINee": "/images/14.png",
+  "Stray Kids": "/images/15.jpg",
+  "TWICE": "/images/16.jpg",
+};
+
 const ACTIVITY_TYPES = [
   {
     value: "LIGHT",
@@ -234,8 +253,24 @@ export default function OnboardingPage() {
                       : "border-gray-700 bg-gray-900 text-gray-400 hover:border-gray-600"
                   }`}
                 >
-                  <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gray-800 flex items-center justify-center text-lg">
-                    {artist.name.charAt(0)}
+                  <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gray-800 flex items-center justify-center overflow-hidden">
+                    {artistImages[artist.name] ? (
+                      <img
+                        src={artistImages[artist.name]}
+                        alt={artist.name}
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : artist.groupImageUrl ? (
+                      <img
+                        src={artist.groupImageUrl}
+                        alt={artist.name}
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-gray-400 text-lg">
+                        {artist.name.charAt(0)}
+                      </span>
+                    )}
                   </div>
                   <p className="text-xs truncate">{artist.name}</p>
                 </button>

@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
   // 로그인 필요한 경로들
   const protectedPaths = [
     "/studio",
-    "/profile",
+    "/profile/",   // /profile/[userId] 는 보호
     "/settings",
     "/admin",
   ];
@@ -21,6 +21,16 @@ export async function middleware(request: NextRequest) {
   const isProtected = protectedPaths.some((path) =>
     pathname.startsWith(path)
   );
+
+  // /profile 정확히 일치할 때: 토큰 없으면 로그인으로, 있으면 통과 (페이지에서 리다이렉트)
+  if (pathname === "/profile") {
+    if (!token) {
+      const loginUrl = new URL("/login", request.url);
+      loginUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+    return NextResponse.next();
+  }
 
   // 로그인 안 된 상태에서 보호 경로 접근 시 로그인 페이지로
   if (isProtected && !token) {
