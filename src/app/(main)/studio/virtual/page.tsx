@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Plus, Pencil, Trash2, ExternalLink, Loader2, Mic, Star } from "lucide-react";
-import CharacterSilhouette from "./[id]/components/CharacterSilhouette";
 
 type VirtualIdol = {
   id: string;
@@ -108,21 +107,23 @@ export default function VirtualStudioListPage() {
           {filtered.map((idol) => {
             return (
               <div key={idol.id} className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="h-40 bg-white border-b border-gray-100 flex items-center justify-center relative">
-                  <div className="w-24 h-36">
-                    <CharacterSilhouette
-                      hairColor={idol.hairColor}
-                      hairLength={idol.hairLength || "medium"}
-                      skinTone={idol.skinTone}
-                      eyeColor={idol.eyeColor || "#4a3728"}
-                      outfitStyle={idol.outfitStyle || "stage"}
-                      accessories={idol.accessories || []}
-                      gender={idol.gender}
-                      stylePreset={idol.stylePreset}
-                    />
+                <div className="h-32 bg-gradient-to-br from-gray-50 to-gray-100 border-b border-gray-100 flex flex-col items-center justify-center relative px-4">
+                  <div className="w-14 h-14 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center shadow-sm mb-2">
+                    <span className="text-xl font-bold text-gray-700">
+                      {idol.name?.charAt(0) || "?"}
+                    </span>
                   </div>
-                  <span className={`absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                    idol.isDraft ? "bg-white/30 text-white" : "bg-green-400 text-white"
+                  {idol.concept && (
+                    <div className="flex flex-wrap gap-1 justify-center">
+                      {idol.concept.split(",").slice(0, 2).map((c: string, i: number) => (
+                        <span key={i} className="px-2 py-0.5 rounded-full bg-white border border-gray-200 text-gray-600 text-[10px] font-medium">
+                          {c.trim()}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                  <span className={`absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                    idol.isDraft ? "bg-gray-200 text-gray-600" : "bg-green-100 text-green-700"
                   }`}>
                     {idol.isDraft ? `Step ${idol.step}/4` : "게시됨"}
                   </span>
