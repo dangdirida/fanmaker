@@ -277,7 +277,7 @@ model VirtualIdol {
   stylePreset  String   @default("idol")
   hairColor    String   @default("#1a1a1a")
   hairLength   String   @default("medium")
-  skinTone     String   @default("#F5C5A3")
+  skinTone     String   @default("#FFF0E6")
   eyeColor     String   @default("#4a3728")
   outfitStyle  String   @default("stage")
   accessories  String[]

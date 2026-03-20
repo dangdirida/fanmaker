@@ -65,7 +65,7 @@ function applyGenderMorph(vrm: any, gender: string) {
   }
 }
 
-// 정확한 재질명으로 색상 적용
+// 정확한 재질명으로 색상 적용 (MToon shadeColor 포함)
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function applyMatColor(vrm: any, matKey: string, color: string, THREE: any) {
   vrm.scene.traverse((obj: InstanceType<typeof THREE.Object3D>) => {
@@ -73,11 +73,17 @@ function applyMatColor(vrm: any, matKey: string, color: string, THREE: any) {
     const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mats.forEach((m: any) => {
-      if (m?.name?.includes(matKey) && m.color) {
-        m.color.set(color);
-        if (m.emissive) m.emissive.set(color).multiplyScalar(0.02);
-        m.needsUpdate = true;
+      if (!m?.name?.includes(matKey)) return;
+      if (m.color) m.color.set(color);
+      if (m.shadeColor) {
+        const c = new THREE.Color(color);
+        m.shadeColor.set(c.r * 0.7, c.g * 0.7, c.b * 0.7);
       }
+      if (m.emissive) {
+        const c = new THREE.Color(color);
+        m.emissive.set(c.r * 0.08, c.g * 0.08, c.b * 0.08);
+      }
+      m.needsUpdate = true;
     });
   });
 }
@@ -179,7 +185,22 @@ function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender }: {
             applyMatColor(vrm, "Face_00_SKIN", skinTone, THREE);
             applyMatColor(vrm, "Body_00_SKIN", skinTone, THREE);
 
-            setStatus("ready");
+            // SpringBone 안정화: 60프레임 미리 시뮬레이션
+            renderer.domElement.style.opacity = "0";
+            let warmupFrames = 0;
+            const warmup = () => {
+              if (disposed) return;
+              if (warmupFrames < 60) {
+                vrm.update(1 / 60);
+                warmupFrames++;
+                requestAnimationFrame(warmup);
+              } else {
+                renderer.domElement.style.opacity = "1";
+                renderer.domElement.style.transition = "opacity 0.3s ease";
+                setStatus("ready");
+              }
+            };
+            requestAnimationFrame(warmup);
           },
           undefined,
           () => { if (!disposed) setStatus("error"); }
