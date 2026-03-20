@@ -172,16 +172,27 @@ export default function WebcamExperiencePage() {
             });
             if (!face) return;
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            if (!(window as any).__faceDebug) {
+              console.log("FACE STRUCTURE:", JSON.stringify(face, null, 2).substring(0, 500));
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (window as any).__faceDebug = true;
+            }
             const head = vrm.humanoid.getNormalizedBoneNode("head");
             const neck = vrm.humanoid.getNormalizedBoneNode("neck");
             if (head && face.head) {
-              head.rotation.x = THREE.MathUtils.lerp(head.rotation.x, face.head.x * 0.6, 0.4);
-              head.rotation.y = THREE.MathUtils.lerp(head.rotation.y, -face.head.y * 0.6, 0.4);
-              head.rotation.z = THREE.MathUtils.lerp(head.rotation.z, face.head.z * 0.4, 0.4);
+              const hx = face.head?.x ?? 0;
+              const hy = face.head?.y ?? 0;
+              const hz = face.head?.z ?? 0;
+              head.rotation.x = THREE.MathUtils.lerp(head.rotation.x, hx * 0.8, 0.35);
+              head.rotation.y = THREE.MathUtils.lerp(head.rotation.y, -hy * 0.8, 0.35);
+              head.rotation.z = THREE.MathUtils.lerp(head.rotation.z, hz * 0.6, 0.35);
             }
             if (neck && face.head) {
-              neck.rotation.x = THREE.MathUtils.lerp(neck.rotation.x, face.head.x * 0.2, 0.3);
-              neck.rotation.y = THREE.MathUtils.lerp(neck.rotation.y, -face.head.y * 0.2, 0.3);
+              const hx = face.head?.x ?? 0;
+              const hy = face.head?.y ?? 0;
+              neck.rotation.x = THREE.MathUtils.lerp(neck.rotation.x, hx * 0.2, 0.3);
+              neck.rotation.y = THREE.MathUtils.lerp(neck.rotation.y, -hy * 0.2, 0.3);
             }
             if (vrm.expressionManager && face.eye) {
               vrm.expressionManager.setValue("blinkLeft", Math.max(0, Math.min(1, 1 - (face.eye.l ?? 1))));
@@ -206,7 +217,7 @@ export default function WebcamExperiencePage() {
       const animate = () => {
         frameId = requestAnimationFrame(animate);
         const delta = clock.getDelta();
-        const t = clock.getElapsedTime();
+        clock.getElapsedTime(); // keep clock running
         const now = performance.now();
 
         // 30fps 얼굴 추적
@@ -216,10 +227,6 @@ export default function WebcamExperiencePage() {
         }
 
         if (vrm) {
-          try {
-            const spine = vrm.humanoid.getNormalizedBoneNode("spine");
-            if (spine) spine.rotation.x = Math.sin(t * 0.6) * 0.008;
-          } catch { /* ok */ }
           vrm.update(delta);
         }
         controls.update();
