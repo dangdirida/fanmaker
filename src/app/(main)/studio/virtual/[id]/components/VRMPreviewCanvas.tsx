@@ -30,7 +30,52 @@ class CanvasErrorBoundary extends Component<
   }
 }
 
-function VRMCanvasInner({ hairColor }: { hairColor: string }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function applyGenderMorph(vrm: any, gender: string) {
+  try {
+    const chest = vrm.humanoid.getNormalizedBoneNode("chest") ||
+                  vrm.humanoid.getNormalizedBoneNode("upperChest");
+    const neck = vrm.humanoid.getNormalizedBoneNode("neck");
+    const leftShoulder = vrm.humanoid.getNormalizedBoneNode("leftShoulder");
+    const rightShoulder = vrm.humanoid.getNormalizedBoneNode("rightShoulder");
+    const leftUpperArm = vrm.humanoid.getNormalizedBoneNode("leftUpperArm");
+    const rightUpperArm = vrm.humanoid.getNormalizedBoneNode("rightUpperArm");
+    const spine = vrm.humanoid.getNormalizedBoneNode("spine");
+    const hips = vrm.humanoid.getNormalizedBoneNode("hips");
+
+    if (gender === "male") {
+      if (leftShoulder) leftShoulder.scale.set(1.15, 1.0, 1.0);
+      if (rightShoulder) rightShoulder.scale.set(1.15, 1.0, 1.0);
+      if (leftUpperArm) leftUpperArm.rotation.z = 0.75;
+      if (rightUpperArm) rightUpperArm.rotation.z = -0.75;
+      if (chest) chest.scale.set(1.1, 0.95, 1.1);
+      if (spine) spine.scale.set(1.08, 1.0, 1.05);
+      if (hips) hips.scale.set(1.05, 1.0, 1.0);
+      if (neck) neck.scale.set(1.1, 1.0, 1.1);
+    } else if (gender === "neutral") {
+      if (leftShoulder) leftShoulder.scale.set(1.07, 1.0, 1.0);
+      if (rightShoulder) rightShoulder.scale.set(1.07, 1.0, 1.0);
+      if (leftUpperArm) leftUpperArm.rotation.z = 0.65;
+      if (rightUpperArm) rightUpperArm.rotation.z = -0.65;
+      if (chest) chest.scale.set(1.02, 0.97, 1.02);
+      if (spine) spine.scale.set(1.03, 1.0, 1.02);
+    } else {
+      // female (default)
+      if (leftShoulder) leftShoulder.scale.set(1.0, 1.0, 1.0);
+      if (rightShoulder) rightShoulder.scale.set(1.0, 1.0, 1.0);
+      if (leftUpperArm) leftUpperArm.rotation.z = 0.6;
+      if (rightUpperArm) rightUpperArm.rotation.z = -0.6;
+      if (chest) chest.scale.set(1.0, 1.0, 1.0);
+      if (spine) spine.scale.set(1.0, 1.0, 1.0);
+      if (hips) hips.scale.set(1.0, 1.0, 1.0);
+      if (neck) neck.scale.set(1.0, 1.0, 1.0);
+    }
+  } catch (e) {
+    console.warn("gender morph failed:", e);
+  }
+}
+
+function VRMCanvasInner({ hairColor, gender }: { hairColor: string; gender: string }) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -118,6 +163,7 @@ function VRMCanvasInner({ hairColor }: { hairColor: string }) {
             vrm.scene.rotation.y = 0;
             scene.add(vrm.scene);
             vrmRef.current = vrm;
+            applyGenderMorph(vrm, gender);
             setStatus("ready");
           },
           undefined,
@@ -206,6 +252,13 @@ function VRMCanvasInner({ hairColor }: { hairColor: string }) {
     });
   }, [hairColor]);
 
+  // 성별 변경 시 체형 재적용
+  useEffect(() => {
+    const vrm = vrmRef.current;
+    if (!vrm) return;
+    applyGenderMorph(vrm, gender);
+  }, [gender]);
+
   return (
     <div ref={mountRef} className="w-full h-full relative">
       {status === "loading" && (
@@ -231,7 +284,7 @@ export default function VRMPreviewCanvas(props: Props) {
 
   return (
     <CanvasErrorBoundary fallback={fallback}>
-      <VRMCanvasInner hairColor={props.hairColor} />
+      <VRMCanvasInner hairColor={props.hairColor} gender={props.gender} />
     </CanvasErrorBoundary>
   );
 }
