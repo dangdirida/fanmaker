@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Image from "next/image";
 import ArtistSelector from "@/components/common/ArtistSelector";
 import FileUploader from "@/components/common/FileUploader";
 import AILoadingState from "@/components/studio/AILoadingState";
@@ -193,10 +194,13 @@ export default function GlobalSyncPage() {
             <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-900 px-3 py-1.5 rounded-full">
               <div className="w-5 h-5 rounded-full bg-gray-300 dark:bg-gray-700 overflow-hidden">
                 {selectedArtist.groupImageUrl ? (
-                  <img
+                  <Image
                     src={selectedArtist.groupImageUrl}
                     alt={selectedArtist.name}
+                    width={20}
+                    height={20}
                     className="w-full h-full object-cover"
+                    unoptimized
                   />
                 ) : (
                   <span className="text-[10px] flex items-center justify-center h-full text-gray-400">
@@ -288,10 +292,13 @@ export default function GlobalSyncPage() {
                 {getYoutubeId(youtubeUrl) && (
                   <div className="bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl p-4">
                     <div className="aspect-video bg-gray-200 dark:bg-gray-800 rounded-lg overflow-hidden">
-                      <img
+                      <Image
                         src={`https://img.youtube.com/vi/${getYoutubeId(youtubeUrl)}/hqdefault.jpg`}
                         alt="YouTube 썸네일"
+                        width={640}
+                        height={360}
                         className="w-full h-full object-cover"
+                        unoptimized
                       />
                     </div>
                     <p className="text-xs text-gray-400 mt-2 truncate">{youtubeUrl}</p>
@@ -434,10 +441,13 @@ export default function GlobalSyncPage() {
                 <div className="aspect-video bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl flex items-center justify-center">
                   {sourceType === "youtube" && getYoutubeId(youtubeUrl) ? (
                     <div className="w-full h-full relative rounded-xl overflow-hidden">
-                      <img
+                      <Image
                         src={`https://img.youtube.com/vi/${getYoutubeId(youtubeUrl)}/hqdefault.jpg`}
                         alt="YouTube 썸네일"
+                        width={640}
+                        height={360}
                         className="w-full h-full object-cover"
+                        unoptimized
                       />
                       <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                         <div className="w-16 h-16 rounded-full bg-black/80 flex items-center justify-center">

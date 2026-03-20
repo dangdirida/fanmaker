@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   UserPlus,
   UserCheck,
@@ -234,10 +235,13 @@ export default function ProfilePage() {
               <div className="w-full h-full rounded-full bg-[#0a0a0a] p-[2px]">
                 <div className="w-full h-full rounded-full bg-gray-800 overflow-hidden flex items-center justify-center">
                   {user.image ? (
-                    <img
+                    <Image
                       src={user.image}
                       alt={user.nickname || "프로필"}
+                      width={112}
+                      height={112}
                       className="w-full h-full object-cover"
+                      unoptimized
                     />
                   ) : (
                     <span className="text-3xl text-gray-500">
@@ -452,10 +456,13 @@ export default function ProfilePage() {
                       >
                         <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-br from-black/20 to-gray-700/20 flex items-center justify-center overflow-hidden">
                           {item.badge.imageUrl ? (
-                            <img
+                            <Image
                               src={item.badge.imageUrl}
                               alt={item.badge.name}
+                              width={40}
+                              height={40}
                               className="w-10 h-10 object-contain"
+                              unoptimized
                             />
                           ) : (
                             <Award className="w-8 h-8 text-gray-700" />

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowLeft,
   Heart,
@@ -179,10 +180,13 @@ export default function PostDetailPage() {
       <div className="flex items-center gap-3 mb-6">
         <div className="w-8 h-8 rounded-full bg-gray-700 overflow-hidden">
           {post.author.image && (
-            <img
+            <Image
               src={post.author.image}
               alt=""
+              width={32}
+              height={32}
               className="w-full h-full object-cover"
+              unoptimized
             />
           )}
         </div>
@@ -202,10 +206,13 @@ export default function PostDetailPage() {
       {/* 썸네일 */}
       {post.thumbnailUrl && (
         <div className="mb-6 rounded-xl overflow-hidden">
-          <img
+          <Image
             src={post.thumbnailUrl}
             alt={post.title}
+            width={640}
+            height={360}
             className="w-full object-cover"
+            unoptimized
           />
         </div>
       )}

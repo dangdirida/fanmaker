@@ -125,13 +125,14 @@ export async function POST(req: NextRequest) {
           outputData: { imageUrl },
         },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[virtual/generate] AI generation failed:", error);
+      const message = error instanceof Error ? error.message : "이미지 생성에 실패했습니다";
       await prisma.aIJob.update({
         where: { id: job.id },
         data: {
           status: "FAILED",
-          error: error.message || "이미지 생성에 실패했습니다",
+          error: message,
         },
       });
     }

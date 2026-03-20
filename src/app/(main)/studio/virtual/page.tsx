@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Image from "next/image";
 import {
   User,
   UserRound,
@@ -570,10 +571,13 @@ export default function VirtualStudioPage() {
                   </div>
                 ) : resultImage ? (
                   /* 생성 완료 */
-                  <img
+                  <Image
                     src={resultImage}
                     alt="Generated virtual idol"
+                    width={640}
+                    height={640}
                     className="w-full h-full object-cover rounded-2xl"
+                    unoptimized
                   />
                 ) : (
                   /* 생성 전: 플레이스홀더 */
