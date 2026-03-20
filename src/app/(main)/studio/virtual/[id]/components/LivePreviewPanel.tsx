@@ -75,6 +75,7 @@ export default function LivePreviewPanel({ idol, saving }: Props) {
             outfitStyle={idol.outfitStyle}
             accessories={idol.accessories}
             gender={idol.gender}
+            stylePreset={idol.stylePreset}
           />
         </div>
 

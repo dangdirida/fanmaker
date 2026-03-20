@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Plus, Pencil, Trash2, ExternalLink, Loader2, Mic, Star } from "lucide-react";
+import CharacterSilhouette from "./[id]/components/CharacterSilhouette";
 
 type VirtualIdol = {
   id: string;
@@ -11,7 +12,11 @@ type VirtualIdol = {
   gender: string;
   stylePreset: string;
   hairColor: string;
+  hairLength: string;
   skinTone: string;
+  eyeColor: string;
+  outfitStyle: string;
+  accessories: string[];
   isDraft: boolean;
   postId: string | null;
   step: number;
@@ -116,14 +121,19 @@ export default function VirtualStudioListPage() {
             const grad = STYLE_GRADIENTS[idol.stylePreset] || STYLE_GRADIENTS.idol;
             return (
               <div key={idol.id} className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-                <div className={`h-32 bg-gradient-to-br ${grad} flex items-center justify-center relative`}>
-                  <svg viewBox="0 0 100 100" className="w-16 h-16 opacity-80">
-                    <circle cx="50" cy="38" r="18" fill={idol.skinTone} />
-                    <ellipse cx="50" cy="80" rx="22" ry="18" fill="white" fillOpacity={0.3} />
-                    <circle cx="44" cy="36" r="2.5" fill={idol.hairColor} />
-                    <circle cx="56" cy="36" r="2.5" fill={idol.hairColor} />
-                    <path d="M32 28 C32 14 68 14 68 28 L68 32 C60 32 40 32 32 32Z" fill={idol.hairColor} opacity={0.9} />
-                  </svg>
+                <div className={`h-40 bg-gradient-to-br ${grad} flex items-center justify-center relative`}>
+                  <div className="w-24 h-36">
+                    <CharacterSilhouette
+                      hairColor={idol.hairColor}
+                      hairLength={idol.hairLength || "medium"}
+                      skinTone={idol.skinTone}
+                      eyeColor={idol.eyeColor || "#4a3728"}
+                      outfitStyle={idol.outfitStyle || "stage"}
+                      accessories={idol.accessories || []}
+                      gender={idol.gender}
+                      stylePreset={idol.stylePreset}
+                    />
+                  </div>
                   <span className={`absolute top-3 right-3 px-2 py-0.5 rounded-full text-[10px] font-bold ${
                     idol.isDraft ? "bg-white/30 text-white" : "bg-green-400 text-white"
                   }`}>

@@ -84,7 +84,7 @@ export default function Step4_Publish({ idol, onPrev }: Props) {
             hairColor={idol.hairColor} hairLength={idol.hairLength}
             skinTone={idol.skinTone} eyeColor={idol.eyeColor}
             outfitStyle={idol.outfitStyle} accessories={idol.accessories}
-            gender={idol.gender}
+            gender={idol.gender} stylePreset={idol.stylePreset}
           />
         </div>
         <div className="text-white text-center sm:text-left">
