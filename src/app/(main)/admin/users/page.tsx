@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import Image from "next/image";
 
 interface User {
   id: string;
@@ -142,9 +143,11 @@ export default function AdminUsersPage() {
                 >
                   <td className="px-4 py-3">
                     {user.image ? (
-                      <img
+                      <Image
                         src={user.image}
                         alt=""
+                        width={32}
+                        height={32}
                         className="w-8 h-8 rounded-full object-cover"
                       />
                     ) : (

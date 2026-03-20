@@ -146,6 +146,7 @@ export default function FeedPage() {
   const [totalCount, setTotalCount] = useState(0);
   const [useMock, setUseMock] = useState(false);
   const observerRef = useRef<HTMLDivElement>(null);
+  const loadingRef = useRef(false);
 
   // 아티스트 목록 로드
   useEffect(() => {
@@ -160,7 +161,8 @@ export default function FeedPage() {
   // 게시물 로드
   const fetchPosts = useCallback(
     async (pageNum: number, reset = false) => {
-      if (loading) return;
+      if (loadingRef.current) return;
+      loadingRef.current = true;
       setLoading(true);
 
       const params = new URLSearchParams({
@@ -177,24 +179,25 @@ export default function FeedPage() {
         const data = await res.json();
 
         if (data.success) {
-          const apiPosts = reset ? data.data : [...posts, ...data.data];
-          // DB에 게시물이 없으면 목데이터 사용
-          if (apiPosts.length === 0 && pageNum === 1) {
-            setUseMock(true);
-          } else {
-            setUseMock(false);
-            setPosts(apiPosts);
-          }
+          setPosts((prev) => {
+            const apiPosts = reset ? data.data : [...prev, ...data.data];
+            if (apiPosts.length === 0 && pageNum === 1) {
+              setUseMock(true);
+            } else {
+              setUseMock(false);
+            }
+            return apiPosts;
+          });
           setHasMore(pageNum < data.pagination.totalPages);
           setTotalCount(data.pagination.total);
         }
       } catch {
-        // API 실패 시 목데이터 사용
         setUseMock(true);
       }
+      loadingRef.current = false;
       setLoading(false);
     },
-    [tab, category, artistId, sort, loading, posts]
+    [tab, category, artistId, sort]
   );
 
   // 필터 변경 시 리셋
@@ -204,13 +207,13 @@ export default function FeedPage() {
     setHasMore(true);
     setUseMock(false);
     fetchPosts(1, true);
-  }, [tab, category, artistId, sort]);
+  }, [fetchPosts]);
 
   // Intersection Observer 무한 스크롤
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && hasMore && !loading && !useMock) {
+        if (entries[0].isIntersecting && hasMore && !loadingRef.current && !useMock) {
           const nextPage = page + 1;
           setPage(nextPage);
           fetchPosts(nextPage);
@@ -221,7 +224,7 @@ export default function FeedPage() {
 
     if (observerRef.current) observer.observe(observerRef.current);
     return () => observer.disconnect();
-  }, [hasMore, loading, page, useMock]);
+  }, [hasMore, page, useMock, fetchPosts]);
 
   // 목데이터 필터링
   const getFilteredMockPosts = (): MockPost[] => {

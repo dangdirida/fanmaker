@@ -8,6 +8,7 @@ import {
   FileText,
   ExternalLink,
 } from "lucide-react";
+import Image from "next/image";
 import PostCard from "@/components/feed/PostCard";
 
 type ArtistDetail = {
@@ -122,9 +123,10 @@ export default function ArtistPage() {
       {/* 히어로 섹션 */}
       <div className="relative h-[300px] md:h-[400px] bg-gradient-to-b from-[#1a1a2e] to-[#0a0a0a] overflow-hidden">
         {artist.groupImageUrl && (
-          <img
+          <Image
             src={artist.groupImageUrl}
             alt={artist.name}
+            fill
             className="absolute inset-0 w-full h-full object-cover opacity-40"
           />
         )}
@@ -198,7 +200,7 @@ export default function ArtistPage() {
               <div className="bg-[#111] border border-gray-800 rounded-xl p-4">
                 <div className="w-16 h-16 rounded-full bg-gray-800 mx-auto mb-3 flex items-center justify-center text-2xl overflow-hidden">
                   {artist.groupImageUrl ? (
-                    <img src={artist.groupImageUrl} alt="" className="w-full h-full object-cover" />
+                    <Image src={artist.groupImageUrl} alt="" width={64} height={64} className="w-full h-full object-cover" />
                   ) : (
                     artist.name.charAt(0)
                   )}

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Check, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import Image from "next/image";
 
 type Artist = {
   id: string;
@@ -255,15 +256,19 @@ export default function OnboardingPage() {
                 >
                   <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gray-800 flex items-center justify-center overflow-hidden">
                     {artistImages[artist.name] ? (
-                      <img
+                      <Image
                         src={artistImages[artist.name]}
                         alt={artist.name}
+                        width={48}
+                        height={48}
                         className="w-full h-full rounded-full object-cover"
                       />
                     ) : artist.groupImageUrl ? (
-                      <img
+                      <Image
                         src={artist.groupImageUrl}
                         alt={artist.name}
+                        width={48}
+                        height={48}
                         className="w-full h-full rounded-full object-cover"
                       />
                     ) : (

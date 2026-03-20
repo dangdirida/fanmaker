@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { useTheme } from "@/components/providers/ThemeProvider";
@@ -172,9 +173,11 @@ export default function MainLayout({
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center overflow-hidden">
               {session?.user?.image ? (
-                <img
+                <Image
                   src={session.user.image}
                   alt=""
+                  width={40}
+                  height={40}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -250,9 +253,11 @@ export default function MainLayout({
                     >
                       <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center overflow-hidden">
                         {session.user.image ? (
-                          <img
+                          <Image
                             src={session.user.image}
                             alt=""
+                            width={32}
+                            height={32}
                             className="w-full h-full object-cover"
                           />
                         ) : (
