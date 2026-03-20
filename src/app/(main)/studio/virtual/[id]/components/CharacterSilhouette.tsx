@@ -13,17 +13,17 @@ interface Props {
   stylePreset?: string;
 }
 
-const OUTFIT_CONFIGS: Record<string, { primary: string; secondary: string; accent: string }> = {
-  stage:    { primary: "#7C3AED", secondary: "#A855F7", accent: "#F59E0B" },
-  casual:   { primary: "#3B82F6", secondary: "#93C5FD", accent: "#FFFFFF" },
-  uniform:  { primary: "#1E3A5F", secondary: "#FFFFFF", accent: "#DC2626" },
-  training: { primary: "#065F46", secondary: "#34D399", accent: "#FFFFFF" },
-  fantasy:  { primary: "#BE185D", secondary: "#F9A8D4", accent: "#FDE68A" },
-  street:   { primary: "#111827", secondary: "#374151", accent: "#F59E0B" },
-  hanbok:   { primary: "#DC2626", secondary: "#FEF3C7", accent: "#059669" },
+const OUTFIT_CFG: Record<string, { p: string; s: string; a: string }> = {
+  stage:    { p: "#7C3AED", s: "#A855F7", a: "#F59E0B" },
+  casual:   { p: "#3B82F6", s: "#93C5FD", a: "#FFFFFF" },
+  uniform:  { p: "#1E3A5F", s: "#FFFFFF", a: "#DC2626" },
+  training: { p: "#065F46", s: "#34D399", a: "#FFFFFF" },
+  fantasy:  { p: "#BE185D", s: "#F9A8D4", a: "#FDE68A" },
+  street:   { p: "#1F2937", s: "#4B5563", a: "#F59E0B" },
+  hanbok:   { p: "#DC2626", s: "#FEF3C7", a: "#059669" },
 };
 
-function shade(color: string, pct: number): string {
+function sh(color: string, pct: number): string {
   try {
     const n = parseInt(color.replace("#", ""), 16);
     const r = Math.min(255, Math.max(0, ((n >> 16) & 0xff) + Math.round(pct * 2.55)));
@@ -33,181 +33,266 @@ function shade(color: string, pct: number): string {
   } catch { return color; }
 }
 
-function Bangs({ color }: { color: string }) {
-  const dk = shade(color, -30);
-  const lt = shade(color, 45);
-  return (
+function HairSVG({ c, length }: { c: string; length: string }) {
+  const dk = sh(c, -30);
+  const lt = sh(c, 40);
+  // 공통 앞머리
+  const bangs = (
     <g>
-      <path d="M60 65 C58 45 75 38 100 36 C125 38 142 45 140 65" fill={color} />
-      <path d="M65 68 C68 50 80 42 95 40 C98 55 90 65 78 70Z" fill={dk} opacity="0.3" />
-      <path d="M105 40 C120 42 132 50 135 68 C122 65 112 55 105 40Z" fill={dk} opacity="0.25" />
-      <path d="M88 42 C92 40 100 40 105 43 C103 48 97 49 90 47Z" fill={lt} opacity="0.5" />
+      <path d="M108 55 C108 40 120 32 150 30 C180 32 192 40 192 55" fill={c} />
+      <path d="M112 58 C115 42 128 36 145 34 C142 48 135 56 125 60Z" fill={dk} opacity="0.25" />
+      <path d="M155 34 C172 36 185 42 188 58 C178 56 168 48 158 36Z" fill={dk} opacity="0.2" />
+      <path d="M138 35 C142 33 150 33 156 36 C154 40 146 41 140 39Z" fill={lt} opacity="0.45" />
     </g>
   );
-}
-
-function Hair({ color, length }: { color: string; length: string }) {
-  const dk = shade(color, -35);
-  const lt = shade(color, 45);
-  const bangs = <Bangs color={color} />;
-
   if (length === "short") return (
     <g>
-      <path d="M55 75 C52 50 60 32 100 28 C140 32 148 50 145 75 C138 68 130 65 120 66 C115 62 112 60 100 60 C88 60 85 62 80 66 C70 65 62 68 55 75Z" fill={color} />
+      <path d="M105 62 C102 42 112 24 150 20 C188 24 198 42 195 62 C188 56 178 54 168 55 C162 50 156 48 150 48 C144 48 138 50 132 55 C122 54 112 56 105 62Z" fill={c} />
       {bangs}
-      <path d="M55 75 C58 72 65 70 75 72 C72 80 66 85 58 88Z" fill={color} />
-      <path d="M145 75 C142 72 135 70 125 72 C128 80 134 85 142 88Z" fill={color} />
-      <path d="M65 50 C67 42 70 38 75 36 C73 42 70 50 68 58Z" fill={dk} opacity="0.2" />
+      <path d="M105 62 C108 60 115 58 124 60 C120 68 114 72 108 74Z" fill={c} />
+      <path d="M195 62 C192 60 185 58 176 60 C180 68 186 72 192 74Z" fill={c} />
     </g>
   );
   if (length === "bob") return (
     <g>
-      <path d="M52 80 C50 52 58 30 100 26 C142 30 150 52 148 80 C142 85 130 88 118 86 C100 88 78 88 52 80Z" fill={color} />
+      <path d="M102 66 C100 42 110 22 150 18 C190 22 200 42 198 66 C192 70 180 74 166 72 C150 74 134 74 102 66Z" fill={c} />
       {bangs}
-      <path d="M52 80 C48 88 46 96 48 104 C55 100 60 92 62 84Z" fill={color} />
-      <path d="M148 80 C152 88 154 96 152 104 C145 100 140 92 138 84Z" fill={color} />
-      <path d="M50 68 C52 58 56 50 62 44 C60 52 58 62 58 72Z" fill={dk} opacity="0.2" />
+      <path d="M102 66 C98 76 96 86 98 96 C106 90 110 80 112 70Z" fill={c} />
+      <path d="M198 66 C202 76 204 86 202 96 C194 90 190 80 188 70Z" fill={c} />
     </g>
   );
   if (length === "medium") return (
     <g>
-      <path d="M50 78 C48 50 56 28 100 24 C144 28 152 50 150 78 C145 82 138 86 100 90 C62 86 55 82 50 78Z" fill={color} />
+      <path d="M100 64 C98 40 108 20 150 16 C192 20 202 40 200 64 C196 68 186 72 150 76 C114 72 104 68 100 64Z" fill={c} />
       {bangs}
-      <path d="M50 78 C44 90 40 108 42 126 C50 118 56 104 58 88Z" fill={color} />
-      <path d="M150 78 C156 90 160 108 158 126 C150 118 144 104 142 88Z" fill={color} />
-      <path d="M68 88 C64 100 62 115 64 128 C70 118 72 105 72 90Z" fill={color} opacity="0.85" />
-      <path d="M132 88 C136 100 138 115 136 128 C130 118 128 105 128 90Z" fill={color} opacity="0.85" />
-      <path d="M52 72 C54 60 58 50 64 42 C62 52 60 64 60 76Z" fill={dk} opacity="0.18" />
+      <path d="M100 64 C94 78 90 96 92 116 C100 106 106 90 108 74Z" fill={c} />
+      <path d="M200 64 C206 78 210 96 208 116 C200 106 194 90 192 74Z" fill={c} />
+      <path d="M118 74 C114 88 112 104 114 118 C120 106 122 92 122 76Z" fill={c} opacity="0.85" />
+      <path d="M182 74 C186 88 188 104 186 118 C180 106 178 92 178 76Z" fill={c} opacity="0.85" />
     </g>
   );
   if (length === "long") return (
     <g>
-      <path d="M48 76 C46 48 54 26 100 22 C146 26 154 48 152 76 C148 82 140 86 100 92 C60 86 52 82 48 76Z" fill={color} />
+      <path d="M98 62 C96 38 106 18 150 14 C194 18 204 38 202 62 C198 66 188 70 150 74 C112 70 102 66 98 62Z" fill={c} />
       {bangs}
-      <path d="M48 76 C40 96 36 120 38 150 C48 136 54 112 56 86Z" fill={color} />
-      <path d="M152 76 C160 96 164 120 162 150 C152 136 146 112 144 86Z" fill={color} />
-      <path d="M62 90 C56 108 54 130 56 155 C64 138 68 116 68 90Z" fill={color} opacity="0.85" />
-      <path d="M138 90 C144 108 146 130 144 155 C136 138 132 116 132 90Z" fill={color} opacity="0.85" />
-      <path d="M75 92 C72 110 72 130 74 155 C80 138 82 116 80 92Z" fill={dk} opacity="0.3" />
-      <path d="M44 85 C42 100 42 118 44 136 C46 120 46 102 46 85Z" fill={lt} opacity="0.25" />
+      <path d="M98 62 C88 82 84 110 86 145 C96 128 102 102 106 72Z" fill={c} />
+      <path d="M202 62 C212 82 216 110 214 145 C204 128 198 102 194 72Z" fill={c} />
+      <path d="M112 74 C106 94 104 118 106 148 C114 130 118 108 118 76Z" fill={c} opacity="0.85" />
+      <path d="M188 74 C194 94 196 118 194 148 C186 130 182 108 182 76Z" fill={c} opacity="0.85" />
+      <path d="M125 76 C122 96 122 120 124 150 C130 130 132 108 130 78Z" fill={dk} opacity="0.25" />
+      <path d="M92 70 C90 88 90 108 92 128 C94 110 94 90 94 72Z" fill={lt} opacity="0.2" />
     </g>
   );
   if (length === "twintail") return (
     <g>
-      <path d="M55 72 C53 48 60 28 100 24 C140 28 147 48 145 72 C140 76 130 78 100 77 C70 76 60 76 55 72Z" fill={color} />
+      <path d="M106 58 C104 38 112 20 150 16 C188 20 196 38 194 58 C190 62 178 64 150 64 C122 64 110 62 106 58Z" fill={c} />
       {bangs}
-      <circle cx="68" cy="72" r="6" fill={dk} opacity="0.6" />
-      <circle cx="132" cy="72" r="6" fill={dk} opacity="0.6" />
-      <path d="M62 78 C52 95 44 115 48 140 C56 122 62 100 64 78Z" fill={color} />
-      <path d="M138 78 C148 95 156 115 152 140 C144 122 138 100 136 78Z" fill={color} />
-      <path d="M50 95 C46 108 46 122 50 138 C56 124 58 108 56 92Z" fill={dk} opacity="0.2" />
-      <path d="M150 95 C154 108 154 122 150 138 C144 124 142 108 144 92Z" fill={dk} opacity="0.2" />
+      <circle cx="118" cy="58" r="6" fill={dk} opacity="0.5" />
+      <circle cx="182" cy="58" r="6" fill={dk} opacity="0.5" />
+      <path d="M112 64 C100 82 92 108 96 140 C106 120 112 96 114 66Z" fill={c} />
+      <path d="M188 64 C200 82 208 108 204 140 C194 120 188 96 186 66Z" fill={c} />
+      <path d="M98 88 C94 102 94 118 98 136 C104 120 106 104 104 86Z" fill={dk} opacity="0.2" />
+      <path d="M202 88 C206 102 206 118 202 136 C196 120 194 104 196 86Z" fill={dk} opacity="0.2" />
     </g>
   );
   if (length === "ponytail") return (
     <g>
-      <path d="M55 72 C53 48 60 28 100 24 C140 28 147 48 145 72" fill={color} />
+      <path d="M106 58 C104 38 112 20 150 16 C188 20 196 38 194 58" fill={c} />
       {bangs}
-      <ellipse cx="100" cy="28" rx="18" ry="10" fill={color} />
-      <circle cx="100" cy="28" r="5" fill={dk} opacity="0.5" />
-      <path d="M92 30 C88 50 86 80 88 110 C96 90 100 65 100 35Z" fill={color} />
-      <path d="M108 30 C112 50 114 80 112 110 C104 90 100 65 100 35Z" fill={color} />
-      <path d="M96 35 C94 58 94 82 96 108 C100 86 100 60 100 38Z" fill={dk} opacity="0.2" />
-      <path d="M55 72 C50 80 48 90 50 100 C56 90 58 80 58 70Z" fill={color} />
-      <path d="M145 72 C150 80 152 90 150 100 C144 90 142 80 142 70Z" fill={color} />
+      <ellipse cx="150" cy="22" rx="16" ry="10" fill={c} />
+      <circle cx="150" cy="22" r="5" fill={dk} opacity="0.4" />
+      <path d="M142 24 C138 44 136 70 138 100 C146 80 150 55 150 28Z" fill={c} />
+      <path d="M158 24 C162 44 164 70 162 100 C154 80 150 55 150 28Z" fill={c} />
+      <path d="M106 58 C100 66 98 76 100 86 C106 78 108 68 108 56Z" fill={c} />
+      <path d="M194 58 C200 66 202 76 200 86 C194 78 192 68 192 56Z" fill={c} />
     </g>
   );
   // updo
   return (
     <g>
-      <path d="M55 72 C53 48 60 28 100 24 C140 28 147 48 145 72 C138 76 125 78 100 78 C75 78 62 76 55 72Z" fill={color} />
+      <path d="M106 58 C104 38 112 20 150 16 C188 20 196 38 194 58 C188 62 175 64 150 64 C125 64 112 62 106 58Z" fill={c} />
       {bangs}
-      <ellipse cx="100" cy="22" rx="22" ry="16" fill={color} />
-      <ellipse cx="100" cy="20" rx="18" ry="12" fill={lt} opacity="0.3" />
-      <path d="M85 18 C88 12 95 10 105 12 C115 14 118 20 115 26" fill="none" stroke={dk} strokeWidth="2" strokeLinecap="round" opacity="0.4" />
-      <rect x="88" y="12" width="24" height="3" rx="1.5" fill="#FFD700" transform="rotate(-15 100 14)" />
-      <path d="M55 70 C50 78 50 88 54 96 C60 86 62 76 60 68Z" fill={color} opacity="0.85" />
-      <path d="M145 70 C150 78 150 88 146 96 C140 86 138 76 140 68Z" fill={color} opacity="0.85" />
+      <ellipse cx="150" cy="16" rx="20" ry="14" fill={c} />
+      <ellipse cx="150" cy="14" rx="16" ry="10" fill={lt} opacity="0.3" />
+      <path d="M136 12 C140 6 148 4 160 6 C168 8 172 14 168 20" fill="none" stroke={dk} strokeWidth="2" strokeLinecap="round" opacity="0.35" />
+      <rect x="140" y="6" width="20" height="3" rx="1.5" fill="#FFD700" transform="rotate(-12 150 8)" />
+      <path d="M106 56 C100 64 100 74 104 82 C110 74 112 64 110 54Z" fill={c} opacity="0.85" />
+      <path d="M194 56 C200 64 200 74 196 82 C190 74 188 64 190 54Z" fill={c} opacity="0.85" />
     </g>
   );
 }
 
-function Outfit({ style, p, s, a }: { style: string; p: string; s: string; a: string }) {
-  const dk = shade(p, -15);
+function OutfitSVG({ style, p, s, a }: { style: string; p: string; s: string; a: string }) {
+  const dk = sh(p, -20);
+  // 공통 다리+신발 (의상 뒤에 깔림)
+  const legs = (skinC: string) => (
+    <g>
+      <rect x="126" y="340" width="18" height="110" rx="8" fill={skinC} />
+      <rect x="156" y="340" width="18" height="110" rx="8" fill={skinC} />
+      <ellipse cx="135" cy="452" rx="14" ry="6" fill="#1a1a1a" />
+      <ellipse cx="165" cy="452" rx="14" ry="6" fill="#1a1a1a" />
+    </g>
+  );
+
   if (style === "stage") return (
     <g>
-      <path d="M62 168 C55 175 50 190 52 220 L148 220 C150 190 145 175 138 168 L120 162 L100 165 L80 162Z" fill={p} />
-      <path d="M62 168 C70 163 80 160 100 160 C120 160 130 163 138 168" fill="none" stroke={s} strokeWidth="3" opacity="0.6" />
-      {[{x:100,y:178,r:3},{x:90,y:185,r:2},{x:110,y:182,r:2.5},{x:85,y:195,r:1.5},{x:115,y:193,r:2}].map((d,i)=>(
-        <circle key={i} cx={d.x} cy={d.y} r={d.r} fill={a} opacity={0.9-i*0.08} />
+      {legs("#0000")}
+      {/* 스커트 */}
+      <path d="M110 235 C105 270 100 310 95 345 L205 345 C200 310 195 270 190 235Z" fill={p} />
+      <path d="M115 240 C112 265 108 295 105 330" fill="none" stroke={sh(p, 15)} strokeWidth="2" opacity="0.4" />
+      {/* 다리 */}
+      <rect x="126" y="335" width="18" height="115" rx="8" fill="#F5C5A3" />
+      <rect x="156" y="335" width="18" height="115" rx="8" fill="#F5C5A3" />
+      <ellipse cx="135" cy="452" rx="14" ry="6" fill="#1a1a1a" />
+      <ellipse cx="165" cy="452" rx="14" ry="6" fill="#1a1a1a" />
+      {/* 상의 */}
+      <path d="M108 130 C95 135 85 145 82 160 L82 235 L218 235 L218 160 C215 145 205 135 192 130 L175 125 L150 128 L125 125Z" fill={p} />
+      <path d="M108 130 C118 125 130 122 150 122 C170 122 182 125 192 130" fill="none" stroke={s} strokeWidth="3" opacity="0.5" />
+      {/* 장식 */}
+      {[{x:150,y:155,r:3.5},{x:140,y:168,r:2.5},{x:160,y:165,r:3},{x:135,y:182,r:2},{x:165,y:180,r:2.5},{x:150,y:195,r:2}].map((d,i)=>(
+        <circle key={i} cx={d.x} cy={d.y} r={d.r} fill={a} opacity={0.85-i*0.08} />
       ))}
-      <path d="M62 168 C50 172 42 185 40 200 C48 198 56 190 60 178Z" fill={p} />
-      <path d="M138 168 C150 172 158 185 160 200 C152 198 144 190 140 178Z" fill={p} />
-      <path d="M75 170 L100 190 L125 170" fill="none" stroke={a} strokeWidth="1" opacity="0.5" />
+      {/* 팔 */}
+      <path d="M108 130 C92 138 80 155 76 180 L76 230 C82 228 88 218 90 200 L95 160 Z" fill={p} />
+      <path d="M192 130 C208 138 220 155 224 180 L224 230 C218 228 212 218 210 200 L205 160 Z" fill={p} />
+      {/* 손 */}
+      <ellipse cx="76" cy="234" rx="8" ry="10" fill="#F5C5A3" />
+      <ellipse cx="224" cy="234" rx="8" ry="10" fill="#F5C5A3" />
     </g>
   );
+
   if (style === "uniform") return (
     <g>
-      <path d="M65 168 C58 175 54 192 56 220 L144 220 C146 192 142 175 135 168 L118 162 L100 164 L82 162Z" fill={p} />
-      <path d="M85 160 L100 175 L115 160" fill={s} stroke="#DDD" strokeWidth="1" />
-      <polygon points="97,165 103,165 101,195 99,195" fill={a} />
-      <polygon points="96,168 104,168 103,173 97,173" fill={a} />
-      <line x1="97" y1="165" x2="95" y2="220" stroke={dk} strokeWidth="2" />
-      <line x1="103" y1="165" x2="105" y2="220" stroke={dk} strokeWidth="2" />
-      <path d="M65 168 C54 173 46 186 44 202 C52 200 60 192 62 178Z" fill={p} />
-      <path d="M135 168 C146 173 154 186 156 202 C148 200 140 192 138 178Z" fill={p} />
+      {/* 스커트 */}
+      <path d="M115 235 C112 265 108 300 105 340 L195 340 C192 300 188 265 185 235Z" fill={dk} />
+      {/* 다리 */}
+      <rect x="126" y="332" width="18" height="118" rx="8" fill="#F5C5A3" />
+      <rect x="156" y="332" width="18" height="118" rx="8" fill="#F5C5A3" />
+      <ellipse cx="135" cy="452" rx="14" ry="6" fill="#2a2a2a" />
+      <ellipse cx="165" cy="452" rx="14" ry="6" fill="#2a2a2a" />
+      {/* 재킷 */}
+      <path d="M108 130 C95 135 85 148 82 165 L82 235 L218 235 L218 165 C215 148 205 135 192 130 L175 125 L150 128 L125 125Z" fill={p} />
+      {/* 칼라+셔츠 */}
+      <path d="M130 122 L150 140 L170 122" fill={s} stroke="#DDD" strokeWidth="1" />
+      {/* 넥타이 */}
+      <polygon points="147,130 153,130 151,175 149,175" fill={a} />
+      <polygon points="146,133 154,133 153,138 147,138" fill={a} />
+      {/* 라인 */}
+      <line x1="148" y1="130" x2="146" y2="235" stroke={dk} strokeWidth="2" />
+      <line x1="152" y1="130" x2="154" y2="235" stroke={dk} strokeWidth="2" />
+      {/* 팔 */}
+      <path d="M108 130 C92 138 82 155 78 178 L78 228 C84 226 90 216 92 198 L96 158Z" fill={p} />
+      <path d="M192 130 C208 138 218 155 222 178 L222 228 C216 226 210 216 208 198 L204 158Z" fill={p} />
+      <ellipse cx="78" cy="232" rx="8" ry="10" fill="#F5C5A3" />
+      <ellipse cx="222" cy="232" rx="8" ry="10" fill="#F5C5A3" />
     </g>
   );
+
   if (style === "fantasy") return (
     <g>
-      <path d="M60 168 C53 175 50 192 52 220 L148 220 C150 192 147 175 140 168 L122 160 L100 163 L78 160Z" fill={p} />
-      <path d="M78 160 C84 155 92 152 100 152 C108 152 116 155 122 160" fill="none" stroke={s} strokeWidth="2" opacity="0.8" />
-      {[85,100,115,90,110].map((x,i)=>(
-        <polygon key={i} points={`${x},${175+i*8} ${x+3},${170+i*8} ${x+6},${175+i*8} ${x+4},${180+i*8} ${x+2},${178+i*8}`} fill={a} opacity="0.8" />
+      {/* 드레스 플레어 */}
+      <path d="M105 230 C95 280 85 330 80 380 L220 380 C215 330 205 280 195 230Z" fill={p} />
+      <path d="M110 235 C106 265 100 305 96 350" fill="none" stroke={s} strokeWidth="2" opacity="0.4" />
+      <path d="M190 235 C194 265 200 305 204 350" fill="none" stroke={s} strokeWidth="2" opacity="0.4" />
+      {/* 신발 */}
+      <ellipse cx="110" cy="382" rx="16" ry="5" fill={dk} />
+      <ellipse cx="190" cy="382" rx="16" ry="5" fill={dk} />
+      {/* 코르셋 상의 */}
+      <path d="M108 130 C95 135 86 148 84 165 L84 230 L216 230 L216 165 C214 148 205 135 192 130 L172 122 L150 125 L128 122Z" fill={p} />
+      <path d="M128 122 C136 118 142 116 150 116 C158 116 164 118 172 122" fill="none" stroke={s} strokeWidth="2" opacity="0.7" />
+      {/* 별 장식 */}
+      {[{x:140,y:155},{x:160,y:160},{x:150,y:180},{x:135,y:195},{x:165,y:190}].map((d,i)=>(
+        <polygon key={i} points={`${d.x},${d.y-5} ${d.x+2},${d.y-1} ${d.x+5},${d.y} ${d.x+2},${d.y+1} ${d.x+3},${d.y+5} ${d.x},${d.y+2} ${d.x-3},${d.y+5} ${d.x-2},${d.y+1} ${d.x-5},${d.y} ${d.x-2},${d.y-1}`} fill={a} opacity="0.75" />
       ))}
-      <path d="M60 168 C45 178 38 200 42 218 C52 208 58 190 62 172Z" fill={dk} opacity="0.9" />
-      <path d="M140 168 C155 178 162 200 158 218 C148 208 142 190 138 172Z" fill={dk} opacity="0.9" />
+      {/* 케이프 소매 */}
+      <path d="M108 130 C88 142 76 165 74 195 L74 240 C82 236 88 220 92 198Z" fill={sh(p,-12)} opacity="0.9" />
+      <path d="M192 130 C212 142 224 165 226 195 L226 240 C218 236 212 220 208 198Z" fill={sh(p,-12)} opacity="0.9" />
+      <ellipse cx="74" cy="244" rx="8" ry="10" fill="#F5C5A3" />
+      <ellipse cx="226" cy="244" rx="8" ry="10" fill="#F5C5A3" />
     </g>
   );
-  if (style === "hanbok") return (
-    <g>
-      <path d="M68 168 C62 176 60 194 62 220 L138 220 C140 194 138 176 132 168 L118 162 L100 164 L82 162Z" fill={p} />
-      <path d="M88 162 L100 175 L112 162" fill="white" opacity="0.9" />
-      <path d="M100 175 C95 180 90 185 85 195" fill="none" stroke={a} strokeWidth="3" strokeLinecap="round" />
-      <path d="M100 175 C105 182 102 192 98 200" fill="none" stroke={a} strokeWidth="2" strokeLinecap="round" />
-      <path d="M68 168 C58 173 52 186 54 204 C62 200 66 186 68 170Z" fill={p} />
-      <path d="M132 168 C142 173 148 186 146 204 C138 200 134 186 132 170Z" fill={p} />
-    </g>
-  );
+
   if (style === "street") return (
     <g>
-      <path d="M58 168 C50 176 46 196 48 220 L152 220 C154 196 150 176 142 168 L124 160 L100 163 L76 160Z" fill={p} />
-      <rect x="82" y="192" width="36" height="22" rx="4" fill={dk} />
-      <rect x="78" y="163" width="6" height="60" rx="3" fill={s} opacity="0.5" />
-      <rect x="116" y="163" width="6" height="60" rx="3" fill={s} opacity="0.5" />
-      <path d="M58 168 C42 175 34 198 38 218 C50 210 56 192 60 172Z" fill={p} />
-      <path d="M142 168 C158 175 166 198 162 218 C150 210 144 192 140 172Z" fill={p} />
+      {/* 바지 */}
+      <path d="M115 235 L110 370 L145 370 L150 260 L155 370 L190 370 L185 235Z" fill={s} />
+      <ellipse cx="128" cy="372" rx="16" ry="6" fill="#F5F5F5" />
+      <ellipse cx="172" cy="372" rx="16" ry="6" fill="#F5F5F5" />
+      {/* 오버핏 후디 */}
+      <path d="M100 130 C85 138 75 155 72 178 L72 240 L228 240 L228 178 C225 155 215 138 200 130 L178 122 L150 125 L122 122Z" fill={p} />
+      {/* 포켓 */}
+      <rect x="130" y="196" width="40" height="28" rx="4" fill={dk} />
+      {/* 후드 뒤 */}
+      <path d="M122 130 C118 118 120 108 150 104 C180 108 182 118 178 130" fill={p} opacity="0.9" />
+      {/* 팔 - 오버핏 */}
+      <path d="M100 130 C78 142 66 168 68 200 L68 240 C78 236 84 218 88 196Z" fill={p} />
+      <path d="M200 130 C222 142 234 168 232 200 L232 240 C222 236 216 218 212 196Z" fill={p} />
+      <ellipse cx="68" cy="244" rx="9" ry="11" fill="#F5C5A3" />
+      <ellipse cx="232" cy="244" rx="9" ry="11" fill="#F5C5A3" />
     </g>
   );
+
+  if (style === "hanbok") return (
+    <g>
+      {/* 치마 */}
+      <path d="M108 225 C100 270 92 320 88 375 L212 375 C208 320 200 270 192 225Z" fill={p} />
+      <path d="M115 228 C112 258 106 300 102 345" fill="none" stroke={sh(p, 20)} strokeWidth="2" opacity="0.3" />
+      <ellipse cx="110" cy="377" rx="14" ry="5" fill={dk} />
+      <ellipse cx="190" cy="377" rx="14" ry="5" fill={dk} />
+      {/* 저고리 */}
+      <path d="M112 130 C98 136 90 150 88 168 L88 225 L212 225 L212 168 C210 150 202 136 188 130 L172 125 L150 128 L128 125Z" fill={s} />
+      {/* 동정 */}
+      <path d="M135 125 L150 142 L165 125" fill="white" opacity="0.9" />
+      {/* 고름 */}
+      <path d="M150 142 C145 150 138 158 132 170" fill="none" stroke={a} strokeWidth="3.5" strokeLinecap="round" />
+      <path d="M150 142 C155 152 152 165 148 175" fill="none" stroke={a} strokeWidth="2.5" strokeLinecap="round" />
+      {/* 소매 */}
+      <path d="M112 130 C96 138 86 155 84 178 L84 225 C92 222 98 208 100 190Z" fill={s} />
+      <path d="M188 130 C204 138 214 155 216 178 L216 225 C208 222 202 208 200 190Z" fill={s} />
+      <ellipse cx="84" cy="228" rx="8" ry="10" fill="#F5C5A3" />
+      <ellipse cx="216" cy="228" rx="8" ry="10" fill="#F5C5A3" />
+    </g>
+  );
+
   if (style === "training") return (
     <g>
-      <path d="M65 168 C58 176 55 194 57 220 L143 220 C145 194 142 176 135 168 L118 163 L100 165 L82 163Z" fill={p} />
-      <path d="M65 168 C68 175 70 190 70 220" fill="none" stroke={s} strokeWidth="3" opacity="0.7" />
-      <path d="M135 168 C132 175 130 190 130 220" fill="none" stroke={s} strokeWidth="3" opacity="0.7" />
-      <line x1="100" y1="163" x2="100" y2="200" stroke={dk} strokeWidth="2" strokeDasharray="3,2" />
-      <path d="M75 168 C72 158 74 148 100 145 C126 148 128 158 125 168" fill={p} opacity="0.9" />
-      <path d="M65 168 C53 173 46 188 48 206 C56 202 62 188 64 172Z" fill={p} />
-      <path d="M135 168 C147 173 154 188 152 206 C144 202 138 188 136 172Z" fill={p} />
+      {/* 바지 */}
+      <path d="M118 235 L114 370 L148 370 L150 258 L152 370 L186 370 L182 235Z" fill={p} />
+      <path d="M118 235 C120 260 120 290 118 320" fill="none" stroke={s} strokeWidth="2.5" opacity="0.6" />
+      <path d="M182 235 C180 260 180 290 182 320" fill="none" stroke={s} strokeWidth="2.5" opacity="0.6" />
+      <ellipse cx="131" cy="372" rx="15" ry="5" fill="#F5F5F5" />
+      <ellipse cx="169" cy="372" rx="15" ry="5" fill="#F5F5F5" />
+      {/* 상의 */}
+      <path d="M108 130 C94 136 84 150 82 168 L82 235 L218 235 L218 168 C216 150 206 136 192 130 L175 125 L150 128 L125 125Z" fill={p} />
+      <line x1="150" y1="125" x2="150" y2="210" stroke={dk} strokeWidth="2.5" strokeDasharray="4,3" />
+      {/* 후드 */}
+      <path d="M125 130 C122 118 124 108 150 104 C176 108 178 118 175 130" fill={p} opacity="0.9" />
+      {/* 팔 */}
+      <path d="M108 130 C92 138 82 155 80 178 L80 228 C88 226 94 212 96 195Z" fill={p} />
+      <path d="M192 130 C208 138 218 155 220 178 L220 228 C212 226 206 212 204 195Z" fill={p} />
+      <ellipse cx="80" cy="232" rx="8" ry="10" fill="#F5C5A3" />
+      <ellipse cx="220" cy="232" rx="8" ry="10" fill="#F5C5A3" />
     </g>
   );
+
   // casual
   return (
     <g>
-      <path d="M65 168 C58 175 55 192 57 220 L143 220 C145 192 142 175 135 168 L118 163 L100 165 L82 163Z" fill={p} />
-      <path d="M82 163 L100 168 L118 163" fill="none" stroke={dk} strokeWidth="2" />
-      <path d="M65 168 C57 174 52 185 54 196 C62 193 66 182 66 170Z" fill={p} />
-      <path d="M135 168 C143 174 148 185 146 196 C138 193 134 182 134 170Z" fill={p} />
-      <text x="100" y="195" textAnchor="middle" fontSize="14" fill={s} opacity="0.7">&#9733;</text>
+      {/* 바지 */}
+      <path d="M120 235 L116 370 L148 370 L150 260 L152 370 L184 370 L180 235Z" fill="#374151" />
+      <ellipse cx="132" cy="372" rx="15" ry="5" fill="#F5F5F5" />
+      <ellipse cx="168" cy="372" rx="15" ry="5" fill="#F5F5F5" />
+      {/* 티셔츠 */}
+      <path d="M110 130 C96 136 86 150 84 168 L84 235 L216 235 L216 168 C214 150 204 136 190 130 L174 125 L150 128 L126 125Z" fill={p} />
+      <path d="M126 125 L150 132 L174 125" fill="none" stroke={dk} strokeWidth="2" />
+      {/* 팔 */}
+      <path d="M110 130 C95 136 86 152 84 172 L84 195 C92 192 96 180 98 168Z" fill={p} />
+      <path d="M190 130 C205 136 214 152 216 172 L216 195 C208 192 204 180 202 168Z" fill={p} />
+      {/* 맨팔 */}
+      <rect x="78" y="192" width="14" height="40" rx="6" fill="#F5C5A3" />
+      <rect x="208" y="192" width="14" height="40" rx="6" fill="#F5C5A3" />
+      <ellipse cx="85" cy="236" rx="8" ry="10" fill="#F5C5A3" />
+      <ellipse cx="215" cy="236" rx="8" ry="10" fill="#F5C5A3" />
     </g>
   );
 }
@@ -217,11 +302,10 @@ export default function CharacterSilhouette({
 }: Props) {
   const [blink, setBlink] = useState(false);
   const [breathe, setBreathe] = useState(0);
-
-  const outfit = OUTFIT_CONFIGS[outfitStyle] || OUTFIT_CONFIGS.stage;
-  const skinShadow = shade(skinTone, -20);
-  const skinHi = shade(skinTone, 25);
-  const hairDk = shade(hairColor, -35);
+  const o = OUTFIT_CFG[outfitStyle] || OUTFIT_CFG.stage;
+  const skinDk = sh(skinTone, -18);
+  const skinHi = sh(skinTone, 22);
+  const hairDk = sh(hairColor, -30);
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -232,166 +316,164 @@ export default function CharacterSilhouette({
   }, []);
 
   useEffect(() => {
-    let frame: number;
-    let t = 0;
+    let frame: number; let t = 0;
     const run = () => { t += 0.02; setBreathe(Math.sin(t) * 2); frame = requestAnimationFrame(run); };
     frame = requestAnimationFrame(run);
     return () => cancelAnimationFrame(frame);
   }, []);
 
-  const eyeY = blink ? 0.08 : 1;
+  const eyeS = blink ? 0.08 : 1;
 
   return (
-    <svg viewBox="0 0 200 320" className="w-full h-full drop-shadow-lg" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 300 500" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <radialGradient id="fg" cx="45%" cy="40%" r="60%">
+        <radialGradient id="fG" cx="45%" cy="40%" r="60%">
           <stop offset="0%" stopColor={skinHi} />
-          <stop offset="60%" stopColor={skinTone} />
-          <stop offset="100%" stopColor={skinShadow} />
+          <stop offset="55%" stopColor={skinTone} />
+          <stop offset="100%" stopColor={skinDk} />
         </radialGradient>
-        <radialGradient id="eg" cx="35%" cy="35%" r="65%">
-          <stop offset="0%" stopColor={shade(eyeColor, 50)} />
+        <radialGradient id="eG" cx="35%" cy="35%" r="65%">
+          <stop offset="0%" stopColor={sh(eyeColor, 45)} />
           <stop offset="50%" stopColor={eyeColor} />
-          <stop offset="100%" stopColor={shade(eyeColor, -40)} />
+          <stop offset="100%" stopColor={sh(eyeColor, -35)} />
         </radialGradient>
       </defs>
 
       <g transform={`translate(0,${breathe * 0.5})`}>
-        {/* 의상 */}
-        <Outfit style={outfitStyle} p={outfit.primary} s={outfit.secondary} a={outfit.accent} />
+        {/* 의상 + 팔 + 다리 */}
+        <OutfitSVG style={outfitStyle} p={o.p} s={o.s} a={o.a} />
 
-        {/* 목 + 쇄골 */}
-        <ellipse cx="100" cy="150" rx="14" ry="8" fill={skinTone} />
-        <path d="M88 148 C90 155 95 160 100 162 C105 160 110 155 112 148" fill={skinTone} />
-        <path d="M72 158 C82 153 90 150 100 150" fill="none" stroke={skinShadow} strokeWidth="1" opacity="0.3" />
-        <path d="M128 158 C118 153 110 150 100 150" fill="none" stroke={skinShadow} strokeWidth="1" opacity="0.3" />
+        {/* 목 */}
+        <rect x="142" y="108" width="16" height="22" rx="6" fill={skinTone} />
+        <path d="M138 125 C142 120 148 118 150 118 C152 118 158 120 162 125" fill="none" stroke={skinDk} strokeWidth="0.8" opacity="0.25" />
 
         {/* 얼굴 */}
         <g transform={`translate(0,${breathe * 0.3})`}>
-          <ellipse cx="100" cy="100" rx="42" ry="48" fill="url(#fg)" />
-          <ellipse cx="100" cy="140" rx="30" ry="10" fill={skinShadow} opacity="0.15" />
-          <ellipse cx="78" cy="110" rx="10" ry="7" fill="#FFB6C1" opacity="0.25" />
-          <ellipse cx="122" cy="110" rx="10" ry="7" fill="#FFB6C1" opacity="0.25" />
+          <ellipse cx="150" cy="72" rx="38" ry="42" fill="url(#fG)" />
+          {/* 턱 음영 */}
+          <ellipse cx="150" cy="108" rx="26" ry="8" fill={skinDk} opacity="0.12" />
+          {/* 귀 */}
+          <ellipse cx="112" cy="75" rx="5" ry="8" fill={skinTone} />
+          <ellipse cx="112" cy="75" rx="3" ry="5" fill={skinDk} opacity="0.15" />
+          <ellipse cx="188" cy="75" rx="5" ry="8" fill={skinTone} />
+          <ellipse cx="188" cy="75" rx="3" ry="5" fill={skinDk} opacity="0.15" />
+          {/* 볼터치 */}
+          <ellipse cx="128" cy="85" rx="9" ry="5" fill="#FFB6C1" opacity="0.2" />
+          <ellipse cx="172" cy="85" rx="9" ry="5" fill="#FFB6C1" opacity="0.2" />
           {/* 코 */}
-          <path d="M96 108 C96 112 98 115 100 116 C102 115 104 112 104 108" fill="none" stroke={skinShadow} strokeWidth="1.2" strokeLinecap="round" opacity="0.4" />
+          <path d="M147 80 C147 84 148 87 150 88 C152 87 153 84 153 80" fill="none" stroke={skinDk} strokeWidth="1" strokeLinecap="round" opacity="0.35" />
 
           {/* 눈썹 */}
           {gender === "male" ? (
             <>
-              <path d="M76 84 C81 81 88 80 94 82" fill="none" stroke={hairDk} strokeWidth="3" strokeLinecap="round" />
-              <path d="M106 82 C112 80 119 81 124 84" fill="none" stroke={hairDk} strokeWidth="3" strokeLinecap="round" />
+              <path d="M127 56 C131 53 137 52 143 54" fill="none" stroke={hairDk} strokeWidth="2.8" strokeLinecap="round" />
+              <path d="M157 54 C163 52 169 53 173 56" fill="none" stroke={hairDk} strokeWidth="2.8" strokeLinecap="round" />
             </>
           ) : (
             <>
-              <path d="M78 84 C82 81 88 80 94 81" fill="none" stroke={hairDk} strokeWidth="2.2" strokeLinecap="round" />
-              <path d="M106 81 C112 80 118 81 122 84" fill="none" stroke={hairDk} strokeWidth="2.2" strokeLinecap="round" />
+              <path d="M128 57 C132 54 138 53 143 54" fill="none" stroke={hairDk} strokeWidth="2" strokeLinecap="round" />
+              <path d="M157 54 C162 53 168 54 172 57" fill="none" stroke={hairDk} strokeWidth="2" strokeLinecap="round" />
             </>
           )}
 
           {/* 왼눈 */}
-          <g transform={`translate(86,96) scale(1,${eyeY})`}>
-            <ellipse cx="0" cy="0" rx="10" ry="8" fill="white" />
-            <circle cx="1" cy="1" r="6.5" fill="url(#eg)" />
-            <circle cx="1" cy="1" r="3.5" fill="#0a0a0a" />
-            <circle cx="-2" cy="-2" r="2.2" fill="white" opacity="0.9" />
-            <circle cx="3" cy="-1" r="1" fill="white" opacity="0.6" />
-            <path d="M-10 -6 C-5 -10 5 -10 10 -6" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" />
-            <line x1="-9" y1="-5" x2="-12" y2="-9" stroke="#111" strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="9" y1="-5" x2="12" y2="-9" stroke="#111" strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M-8 6 C-2 8 2 8 8 6" fill="none" stroke={skinShadow} strokeWidth="1" opacity="0.5" />
+          <g transform={`translate(136,68) scale(1,${eyeS})`}>
+            <ellipse cx="0" cy="0" rx="9" ry="7.5" fill="white" />
+            <circle cx="0.5" cy="0.5" r="6" fill="url(#eG)" />
+            <circle cx="0.5" cy="0.5" r="3.2" fill="#0a0a0a" />
+            <circle cx="-1.5" cy="-1.5" r="2" fill="white" opacity="0.9" />
+            <circle cx="2.5" cy="-0.5" r="0.9" fill="white" opacity="0.6" />
+            <path d="M-9 -5.5 C-4.5 -9 4.5 -9 9 -5.5" fill="none" stroke="#111" strokeWidth="2.2" strokeLinecap="round" />
+            <line x1="-8" y1="-4" x2="-11" y2="-7" stroke="#111" strokeWidth="1.3" strokeLinecap="round" />
           </g>
           {/* 오른눈 */}
-          <g transform={`translate(114,96) scale(1,${eyeY})`}>
-            <ellipse cx="0" cy="0" rx="10" ry="8" fill="white" />
-            <circle cx="-1" cy="1" r="6.5" fill="url(#eg)" />
-            <circle cx="-1" cy="1" r="3.5" fill="#0a0a0a" />
-            <circle cx="-4" cy="-2" r="2.2" fill="white" opacity="0.9" />
-            <circle cx="1" cy="-1" r="1" fill="white" opacity="0.6" />
-            <path d="M-10 -6 C-5 -10 5 -10 10 -6" fill="none" stroke="#111" strokeWidth="2.5" strokeLinecap="round" />
-            <line x1="-9" y1="-5" x2="-12" y2="-9" stroke="#111" strokeWidth="1.5" strokeLinecap="round" />
-            <line x1="9" y1="-5" x2="12" y2="-9" stroke="#111" strokeWidth="1.5" strokeLinecap="round" />
-            <path d="M-8 6 C-2 8 2 8 8 6" fill="none" stroke={skinShadow} strokeWidth="1" opacity="0.5" />
+          <g transform={`translate(164,68) scale(1,${eyeS})`}>
+            <ellipse cx="0" cy="0" rx="9" ry="7.5" fill="white" />
+            <circle cx="-0.5" cy="0.5" r="6" fill="url(#eG)" />
+            <circle cx="-0.5" cy="0.5" r="3.2" fill="#0a0a0a" />
+            <circle cx="-3" cy="-1.5" r="2" fill="white" opacity="0.9" />
+            <circle cx="1" cy="-0.5" r="0.9" fill="white" opacity="0.6" />
+            <path d="M-9 -5.5 C-4.5 -9 4.5 -9 9 -5.5" fill="none" stroke="#111" strokeWidth="2.2" strokeLinecap="round" />
+            <line x1="8" y1="-4" x2="11" y2="-7" stroke="#111" strokeWidth="1.3" strokeLinecap="round" />
           </g>
 
           {/* 입 */}
           {gender === "female" ? (
-            <g transform="translate(100,122)">
-              <path d="M-10 0 C-6 -4 -2 -5 0 -4 C2 -5 6 -4 10 0" fill="#E88B8B" opacity="0.9" />
-              <path d="M-10 0 C-6 5 6 5 10 0" fill="#F2A5A5" />
-              <ellipse cx="0" cy="2" rx="4" ry="1.5" fill="white" opacity="0.3" />
-              <path d="M-10 0 C-4 1 4 1 10 0" fill="none" stroke="#C07070" strokeWidth="0.8" />
+            <g transform="translate(150,95)">
+              <path d="M-8 0 C-5 -3.5 -1 -4.5 0 -3.5 C1 -4.5 5 -3.5 8 0" fill="#E88B8B" opacity="0.9" />
+              <path d="M-8 0 C-4 4 4 4 8 0" fill="#F2A5A5" />
+              <ellipse cx="0" cy="1.5" rx="3.5" ry="1.2" fill="white" opacity="0.3" />
             </g>
           ) : (
-            <g transform="translate(100,122)">
-              <path d="M-9 0 C-5 -3 5 -3 9 0 C5 4 -5 4 -9 0Z" fill="#C08080" opacity="0.8" />
-              <path d="M-9 0 C-5 1 5 1 9 0" fill="none" stroke="#A06060" strokeWidth="1" />
+            <g transform="translate(150,95)">
+              <path d="M-7 0 C-4 -2.5 4 -2.5 7 0 C4 3 -4 3 -7 0Z" fill="#C08080" opacity="0.8" />
             </g>
           )}
         </g>
 
         {/* 헤어 (얼굴 위) */}
-        <Hair color={hairColor} length={hairLength} />
+        <HairSVG c={hairColor} length={hairLength} />
 
         {/* 악세서리 */}
         {accessories.includes("왕관") && (
-          <g transform="translate(100,52)">
-            <path d="M-22 0 L-15 -14 L-8 -2 L0 -18 L8 -2 L15 -14 L22 0Z" fill="#FFD700" stroke="#DAA520" strokeWidth="1" />
-            <circle cx="-15" cy="-12" r="2.5" fill="#FF4444" />
-            <circle cx="0" cy="-16" r="3" fill="#4444FF" />
-            <circle cx="15" cy="-12" r="2.5" fill="#44FF44" />
+          <g transform="translate(150,30)">
+            <path d="M-20 0 L-14 -12 L-7 -2 L0 -16 L7 -2 L14 -12 L20 0Z" fill="#FFD700" stroke="#DAA520" strokeWidth="1" />
+            <circle cx="-14" cy="-10" r="2" fill="#FF4444" />
+            <circle cx="0" cy="-14" r="2.5" fill="#4444FF" />
+            <circle cx="14" cy="-10" r="2" fill="#44FF44" />
           </g>
         )}
         {accessories.includes("안경") && (
-          <g transform="translate(100,96)" opacity="0.85">
-            <rect x="-26" y="-10" width="20" height="16" rx="4" fill="none" stroke="#2a2a2a" strokeWidth="2" />
-            <rect x="6" y="-10" width="20" height="16" rx="4" fill="none" stroke="#2a2a2a" strokeWidth="2" />
-            <line x1="-6" y1="-3" x2="6" y2="-3" stroke="#2a2a2a" strokeWidth="2" />
+          <g transform="translate(150,68)" opacity="0.85">
+            <rect x="-24" y="-8" width="18" height="14" rx="3.5" fill="none" stroke="#2a2a2a" strokeWidth="1.8" />
+            <rect x="6" y="-8" width="18" height="14" rx="3.5" fill="none" stroke="#2a2a2a" strokeWidth="1.8" />
+            <line x1="-6" y1="-1" x2="6" y2="-1" stroke="#2a2a2a" strokeWidth="1.5" />
           </g>
         )}
         {accessories.includes("리본") && (
-          <g transform="translate(130,68) rotate(-15)">
-            <path d="M0 0 L-12 -8 L-12 8Z" fill="#FF69B4" />
-            <path d="M0 0 L12 -8 L12 8Z" fill="#FF1493" />
-            <circle cx="0" cy="0" r="4" fill="#FFB6C1" />
+          <g transform="translate(180,50) rotate(-12)">
+            <path d="M0 0 L-10 -7 L-10 7Z" fill="#FF69B4" />
+            <path d="M0 0 L10 -7 L10 7Z" fill="#FF1493" />
+            <circle cx="0" cy="0" r="3.5" fill="#FFB6C1" />
           </g>
         )}
         {accessories.includes("고양이귀") && (
           <g>
-            <path d="M66 66 L72 42 L84 62" fill={hairColor} />
-            <path d="M69 64 L74 46 L81 62" fill="#FFB6C1" opacity="0.6" />
-            <path d="M116 62 L128 42 L134 66" fill={hairColor} />
-            <path d="M119 62 L126 46 L131 64" fill="#FFB6C1" opacity="0.6" />
+            <path d="M116 48 L124 24 L136 44" fill={hairColor} />
+            <path d="M119 46 L125 28 L133 44" fill="#FFB6C1" opacity="0.55" />
+            <path d="M164 44 L176 24 L184 48" fill={hairColor} />
+            <path d="M167 44 L175 28 L181 46" fill="#FFB6C1" opacity="0.55" />
           </g>
         )}
         {accessories.includes("귀걸이") && (
           <g>
-            <circle cx="58" cy="118" r="4" fill="#FFD700" />
-            <line x1="58" y1="122" x2="58" y2="134" stroke="#FFD700" strokeWidth="2" />
-            <circle cx="58" cy="136" r="3" fill="#FFD700" />
-            <circle cx="142" cy="118" r="4" fill="#FFD700" />
-            <line x1="142" y1="122" x2="142" y2="134" stroke="#FFD700" strokeWidth="2" />
-            <circle cx="142" cy="136" r="3" fill="#FFD700" />
+            <circle cx="112" cy="88" r="3" fill="#FFD700" />
+            <line x1="112" y1="91" x2="112" y2="102" stroke="#FFD700" strokeWidth="1.5" />
+            <circle cx="112" cy="104" r="2.5" fill="#FFD700" />
+            <circle cx="188" cy="88" r="3" fill="#FFD700" />
+            <line x1="188" y1="91" x2="188" y2="102" stroke="#FFD700" strokeWidth="1.5" />
+            <circle cx="188" cy="104" r="2.5" fill="#FFD700" />
           </g>
         )}
         {accessories.includes("목걸이") && (
-          <path d="M82 155 C88 160 94 163 100 164 C106 163 112 160 118 155" fill="none" stroke="#FFD700" strokeWidth="2" strokeLinecap="round" />
-        )}
-        {accessories.includes("마스크") && (
-          <rect x="78" y="108" width="44" height="30" rx="8" fill="white" opacity="0.9" stroke="#ddd" strokeWidth="1" />
+          <path d="M132 120 C138 126 144 128 150 129 C156 128 162 126 168 120" fill="none" stroke="#FFD700" strokeWidth="2" strokeLinecap="round" />
         )}
         {accessories.includes("헤어핀") && (
-          <g transform="translate(130,82) rotate(30)">
-            <rect x="-1" y="-12" width="2" height="24" rx="1" fill="#FF69B4" />
-            <ellipse cx="0" cy="-14" rx="5" ry="4" fill="#FF1493" />
+          <g transform="translate(180,58) rotate(25)">
+            <rect x="-1" y="-10" width="2" height="20" rx="1" fill="#FF69B4" />
+            <ellipse cx="0" cy="-12" rx="4" ry="3" fill="#FF1493" />
           </g>
         )}
         {accessories.includes("날개") && (
-          <g opacity="0.6">
-            <path d="M40 175 C20 160 10 140 15 120 C25 135 35 155 50 168Z" fill="white" stroke="#E0E0E0" strokeWidth="1" />
-            <path d="M35 180 C12 168 2 148 8 128 C20 145 30 162 45 175Z" fill="white" stroke="#E0E0E0" strokeWidth="1" />
-            <path d="M160 175 C180 160 190 140 185 120 C175 135 165 155 150 168Z" fill="white" stroke="#E0E0E0" strokeWidth="1" />
-            <path d="M165 180 C188 168 198 148 192 128 C180 145 170 162 155 175Z" fill="white" stroke="#E0E0E0" strokeWidth="1" />
+          <g opacity="0.5">
+            <path d="M82 165 C55 148 38 125 42 100 C55 118 68 140 90 156Z" fill="white" stroke="#E0E0E0" strokeWidth="1" />
+            <path d="M76 172 C45 158 28 135 34 108 C50 128 62 150 85 165Z" fill="white" stroke="#E0E0E0" strokeWidth="1" />
+            <path d="M218 165 C245 148 262 125 258 100 C245 118 232 140 210 156Z" fill="white" stroke="#E0E0E0" strokeWidth="1" />
+            <path d="M224 172 C255 158 272 135 266 108 C250 128 238 150 215 165Z" fill="white" stroke="#E0E0E0" strokeWidth="1" />
           </g>
+        )}
+        {accessories.includes("마스크") && (
+          <rect x="130" y="80" width="40" height="26" rx="8" fill="white" opacity="0.9" stroke="#ddd" strokeWidth="1" />
         )}
       </g>
     </svg>

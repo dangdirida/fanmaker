@@ -112,7 +112,7 @@ export default function Step2_Appearance({ idol, onUpdate, onPrev, onNext }: Pro
                 className={`p-3 rounded-2xl border-2 text-center transition-all ${
                   sel ? "border-black bg-black text-white" : "border-gray-200 text-gray-600 hover:border-gray-300"
                 }`}>
-                <div className="text-2xl mb-1">&#x1F9D1;</div>
+                <div className="w-8 h-8 mx-auto mb-1 rounded-full bg-gray-200" />
                 <p className="text-xs font-bold">{m.label}</p>
                 <p className={`text-[10px] ${sel ? "text-gray-300" : "text-gray-400"}`}>{m.desc}</p>
               </button>

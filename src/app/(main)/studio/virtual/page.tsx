@@ -23,18 +23,6 @@ type VirtualIdol = {
   updatedAt: string;
 };
 
-const STYLE_GRADIENTS: Record<string, string> = {
-  idol: "from-violet-500 to-fuchsia-500",
-  pure: "from-sky-300 to-blue-400",
-  powerful: "from-red-500 to-orange-500",
-  dark: "from-gray-800 to-gray-900",
-  fantasy: "from-purple-400 to-pink-400",
-  retro: "from-amber-400 to-yellow-500",
-  girlcrush: "from-rose-500 to-red-600",
-  chic: "from-gray-600 to-gray-700",
-  cute: "from-pink-300 to-rose-400",
-  boyish: "from-blue-500 to-cyan-500",
-};
 
 export default function VirtualStudioListPage() {
   const [idols, setIdols] = useState<VirtualIdol[]>([]);
@@ -118,10 +106,9 @@ export default function VirtualStudioListPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((idol) => {
-            const grad = STYLE_GRADIENTS[idol.stylePreset] || STYLE_GRADIENTS.idol;
             return (
               <div key={idol.id} className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
-                <div className={`h-40 bg-gradient-to-br ${grad} flex items-center justify-center relative`}>
+                <div className="h-40 bg-white border-b border-gray-100 flex items-center justify-center relative">
                   <div className="w-24 h-36">
                     <CharacterSilhouette
                       hairColor={idol.hairColor}

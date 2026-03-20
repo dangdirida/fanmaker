@@ -9,16 +9,16 @@ const GENDERS = [
 ];
 
 const CONCEPTS = [
-  { value: "idol", label: "아이돌", emoji: "✨" },
-  { value: "pure", label: "청순", emoji: "🌸" },
-  { value: "powerful", label: "파워풀", emoji: "🔥" },
-  { value: "dark", label: "다크", emoji: "🌙" },
-  { value: "fantasy", label: "판타지", emoji: "🦋" },
-  { value: "retro", label: "레트로", emoji: "🎞" },
-  { value: "girlcrush", label: "걸크러시", emoji: "💎" },
-  { value: "chic", label: "시크", emoji: "🖤" },
-  { value: "cute", label: "큐트", emoji: "🍭" },
-  { value: "boyish", label: "보이시", emoji: "🧢" },
+  { value: "idol", label: "아이돌" },
+  { value: "pure", label: "청순" },
+  { value: "powerful", label: "파워풀" },
+  { value: "dark", label: "다크" },
+  { value: "fantasy", label: "판타지" },
+  { value: "retro", label: "레트로" },
+  { value: "girlcrush", label: "걸크러시" },
+  { value: "chic", label: "시크" },
+  { value: "cute", label: "큐트" },
+  { value: "boyish", label: "보이시" },
 ];
 
 const PERSONALITY_TAGS = [
@@ -107,7 +107,7 @@ export default function Step1_Identity({ idol, onUpdate, onNext }: Props) {
                 className={`px-3 py-2 rounded-xl text-xs font-medium border transition-all ${
                   sel ? "border-black bg-black text-white" : "border-gray-200 text-gray-600 hover:border-gray-400"
                 }`}>
-                {c.emoji} {c.label}
+                {c.label}
               </button>
             );
           })}
