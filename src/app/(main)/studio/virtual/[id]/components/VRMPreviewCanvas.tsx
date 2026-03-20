@@ -75,7 +75,9 @@ function applyGenderMorph(vrm: any, gender: string) {
   }
 }
 
-function VRMCanvasInner({ hairColor, gender }: { hairColor: string; gender: string }) {
+function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender }: {
+  hairColor: string; skinTone: string; eyeColor: string; gender: string;
+}) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -114,7 +116,8 @@ function VRMCanvasInner({ hairColor, gender }: { hairColor: string; gender: stri
 
         // 카메라
         const camera = new THREE.PerspectiveCamera(28, w / h, 0.1, 100);
-        camera.position.set(0, 1.1, 2.2);
+        camera.position.set(0, 1.4, 2.0);
+        camera.lookAt(0, 1.3, 0);
 
         // 조명
         scene.add(new THREE.AmbientLight(0xffffff, 1.5));
@@ -127,7 +130,7 @@ function VRMCanvasInner({ hairColor, gender }: { hairColor: string; gender: stri
 
         // OrbitControls
         const controls = new OrbitControls(camera, renderer.domElement);
-        controls.target.set(0, 1.0, 0);
+        controls.target.set(0, 1.3, 0);
         controls.enablePan = false;
         controls.minDistance = 1.2;
         controls.maxDistance = 3.5;
@@ -164,7 +167,7 @@ function VRMCanvasInner({ hairColor, gender }: { hairColor: string; gender: stri
               if (ra) ra.rotation.z = -0.6;
             } catch { /* ok */ }
 
-            vrm.scene.rotation.y = 0;
+            vrm.scene.rotation.y = Math.PI;
             scene.add(vrm.scene);
             vrmRef.current = vrm;
             applyGenderMorph(vrm, gender);
@@ -258,6 +261,52 @@ function VRMCanvasInner({ hairColor, gender }: { hairColor: string; gender: stri
     });
   }, [hairColor]);
 
+  // 피부톤 변경
+  useEffect(() => {
+    const vrm = vrmRef.current;
+    if (!vrm) return;
+    import("three").then((THREE) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      vrm.scene.traverse((obj: any) => {
+        if (!(obj instanceof THREE.Mesh)) return;
+        const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        mats.forEach((m: any) => {
+          if (!m?.color) return;
+          const name = (obj.name + (m.name || "")).toLowerCase();
+          if (name.includes("face") || name.includes("skin") || name.includes("body") ||
+              name.includes("顔") || name.includes("肌") || name.includes("体")) {
+            m.color.set(skinTone);
+            m.needsUpdate = true;
+          }
+        });
+      });
+    });
+  }, [skinTone]);
+
+  // 눈 색상 변경
+  useEffect(() => {
+    const vrm = vrmRef.current;
+    if (!vrm) return;
+    import("three").then((THREE) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      vrm.scene.traverse((obj: any) => {
+        if (!(obj instanceof THREE.Mesh)) return;
+        const mats = Array.isArray(obj.material) ? obj.material : [obj.material];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        mats.forEach((m: any) => {
+          if (!m?.color) return;
+          const name = (obj.name + (m.name || "")).toLowerCase();
+          if (name.includes("eye") || name.includes("iris") ||
+              name.includes("目") || name.includes("瞳")) {
+            m.color.set(eyeColor);
+            m.needsUpdate = true;
+          }
+        });
+      });
+    });
+  }, [eyeColor]);
+
   // 성별 변경 시 체형 재적용
   useEffect(() => {
     const vrm = vrmRef.current;
@@ -290,7 +339,7 @@ export default function VRMPreviewCanvas(props: Props) {
 
   return (
     <CanvasErrorBoundary fallback={fallback}>
-      <VRMCanvasInner hairColor={props.hairColor} gender={props.gender} />
+      <VRMCanvasInner hairColor={props.hairColor} skinTone={props.skinTone} eyeColor={props.eyeColor} gender={props.gender} />
     </CanvasErrorBoundary>
   );
 }

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Plus, Pencil, Trash2, ExternalLink, Loader2, Mic, Star } from "lucide-react";
+import IdolThumbnail from "./[id]/components/IdolThumbnail";
 
 type VirtualIdol = {
   id: string;
@@ -108,10 +109,14 @@ export default function VirtualStudioListPage() {
             return (
               <div key={idol.id} className="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow">
                 <div className="h-32 bg-gradient-to-br from-gray-50 to-gray-100 border-b border-gray-100 flex flex-col items-center justify-center relative px-4">
-                  <div className="w-14 h-14 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center shadow-sm mb-2">
-                    <span className="text-xl font-bold text-gray-700">
-                      {idol.name?.charAt(0) || "?"}
-                    </span>
+                  <div className="mb-2">
+                    <IdolThumbnail
+                      idolId={idol.id}
+                      name={idol.name}
+                      gender={idol.gender}
+                      hairColor={idol.hairColor}
+                      size={56}
+                    />
                   </div>
                   {idol.concept && (
                     <div className="flex flex-wrap gap-1 justify-center">
