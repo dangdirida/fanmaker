@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from "react";
 import { Upload, X, FileAudio, FileImage, FileVideo, Loader2 } from "lucide-react";
+import Image from "next/image";
 
 interface FileUploaderProps {
   accept: string;
@@ -140,7 +141,7 @@ export default function FileUploader({
       ) : (
         <div className="bg-gray-900 border border-gray-700 rounded-xl p-4 flex items-center gap-3">
           {preview ? (
-            <img src={preview} alt="" className="w-16 h-16 rounded-lg object-cover" />
+            <Image src={preview} alt="" width={64} height={64} className="w-16 h-16 rounded-lg object-cover" unoptimized />
           ) : (
             <Icon className="w-10 h-10 text-gray-500" />
           )}

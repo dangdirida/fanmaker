@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Search, X } from "lucide-react";
+import Image from "next/image";
 
 type Artist = {
   id: string;
@@ -121,16 +122,22 @@ export default function ArtistSelector({
                 >
                   <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-gray-800 flex items-center justify-center text-base overflow-hidden">
                     {artistImages[artist.name] ? (
-                      <img
+                      <Image
                         src={artistImages[artist.name]}
                         alt={artist.name}
+                        width={48}
+                        height={48}
                         className="w-full h-full rounded-full object-cover"
+                        unoptimized
                       />
                     ) : artist.groupImageUrl ? (
-                      <img
+                      <Image
                         src={artist.groupImageUrl}
                         alt={artist.name}
+                        width={48}
+                        height={48}
                         className="w-full h-full rounded-full object-cover"
+                        unoptimized
                       />
                     ) : (
                       <span className="text-gray-400">

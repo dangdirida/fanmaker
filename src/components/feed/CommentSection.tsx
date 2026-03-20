@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { Send, Trash2, CornerDownRight } from "lucide-react";
+import Image from "next/image";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 
@@ -22,16 +23,16 @@ export default function CommentSection({ postId }: { postId: string }) {
   const [replyContent, setReplyContent] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     const res = await fetch(`/api/posts/${postId}/comments`);
     const data = await res.json();
     if (data.success) setComments(data.data);
     setLoading(false);
-  };
+  }, [postId]);
 
   useEffect(() => {
     fetchComments();
-  }, [postId]);
+  }, [fetchComments]);
 
   const handleSubmit = async (parentId?: string) => {
     const text = parentId ? replyContent : content;
@@ -66,7 +67,7 @@ export default function CommentSection({ postId }: { postId: string }) {
       <div className="flex items-start gap-2">
         <div className="w-7 h-7 rounded-full bg-gray-700 overflow-hidden flex-shrink-0">
           {comment.author.image && (
-            <img src={comment.author.image} alt="" className="w-full h-full object-cover" />
+            <Image src={comment.author.image} alt="" width={28} height={28} className="w-full h-full object-cover" unoptimized />
           )}
         </div>
         <div className="flex-1 min-w-0">

@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  let body: any;
+  let body: { nickname?: string; artistIds?: string[]; activityType?: string };
   try {
     body = await req.json();
   } catch {
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
   if (Array.isArray(artistIds) && artistIds.length > 0) {
     try {
       const validArtists = await prisma.artist.findMany({
-        where: { id: { in: artistIds.filter((id: any) => typeof id === "string") } },
+        where: { id: { in: artistIds.filter((id: unknown) => typeof id === "string") as string[] } },
         select: { id: true },
       });
       if (validArtists.length > 0) {

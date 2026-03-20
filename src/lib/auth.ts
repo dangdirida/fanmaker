@@ -75,8 +75,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const userId = (token.id as string) || token.sub;
         session.user.id = userId!;
         session.user.nickname = (token.nickname as string | null) ?? null;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         session.user.activityType = token.activityType as any;
         session.user.onboardingDone = (token.onboardingDone as boolean) ?? false;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         session.user.role = (token.role as any) ?? "USER";
         session.user.isPro = (token.isPro as boolean) ?? false;
         session.user.image = (token.picture as string | null) ?? null;
