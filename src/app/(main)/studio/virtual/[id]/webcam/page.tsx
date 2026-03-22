@@ -67,8 +67,8 @@ export default function WebcamExperiencePage() {
 
       // 전신 보기 위해 카메라 더 뒤로
       const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
-      camera.position.set(0, 0.9, 3.5);
-      camera.lookAt(0, 0.9, 0);
+      camera.position.set(0, 0.8, 4.5);
+      camera.lookAt(0, 0.8, 0);
 
       scene.add(new THREE.AmbientLight(0xffffff, 2.0));
       const key = new THREE.DirectionalLight(0xfff0e0, 1.4);
@@ -77,7 +77,7 @@ export default function WebcamExperiencePage() {
       fill.position.set(-2, 1, 1); scene.add(fill);
 
       const controls = new OrbitControls(camera, renderer.domElement);
-      controls.target.set(0, 0.9, 0);
+      controls.target.set(0, 0.8, 0);
       controls.enablePan = false;
       controls.minDistance = 1.0;
       controls.maxDistance = 6;
@@ -241,6 +241,15 @@ export default function WebcamExperiencePage() {
             setBodyVisible(true);
 
             try {
+              // 팔 랜드마크 가시성 체크
+              const landmarks = results.poseLandmarks;
+              const leftWristVisible = landmarks?.[15]?.visibility > 0.5;
+              const rightWristVisible = landmarks?.[16]?.visibility > 0.5;
+              const leftShoulderVisible = landmarks?.[11]?.visibility > 0.5;
+              const rightShoulderVisible = landmarks?.[12]?.visibility > 0.5;
+              const leftArmVisible = leftWristVisible && leftShoulderVisible;
+              const rightArmVisible = rightWristVisible && rightShoulderVisible;
+
               const pose = Kalidokit.Pose.solve(
                 results.poseWorldLandmarks,
                 results.poseLandmarks,
@@ -267,29 +276,100 @@ export default function WebcamExperiencePage() {
               // 왼팔
               const lUA = vrm.humanoid.getNormalizedBoneNode("leftUpperArm");
               const lLA = vrm.humanoid.getNormalizedBoneNode("leftLowerArm");
-              if (lUA && pose.LeftUpperArm) {
-                lUA.rotation.x = L(lUA.rotation.x, pose.LeftUpperArm.x ?? 0, amt);
-                lUA.rotation.y = L(lUA.rotation.y, pose.LeftUpperArm.y ?? 0, amt);
-                lUA.rotation.z = L(lUA.rotation.z, (pose.LeftUpperArm.z ?? 0) + 0.5, amt);
-              }
-              if (lLA && pose.LeftLowerArm) {
-                lLA.rotation.x = L(lLA.rotation.x, pose.LeftLowerArm.x ?? 0, amt);
-                lLA.rotation.y = L(lLA.rotation.y, pose.LeftLowerArm.y ?? 0, amt);
-                lLA.rotation.z = L(lLA.rotation.z, pose.LeftLowerArm.z ?? 0, amt);
+              if (!leftArmVisible) {
+                // 왼팔 차렷 (자연스러운 내려진 자세)
+                if (lUA) {
+                  lUA.rotation.x = L(lUA.rotation.x, 0, 0.15);
+                  lUA.rotation.y = L(lUA.rotation.y, 0, 0.15);
+                  lUA.rotation.z = L(lUA.rotation.z, 0.3, 0.15);
+                }
+                if (lLA) {
+                  lLA.rotation.x = L(lLA.rotation.x, 0, 0.15);
+                  lLA.rotation.y = L(lLA.rotation.y, 0, 0.15);
+                  lLA.rotation.z = L(lLA.rotation.z, 0, 0.15);
+                }
+              } else {
+                if (lUA && pose.LeftUpperArm) {
+                  lUA.rotation.x = L(lUA.rotation.x, pose.LeftUpperArm.x ?? 0, amt);
+                  lUA.rotation.y = L(lUA.rotation.y, pose.LeftUpperArm.y ?? 0, amt);
+                  lUA.rotation.z = L(lUA.rotation.z, (pose.LeftUpperArm.z ?? 0) + 0.5, amt);
+                }
+                if (lLA && pose.LeftLowerArm) {
+                  lLA.rotation.x = L(lLA.rotation.x, pose.LeftLowerArm.x ?? 0, amt);
+                  lLA.rotation.y = L(lLA.rotation.y, pose.LeftLowerArm.y ?? 0, amt);
+                  lLA.rotation.z = L(lLA.rotation.z, pose.LeftLowerArm.z ?? 0, amt);
+                }
               }
 
               // 오른팔
               const rUA = vrm.humanoid.getNormalizedBoneNode("rightUpperArm");
               const rLA = vrm.humanoid.getNormalizedBoneNode("rightLowerArm");
-              if (rUA && pose.RightUpperArm) {
-                rUA.rotation.x = L(rUA.rotation.x, pose.RightUpperArm.x ?? 0, amt);
-                rUA.rotation.y = L(rUA.rotation.y, pose.RightUpperArm.y ?? 0, amt);
-                rUA.rotation.z = L(rUA.rotation.z, (pose.RightUpperArm.z ?? 0) - 0.5, amt);
+              if (!rightArmVisible) {
+                // 오른팔 차렷
+                if (rUA) {
+                  rUA.rotation.x = L(rUA.rotation.x, 0, 0.15);
+                  rUA.rotation.y = L(rUA.rotation.y, 0, 0.15);
+                  rUA.rotation.z = L(rUA.rotation.z, -0.3, 0.15);
+                }
+                if (rLA) {
+                  rLA.rotation.x = L(rLA.rotation.x, 0, 0.15);
+                  rLA.rotation.y = L(rLA.rotation.y, 0, 0.15);
+                  rLA.rotation.z = L(rLA.rotation.z, 0, 0.15);
+                }
+              } else {
+                if (rUA && pose.RightUpperArm) {
+                  rUA.rotation.x = L(rUA.rotation.x, pose.RightUpperArm.x ?? 0, amt);
+                  rUA.rotation.y = L(rUA.rotation.y, pose.RightUpperArm.y ?? 0, amt);
+                  rUA.rotation.z = L(rUA.rotation.z, (pose.RightUpperArm.z ?? 0) - 0.5, amt);
+                }
+                if (rLA && pose.RightLowerArm) {
+                  rLA.rotation.x = L(rLA.rotation.x, pose.RightLowerArm.x ?? 0, amt);
+                  rLA.rotation.y = L(rLA.rotation.y, pose.RightLowerArm.y ?? 0, amt);
+                  rLA.rotation.z = L(rLA.rotation.z, pose.RightLowerArm.z ?? 0, amt);
+                }
               }
-              if (rLA && pose.RightLowerArm) {
-                rLA.rotation.x = L(rLA.rotation.x, pose.RightLowerArm.x ?? 0, amt);
-                rLA.rotation.y = L(rLA.rotation.y, pose.RightLowerArm.y ?? 0, amt);
-                rLA.rotation.z = L(rLA.rotation.z, pose.RightLowerArm.z ?? 0, amt);
+
+              // ── 다리 인식 ──
+              const lUL = vrm.humanoid.getNormalizedBoneNode("leftUpperLeg");
+              const lLL = vrm.humanoid.getNormalizedBoneNode("leftLowerLeg");
+              const rUL = vrm.humanoid.getNormalizedBoneNode("rightUpperLeg");
+              const rLL = vrm.humanoid.getNormalizedBoneNode("rightLowerLeg");
+              const lFoot = vrm.humanoid.getNormalizedBoneNode("leftFoot");
+              const rFoot = vrm.humanoid.getNormalizedBoneNode("rightFoot");
+
+              if (lUL && pose.LeftUpperLeg) {
+                lUL.rotation.x = L(lUL.rotation.x, (pose.LeftUpperLeg.x ?? 0) * 0.8, amt);
+                lUL.rotation.y = L(lUL.rotation.y, (pose.LeftUpperLeg.y ?? 0) * 0.5, amt);
+                lUL.rotation.z = L(lUL.rotation.z, (pose.LeftUpperLeg.z ?? 0) * 0.5, amt);
+              }
+              if (lLL && pose.LeftLowerLeg) {
+                lLL.rotation.x = L(lLL.rotation.x, Math.min(0, pose.LeftLowerLeg.x ?? 0), amt);
+                lLL.rotation.z = L(lLL.rotation.z, (pose.LeftLowerLeg.z ?? 0) * 0.3, amt);
+              }
+              if (rUL && pose.RightUpperLeg) {
+                rUL.rotation.x = L(rUL.rotation.x, (pose.RightUpperLeg.x ?? 0) * 0.8, amt);
+                rUL.rotation.y = L(rUL.rotation.y, (pose.RightUpperLeg.y ?? 0) * 0.5, amt);
+                rUL.rotation.z = L(rUL.rotation.z, (pose.RightUpperLeg.z ?? 0) * 0.5, amt);
+              }
+              if (rLL && pose.RightLowerLeg) {
+                rLL.rotation.x = L(rLL.rotation.x, Math.min(0, pose.RightLowerLeg.x ?? 0), amt);
+                rLL.rotation.z = L(rLL.rotation.z, (pose.RightLowerLeg.z ?? 0) * 0.3, amt);
+              }
+              if (lFoot && pose.LeftFoot) {
+                lFoot.rotation.x = L(lFoot.rotation.x, (pose.LeftFoot.x ?? 0) * 0.5, amt);
+              }
+              if (rFoot && pose.RightFoot) {
+                rFoot.rotation.x = L(rFoot.rotation.x, (pose.RightFoot.x ?? 0) * 0.5, amt);
+              }
+
+              // 점프 감지 - hips Y 위치로 판단
+              if (pose.Hips?.worldPosition) {
+                const hipY = pose.Hips.worldPosition.y ?? 0;
+                if (vrm.scene && hipY > 0.1) {
+                  vrm.scene.position.y = 0.1 + hipY * 1.5;
+                } else {
+                  vrm.scene.position.y = L(vrm.scene.position.y, 0.1, 0.2);
+                }
               }
             } catch { /* ok */ }
           });
@@ -413,7 +493,7 @@ export default function WebcamExperiencePage() {
             <PersonStanding className="w-5 h-5 flex-shrink-0" />
             <div className="text-sm font-bold">
               카메라에서 더 멀리 떨어져주세요<br />
-              <span className="font-normal text-xs">상반신 전체가 보여야 몸 인식이 돼요</span>
+              <span className="font-normal text-xs">전신이 보여야 팔·다리 인식이 돼요</span>
             </div>
           </div>
         </div>
@@ -459,6 +539,7 @@ export default function WebcamExperiencePage() {
               <p className="text-white/50 text-xs">✓ 고개 돌리기 · 끄덕이기</p>
               <p className="text-white/50 text-xs">✓ 눈 깜빡임 · 입 벌리기</p>
               <p className="text-white/50 text-xs">✓ 팔 올리기 · 몸 기울이기</p>
+              <p className="text-white/50 text-xs">✓ 다리 움직임 · 점프</p>
             </div>
             <button
               onClick={startExperience}
