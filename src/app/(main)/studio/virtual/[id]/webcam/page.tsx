@@ -176,12 +176,12 @@ export default function WebcamExperiencePage() {
 
             if (head) {
               head.rotation.x = L(head.rotation.x, (face.head.x ?? 0) * 0.8, 0.35);
-              head.rotation.y = L(head.rotation.y, -(face.head.y ?? 0) * 0.8, 0.35);
+              head.rotation.y = L(head.rotation.y, (face.head.y ?? 0) * 0.8, 0.35);
               head.rotation.z = L(head.rotation.z, (face.head.z ?? 0) * 0.6, 0.35);
             }
             if (neck) {
               neck.rotation.x = L(neck.rotation.x, (face.head.x ?? 0) * 0.2, 0.3);
-              neck.rotation.y = L(neck.rotation.y, -(face.head.y ?? 0) * 0.2, 0.3);
+              neck.rotation.y = L(neck.rotation.y, (face.head.y ?? 0) * 0.2, 0.3);
             }
 
             if (vrm.expressionManager) {
@@ -207,6 +207,108 @@ export default function WebcamExperiencePage() {
         // 얼굴 추적 없이도 계속 실행
       }
 
+      // ── Pose (몸 인식) 초기화 ──
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let poseInstance: any = null;
+      try {
+        setLoadingMsg("몸 인식 모델 로딩 중...");
+        // Pose 스크립트 로드
+        await new Promise<void>((res, rej) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          if ((window as any).Pose) { res(); return; }
+          const s = document.createElement("script");
+          s.src = "https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/pose.js";
+          s.crossOrigin = "anonymous";
+          s.onload = () => res();
+          s.onerror = () => { console.warn("Pose CDN failed"); res(); }; // 실패해도 계속
+          document.head.appendChild(s);
+        });
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const P = (window as any).Pose;
+        if (P) {
+          poseInstance = new P({
+            locateFile: (f: string) =>
+              `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/${f}`,
+          });
+          poseInstance.setOptions({
+            modelComplexity: 1,
+            smoothLandmarks: true,
+            enableSegmentation: false,
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5,
+          });
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          poseInstance.onResults((results: any) => {
+            if (!vrm || !results.poseLandmarks) return;
+            try {
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const Kalidokit = (window as any).__kalidokit;
+              if (!Kalidokit) return;
+              const pose = Kalidokit.Pose.solve(
+                results.poseWorldLandmarks,
+                results.poseLandmarks,
+                { runtime: "mediapipe", video, imageSize: { width: 640, height: 480 } }
+              );
+              if (!pose) return;
+
+              const L = THREE.MathUtils.lerp;
+              const lerpAmt = 0.3;
+
+              // 척추/허리
+              const hips = vrm.humanoid.getNormalizedBoneNode("hips");
+              const spine = vrm.humanoid.getNormalizedBoneNode("spine");
+
+              if (hips && pose.Hips) {
+                hips.rotation.x = L(hips.rotation.x, (pose.Hips.rotation?.x ?? 0) * 0.5, lerpAmt);
+                hips.rotation.y = L(hips.rotation.y, (pose.Hips.rotation?.y ?? 0) * 0.5, lerpAmt);
+                hips.rotation.z = L(hips.rotation.z, (pose.Hips.rotation?.z ?? 0) * 0.5, lerpAmt);
+              }
+              if (spine && pose.Spine) {
+                spine.rotation.x = L(spine.rotation.x, (pose.Spine?.x ?? 0) * 0.3, lerpAmt);
+                spine.rotation.z = L(spine.rotation.z, (pose.Spine?.z ?? 0) * 0.3, lerpAmt);
+              }
+
+              // 왼팔
+              const leftUpperArm = vrm.humanoid.getNormalizedBoneNode("leftUpperArm");
+              const leftLowerArm = vrm.humanoid.getNormalizedBoneNode("leftLowerArm");
+              if (leftUpperArm && pose.LeftUpperArm) {
+                leftUpperArm.rotation.x = L(leftUpperArm.rotation.x, (pose.LeftUpperArm.x ?? 0), lerpAmt);
+                leftUpperArm.rotation.y = L(leftUpperArm.rotation.y, (pose.LeftUpperArm.y ?? 0), lerpAmt);
+                leftUpperArm.rotation.z = L(leftUpperArm.rotation.z, (pose.LeftUpperArm.z ?? 0) + 0.6, lerpAmt);
+              }
+              if (leftLowerArm && pose.LeftLowerArm) {
+                leftLowerArm.rotation.x = L(leftLowerArm.rotation.x, (pose.LeftLowerArm.x ?? 0), lerpAmt);
+                leftLowerArm.rotation.y = L(leftLowerArm.rotation.y, (pose.LeftLowerArm.y ?? 0), lerpAmt);
+                leftLowerArm.rotation.z = L(leftLowerArm.rotation.z, (pose.LeftLowerArm.z ?? 0), lerpAmt);
+              }
+
+              // 오른팔
+              const rightUpperArm = vrm.humanoid.getNormalizedBoneNode("rightUpperArm");
+              const rightLowerArm = vrm.humanoid.getNormalizedBoneNode("rightLowerArm");
+              if (rightUpperArm && pose.RightUpperArm) {
+                rightUpperArm.rotation.x = L(rightUpperArm.rotation.x, (pose.RightUpperArm.x ?? 0), lerpAmt);
+                rightUpperArm.rotation.y = L(rightUpperArm.rotation.y, (pose.RightUpperArm.y ?? 0), lerpAmt);
+                rightUpperArm.rotation.z = L(rightUpperArm.rotation.z, (pose.RightUpperArm.z ?? 0) - 0.6, lerpAmt);
+              }
+              if (rightLowerArm && pose.RightLowerArm) {
+                rightLowerArm.rotation.x = L(rightLowerArm.rotation.x, (pose.RightLowerArm.x ?? 0), lerpAmt);
+                rightLowerArm.rotation.y = L(rightLowerArm.rotation.y, (pose.RightLowerArm.y ?? 0), lerpAmt);
+                rightLowerArm.rotation.z = L(rightLowerArm.rotation.z, (pose.RightLowerArm.z ?? 0), lerpAmt);
+              }
+            } catch { /* ok */ }
+          });
+          await poseInstance.initialize();
+          console.log("Pose initialized!");
+        }
+      } catch (e) {
+        console.warn("Pose init failed:", e);
+      }
+
+      // kalidokit을 window에 저장 (Pose 콜백에서 사용)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      import("kalidokit").then(k => { (window as any).__kalidokit = k; });
+
       // ── 5. 애니메이션 루프 ──
       let frameId = 0;
       let lastFaceMs = 0;
@@ -222,6 +324,11 @@ export default function WebcamExperiencePage() {
         if (faceTracking && faceMesh && video.readyState >= 2 && now - lastFaceMs > 33) {
           lastFaceMs = now;
           faceMesh.send({ image: video }).catch(() => {});
+        }
+
+        // Pose send (15fps - 얼굴보다 낮은 빈도)
+        if (poseInstance && video.readyState >= 2 && now - lastFaceMs > 66) {
+          poseInstance.send({ image: video }).catch(() => {});
         }
 
         // 기본 idle 애니메이션 (고개만, 가슴/spine 없음)
@@ -258,6 +365,7 @@ export default function WebcamExperiencePage() {
         window.removeEventListener("resize", onResize);
         stream.getTracks().forEach(t => t.stop());
         try { faceMesh?.close(); } catch { /* ok */ }
+        try { poseInstance?.close(); } catch { /* ok */ }
         renderer.dispose();
         if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
       };
