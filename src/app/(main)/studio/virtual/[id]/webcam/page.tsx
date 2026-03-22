@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Loader2, ArrowLeft, Camera, CameraOff } from "lucide-react";
+import { Loader2, ArrowLeft, Camera, CameraOff, PersonStanding } from "lucide-react";
 
 interface IdolData {
   id: string; name: string;
@@ -18,6 +18,7 @@ export default function WebcamExperiencePage() {
   const [status, setStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
   const [loadingMsg, setLoadingMsg] = useState("준비 중...");
   const [errorMsg, setErrorMsg] = useState("");
+  const [bodyVisible, setBodyVisible] = useState(true);
   const cleanupRef = useRef<(() => void) | null>(null);
 
   useEffect(() => {
@@ -64,9 +65,10 @@ export default function WebcamExperiencePage() {
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0x1a1a2e);
 
-      const camera = new THREE.PerspectiveCamera(28, container.clientWidth / container.clientHeight, 0.1, 100);
-      camera.position.set(0, 1.45, 1.9);
-      camera.lookAt(0, 1.4, 0);
+      // 전신 보기 위해 카메라 더 뒤로
+      const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
+      camera.position.set(0, 0.9, 3.5);
+      camera.lookAt(0, 0.9, 0);
 
       scene.add(new THREE.AmbientLight(0xffffff, 2.0));
       const key = new THREE.DirectionalLight(0xfff0e0, 1.4);
@@ -75,10 +77,10 @@ export default function WebcamExperiencePage() {
       fill.position.set(-2, 1, 1); scene.add(fill);
 
       const controls = new OrbitControls(camera, renderer.domElement);
-      controls.target.set(0, 1.4, 0);
+      controls.target.set(0, 0.9, 0);
       controls.enablePan = false;
-      controls.minDistance = 0.8;
-      controls.maxDistance = 4;
+      controls.minDistance = 1.0;
+      controls.maxDistance = 6;
       controls.enableDamping = true;
 
       // ── 3. VRM 로드 ──
@@ -96,10 +98,9 @@ export default function WebcamExperiencePage() {
           if (!vrm) { reject(new Error("VRM not found")); return; }
           VRMUtils.rotateVRM0(vrm);
           vrm.scene.rotation.y = Math.PI;
-          vrm.scene.position.y = 0.1;
+          vrm.scene.position.y = 0;
           VRMUtils.removeUnnecessaryVertices(gltf.scene);
           VRMUtils.removeUnnecessaryJoints(gltf.scene);
-          // 색상 적용
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           vrm.scene.traverse((obj: any) => {
             if (!(obj instanceof THREE.Mesh)) return;
@@ -112,7 +113,7 @@ export default function WebcamExperiencePage() {
               if (m.name.includes("EyeIris_00_EYE")) m.color.set(idol.eyeColor);
             });
           });
-          // 팔 내리기
+          // 기본 팔 자세
           try {
             const la = vrm.humanoid.getNormalizedBoneNode("leftUpperArm");
             const ra = vrm.humanoid.getNormalizedBoneNode("rightUpperArm");
@@ -124,16 +125,18 @@ export default function WebcamExperiencePage() {
         }, undefined, reject);
       });
 
-      // ── 4. MediaPipe FaceMesh 로드 + 초기화 완료 대기 ──
+      // kalidokit window에 저장
+      const Kalidokit = await import("kalidokit");
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).__kalidokit = Kalidokit;
+
+      // ── 4. FaceMesh 초기화 ──
       setLoadingMsg("얼굴 인식 모델 로딩 중...");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let faceMesh: any = null;
       let faceTracking = false;
 
       try {
-        const Kalidokit = await import("kalidokit");
-
-        // 스크립트 로드
         await new Promise<void>((res, rej) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           if ((window as any).FaceMesh) { res(); return; }
@@ -141,25 +144,17 @@ export default function WebcamExperiencePage() {
           s.src = "https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/face_mesh.js";
           s.crossOrigin = "anonymous";
           s.onload = () => res();
-          s.onerror = () => rej(new Error("FaceMesh script load failed"));
+          s.onerror = () => rej(new Error("FaceMesh CDN failed"));
           document.head.appendChild(s);
         });
 
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const FM = (window as any).FaceMesh;
         faceMesh = new FM({
-          locateFile: (f: string) =>
-            `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/${f}`,
+          locateFile: (f: string) => `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/${f}`,
         });
+        faceMesh.setOptions({ maxNumFaces: 1, refineLandmarks: true, minDetectionConfidence: 0.5, minTrackingConfidence: 0.5 });
 
-        faceMesh.setOptions({
-          maxNumFaces: 1,
-          refineLandmarks: true,
-          minDetectionConfidence: 0.5,
-          minTrackingConfidence: 0.5,
-        });
-
-        // onResults 등록
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         faceMesh.onResults((results: any) => {
           if (!vrm || !results.multiFaceLandmarks?.[0]) return;
@@ -169,13 +164,12 @@ export default function WebcamExperiencePage() {
               { runtime: "mediapipe", video, imageSize: { width: 640, height: 480 }, smoothBlink: true }
             );
             if (!face?.head) return;
-
+            const L = THREE.MathUtils.lerp;
             const head = vrm.humanoid.getNormalizedBoneNode("head");
             const neck = vrm.humanoid.getNormalizedBoneNode("neck");
-            const L = THREE.MathUtils.lerp;
-
             if (head) {
               head.rotation.x = L(head.rotation.x, (face.head.x ?? 0) * 0.8, 0.35);
+              // 거울 모드: y 부호 반전 제거
               head.rotation.y = L(head.rotation.y, (face.head.y ?? 0) * 0.8, 0.35);
               head.rotation.z = L(head.rotation.z, (face.head.z ?? 0) * 0.6, 0.35);
             }
@@ -183,44 +177,39 @@ export default function WebcamExperiencePage() {
               neck.rotation.x = L(neck.rotation.x, (face.head.x ?? 0) * 0.2, 0.3);
               neck.rotation.y = L(neck.rotation.y, (face.head.y ?? 0) * 0.2, 0.3);
             }
-
             if (vrm.expressionManager) {
-              const eL = face.eye?.l ?? 1;
-              const eR = face.eye?.r ?? 1;
-              vrm.expressionManager.setValue("blinkLeft", Math.max(0, Math.min(1, 1 - eL)));
-              vrm.expressionManager.setValue("blinkRight", Math.max(0, Math.min(1, 1 - eR)));
-              const mOpen = Math.max(0, Math.min(1, (face.mouth?.y ?? 0) * 3));
-              vrm.expressionManager.setValue("aa", mOpen);
+              vrm.expressionManager.setValue("blinkLeft", Math.max(0, Math.min(1, 1 - (face.eye?.l ?? 1))));
+              vrm.expressionManager.setValue("blinkRight", Math.max(0, Math.min(1, 1 - (face.eye?.r ?? 1))));
+              vrm.expressionManager.setValue("aa", Math.max(0, Math.min(1, (face.mouth?.y ?? 0) * 3)));
               vrm.expressionManager.update();
             }
           } catch { /* ok */ }
         });
 
-        // ★ 핵심: initialize() 완료 후에만 send() 가능
-        setLoadingMsg("얼굴 인식 초기화 중... (처음 한 번은 30초 소요)");
+        setLoadingMsg("얼굴 인식 초기화 중...");
         await faceMesh.initialize();
         faceTracking = true;
-        console.log("FaceMesh initialized!");
-
+        console.log("FaceMesh ready!");
       } catch (e) {
-        console.warn("FaceMesh failed, running without face tracking:", e);
-        // 얼굴 추적 없이도 계속 실행
+        console.warn("FaceMesh failed:", e);
       }
 
-      // ── Pose (몸 인식) 초기화 ──
+      // ── 5. MediaPipe Pose (전신) 초기화 ──
+      setLoadingMsg("전신 인식 모델 로딩 중...");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let poseInstance: any = null;
+      let poseTracking = false;
+      let noBodyFrames = 0; // 몸이 안 보이는 프레임 카운터
+
       try {
-        setLoadingMsg("몸 인식 모델 로딩 중...");
-        // Pose 스크립트 로드
-        await new Promise<void>((res, rej) => {
+        await new Promise<void>((res) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           if ((window as any).Pose) { res(); return; }
           const s = document.createElement("script");
           s.src = "https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/pose.js";
           s.crossOrigin = "anonymous";
           s.onload = () => res();
-          s.onerror = () => { console.warn("Pose CDN failed"); res(); }; // 실패해도 계속
+          s.onerror = () => res(); // 실패해도 계속
           document.head.appendChild(s);
         });
 
@@ -228,8 +217,7 @@ export default function WebcamExperiencePage() {
         const P = (window as any).Pose;
         if (P) {
           poseInstance = new P({
-            locateFile: (f: string) =>
-              `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/${f}`,
+            locateFile: (f: string) => `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/${f}`,
           });
           poseInstance.setOptions({
             modelComplexity: 1,
@@ -238,13 +226,21 @@ export default function WebcamExperiencePage() {
             minDetectionConfidence: 0.5,
             minTrackingConfidence: 0.5,
           });
+
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           poseInstance.onResults((results: any) => {
-            if (!vrm || !results.poseLandmarks) return;
+            if (!vrm) return;
+
+            // 몸이 인식되지 않으면 안내 메시지
+            if (!results.poseLandmarks || results.poseLandmarks.length === 0) {
+              noBodyFrames++;
+              if (noBodyFrames > 30) setBodyVisible(false);
+              return;
+            }
+            noBodyFrames = 0;
+            setBodyVisible(true);
+
             try {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              const Kalidokit = (window as any).__kalidokit;
-              if (!Kalidokit) return;
               const pose = Kalidokit.Pose.solve(
                 results.poseWorldLandmarks,
                 results.poseLandmarks,
@@ -253,65 +249,64 @@ export default function WebcamExperiencePage() {
               if (!pose) return;
 
               const L = THREE.MathUtils.lerp;
-              const lerpAmt = 0.3;
+              const amt = 0.3;
 
-              // 척추/허리
+              // 엉덩이/척추
               const hips = vrm.humanoid.getNormalizedBoneNode("hips");
               const spine = vrm.humanoid.getNormalizedBoneNode("spine");
-
-              if (hips && pose.Hips) {
-                hips.rotation.x = L(hips.rotation.x, (pose.Hips.rotation?.x ?? 0) * 0.5, lerpAmt);
-                hips.rotation.y = L(hips.rotation.y, (pose.Hips.rotation?.y ?? 0) * 0.5, lerpAmt);
-                hips.rotation.z = L(hips.rotation.z, (pose.Hips.rotation?.z ?? 0) * 0.5, lerpAmt);
+              if (hips && pose.Hips?.rotation) {
+                hips.rotation.x = L(hips.rotation.x, pose.Hips.rotation.x * 0.5, amt);
+                hips.rotation.y = L(hips.rotation.y, pose.Hips.rotation.y * 0.5, amt);
+                hips.rotation.z = L(hips.rotation.z, pose.Hips.rotation.z * 0.5, amt);
               }
               if (spine && pose.Spine) {
-                spine.rotation.x = L(spine.rotation.x, (pose.Spine?.x ?? 0) * 0.3, lerpAmt);
-                spine.rotation.z = L(spine.rotation.z, (pose.Spine?.z ?? 0) * 0.3, lerpAmt);
+                spine.rotation.x = L(spine.rotation.x, (pose.Spine.x ?? 0) * 0.3, amt);
+                spine.rotation.z = L(spine.rotation.z, (pose.Spine.z ?? 0) * 0.3, amt);
               }
 
               // 왼팔
-              const leftUpperArm = vrm.humanoid.getNormalizedBoneNode("leftUpperArm");
-              const leftLowerArm = vrm.humanoid.getNormalizedBoneNode("leftLowerArm");
-              if (leftUpperArm && pose.LeftUpperArm) {
-                leftUpperArm.rotation.x = L(leftUpperArm.rotation.x, (pose.LeftUpperArm.x ?? 0), lerpAmt);
-                leftUpperArm.rotation.y = L(leftUpperArm.rotation.y, (pose.LeftUpperArm.y ?? 0), lerpAmt);
-                leftUpperArm.rotation.z = L(leftUpperArm.rotation.z, (pose.LeftUpperArm.z ?? 0) + 0.6, lerpAmt);
+              const lUA = vrm.humanoid.getNormalizedBoneNode("leftUpperArm");
+              const lLA = vrm.humanoid.getNormalizedBoneNode("leftLowerArm");
+              if (lUA && pose.LeftUpperArm) {
+                lUA.rotation.x = L(lUA.rotation.x, pose.LeftUpperArm.x ?? 0, amt);
+                lUA.rotation.y = L(lUA.rotation.y, pose.LeftUpperArm.y ?? 0, amt);
+                lUA.rotation.z = L(lUA.rotation.z, (pose.LeftUpperArm.z ?? 0) + 0.5, amt);
               }
-              if (leftLowerArm && pose.LeftLowerArm) {
-                leftLowerArm.rotation.x = L(leftLowerArm.rotation.x, (pose.LeftLowerArm.x ?? 0), lerpAmt);
-                leftLowerArm.rotation.y = L(leftLowerArm.rotation.y, (pose.LeftLowerArm.y ?? 0), lerpAmt);
-                leftLowerArm.rotation.z = L(leftLowerArm.rotation.z, (pose.LeftLowerArm.z ?? 0), lerpAmt);
+              if (lLA && pose.LeftLowerArm) {
+                lLA.rotation.x = L(lLA.rotation.x, pose.LeftLowerArm.x ?? 0, amt);
+                lLA.rotation.y = L(lLA.rotation.y, pose.LeftLowerArm.y ?? 0, amt);
+                lLA.rotation.z = L(lLA.rotation.z, pose.LeftLowerArm.z ?? 0, amt);
               }
 
               // 오른팔
-              const rightUpperArm = vrm.humanoid.getNormalizedBoneNode("rightUpperArm");
-              const rightLowerArm = vrm.humanoid.getNormalizedBoneNode("rightLowerArm");
-              if (rightUpperArm && pose.RightUpperArm) {
-                rightUpperArm.rotation.x = L(rightUpperArm.rotation.x, (pose.RightUpperArm.x ?? 0), lerpAmt);
-                rightUpperArm.rotation.y = L(rightUpperArm.rotation.y, (pose.RightUpperArm.y ?? 0), lerpAmt);
-                rightUpperArm.rotation.z = L(rightUpperArm.rotation.z, (pose.RightUpperArm.z ?? 0) - 0.6, lerpAmt);
+              const rUA = vrm.humanoid.getNormalizedBoneNode("rightUpperArm");
+              const rLA = vrm.humanoid.getNormalizedBoneNode("rightLowerArm");
+              if (rUA && pose.RightUpperArm) {
+                rUA.rotation.x = L(rUA.rotation.x, pose.RightUpperArm.x ?? 0, amt);
+                rUA.rotation.y = L(rUA.rotation.y, pose.RightUpperArm.y ?? 0, amt);
+                rUA.rotation.z = L(rUA.rotation.z, (pose.RightUpperArm.z ?? 0) - 0.5, amt);
               }
-              if (rightLowerArm && pose.RightLowerArm) {
-                rightLowerArm.rotation.x = L(rightLowerArm.rotation.x, (pose.RightLowerArm.x ?? 0), lerpAmt);
-                rightLowerArm.rotation.y = L(rightLowerArm.rotation.y, (pose.RightLowerArm.y ?? 0), lerpAmt);
-                rightLowerArm.rotation.z = L(rightLowerArm.rotation.z, (pose.RightLowerArm.z ?? 0), lerpAmt);
+              if (rLA && pose.RightLowerArm) {
+                rLA.rotation.x = L(rLA.rotation.x, pose.RightLowerArm.x ?? 0, amt);
+                rLA.rotation.y = L(rLA.rotation.y, pose.RightLowerArm.y ?? 0, amt);
+                rLA.rotation.z = L(rLA.rotation.z, pose.RightLowerArm.z ?? 0, amt);
               }
             } catch { /* ok */ }
           });
+
+          setLoadingMsg("전신 인식 초기화 중...");
           await poseInstance.initialize();
-          console.log("Pose initialized!");
+          poseTracking = true;
+          console.log("Pose ready!");
         }
       } catch (e) {
-        console.warn("Pose init failed:", e);
+        console.warn("Pose failed:", e);
       }
 
-      // kalidokit을 window에 저장 (Pose 콜백에서 사용)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      import("kalidokit").then(k => { (window as any).__kalidokit = k; });
-
-      // ── 5. 애니메이션 루프 ──
+      // ── 6. 애니메이션 루프 ──
       let frameId = 0;
       let lastFaceMs = 0;
+      let lastPoseMs = 0;
       const clock = new THREE.Clock();
 
       const animate = () => {
@@ -320,30 +315,31 @@ export default function WebcamExperiencePage() {
         const t = clock.getElapsedTime();
         const now = performance.now();
 
-        // 얼굴 추적 (초기화 완료 후만, 30fps)
+        // 얼굴 추적 30fps
         if (faceTracking && faceMesh && video.readyState >= 2 && now - lastFaceMs > 33) {
           lastFaceMs = now;
           faceMesh.send({ image: video }).catch(() => {});
         }
 
-        // Pose send (15fps - 얼굴보다 낮은 빈도)
-        if (poseInstance && video.readyState >= 2 && now - lastFaceMs > 66) {
+        // 전신 추적 20fps (얼굴보다 낮게)
+        if (poseTracking && poseInstance && video.readyState >= 2 && now - lastPoseMs > 50) {
+          lastPoseMs = now;
           poseInstance.send({ image: video }).catch(() => {});
         }
 
-        // 기본 idle 애니메이션 (고개만, 가슴/spine 없음)
         if (vrm) {
-          try {
-            const head = vrm.humanoid.getNormalizedBoneNode("head");
-            if (head && !faceTracking) {
-              // 추적 없을 때만 idle 고개 움직임
-              head.rotation.y = Math.sin(t * 0.3) * 0.04;
-              head.rotation.x = -0.05 + Math.sin(t * 0.5) * 0.015;
-            }
-          } catch { /* ok */ }
+          // 추적 없을 때만 idle 고개
+          if (!faceTracking) {
+            try {
+              const head = vrm.humanoid.getNormalizedBoneNode("head");
+              if (head) {
+                head.rotation.y = Math.sin(t * 0.3) * 0.04;
+                head.rotation.x = -0.05 + Math.sin(t * 0.5) * 0.015;
+              }
+            } catch { /* ok */ }
+          }
           vrm.update(delta);
         }
-
         controls.update();
         renderer.render(scene, camera);
       };
@@ -361,6 +357,7 @@ export default function WebcamExperiencePage() {
 
       cleanupRef.current = () => {
         faceTracking = false;
+        poseTracking = false;
         cancelAnimationFrame(frameId);
         window.removeEventListener("resize", onResize);
         stream.getTracks().forEach(t => t.stop());
@@ -398,7 +395,7 @@ export default function WebcamExperiencePage() {
         )}
         {status === "ready" && (
           <button
-            onClick={() => { cleanupRef.current?.(); cleanupRef.current = null; setStatus("idle"); }}
+            onClick={() => { cleanupRef.current?.(); cleanupRef.current = null; setStatus("idle"); setBodyVisible(true); }}
             className="flex items-center gap-2 px-4 py-2 bg-red-500/80 backdrop-blur-md text-white rounded-xl text-sm hover:bg-red-600 transition"
           >
             <CameraOff className="w-4 h-4" /> 종료
@@ -409,7 +406,20 @@ export default function WebcamExperiencePage() {
       {/* 3D 뷰어 */}
       <div ref={mountRef} className="flex-1" />
 
-      {/* 카메라 비디오 - 항상 DOM에 존재, CSS로만 제어 */}
+      {/* 몸이 안 보일 때 안내 */}
+      {status === "ready" && !bodyVisible && (
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-30">
+          <div className="flex items-center gap-3 px-5 py-3 bg-yellow-500/90 backdrop-blur-md text-black rounded-2xl shadow-lg animate-bounce">
+            <PersonStanding className="w-5 h-5 flex-shrink-0" />
+            <div className="text-sm font-bold">
+              카메라에서 더 멀리 떨어져주세요<br />
+              <span className="font-normal text-xs">상반신 전체가 보여야 몸 인식이 돼요</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 카메라 비디오 PIP */}
       <video
         ref={videoRef}
         className="absolute object-cover scale-x-[-1]"
@@ -423,15 +433,13 @@ export default function WebcamExperiencePage() {
           border: status === "ready" ? "2px solid rgba(255,255,255,0.2)" : "none",
           zIndex: 20,
         }}
-        muted
-        playsInline
-        autoPlay
+        muted playsInline autoPlay
       />
 
       {/* 시작 오버레이 */}
       {status === "idle" && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="text-center space-y-8 max-w-sm px-6">
+          <div className="text-center space-y-6 max-w-sm px-6">
             <div className="relative mx-auto w-24 h-24">
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 opacity-20 animate-ping" />
               <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
@@ -443,9 +451,14 @@ export default function WebcamExperiencePage() {
                 {idol?.name || "버추얼 아이돌"} 체험
               </h2>
               <p className="text-white/60 text-sm leading-relaxed">
-                카메라를 켜면<br/>
-                <span className="text-purple-300 font-semibold">내 얼굴·고개 움직임을<br/>캐릭터가 실시간으로 따라해요</span>
+                카메라에 <span className="text-yellow-300 font-semibold">전신이 보이도록</span> 거리를 맞추면<br/>
+                <span className="text-purple-300 font-semibold">얼굴 + 팔 + 몸 전체</span>를 캐릭터가 따라해요
               </p>
+            </div>
+            <div className="bg-white/5 rounded-xl p-3 text-left space-y-1.5">
+              <p className="text-white/50 text-xs">✓ 고개 돌리기 · 끄덕이기</p>
+              <p className="text-white/50 text-xs">✓ 눈 깜빡임 · 입 벌리기</p>
+              <p className="text-white/50 text-xs">✓ 팔 올리기 · 몸 기울이기</p>
             </div>
             <button
               onClick={startExperience}
@@ -463,7 +476,7 @@ export default function WebcamExperiencePage() {
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/70">
           <Loader2 className="w-12 h-12 text-purple-400 animate-spin mb-4" />
           <p className="text-white font-medium">{loadingMsg}</p>
-          <p className="text-white/30 text-xs mt-2">얼굴 인식 초기화는 처음 한 번만 오래 걸려요</p>
+          <p className="text-white/30 text-xs mt-2">처음 실행 시 모델 다운로드로 1~2분 소요될 수 있어요</p>
         </div>
       )}
 
@@ -483,10 +496,10 @@ export default function WebcamExperiencePage() {
       )}
 
       {/* 힌트 */}
-      {status === "ready" && (
+      {status === "ready" && bodyVisible && (
         <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20">
           <div className="px-5 py-2.5 bg-white/10 backdrop-blur-md text-white/70 rounded-full text-xs font-medium">
-            고개를 움직이면 캐릭터가 따라해요 · 드래그로 시점 변경
+            얼굴·팔·몸이 따라해요 · 드래그로 시점 변경
           </div>
         </div>
       )}
