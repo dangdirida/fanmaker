@@ -301,18 +301,24 @@ export default function WebcamExperiencePage() {
       {/* 3D 뷰어 */}
       <div ref={mountRef} className="flex-1" />
 
-      {/* 웹캠 PIP (우하단) */}
-      {status === "ready" && (
-        <div className="absolute bottom-20 right-5 z-20">
-          <div className="w-36 h-28 rounded-xl overflow-hidden border-2 border-white/20 shadow-xl relative">
-            <video ref={videoRef} className="w-full h-full object-cover scale-x-[-1]" muted playsInline />
-            <div className="absolute bottom-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-          </div>
-        </div>
-      )}
-
-      {/* 숨김 비디오 (로딩 중) */}
-      {status !== "ready" && <video ref={videoRef} className="hidden" muted playsInline />}
+      {/* 카메라 비디오 - 항상 DOM에 존재, CSS로만 제어 */}
+      <video
+        ref={videoRef}
+        className="absolute object-cover scale-x-[-1]"
+        style={{
+          bottom: status === "ready" ? "80px" : "-9999px",
+          right: status === "ready" ? "20px" : "-9999px",
+          width: status === "ready" ? "144px" : "1px",
+          height: status === "ready" ? "112px" : "1px",
+          opacity: status === "ready" ? 1 : 0,
+          borderRadius: "12px",
+          border: status === "ready" ? "2px solid rgba(255,255,255,0.2)" : "none",
+          zIndex: 20,
+        }}
+        muted
+        playsInline
+        autoPlay
+      />
 
       {/* 시작 오버레이 */}
       {status === "idle" && (
