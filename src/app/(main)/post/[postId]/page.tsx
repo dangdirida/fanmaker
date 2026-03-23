@@ -12,6 +12,7 @@ import {
   Sparkles,
   Eye,
   MessageCircle,
+  Trash2,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -131,6 +132,19 @@ export default function PostDetailPage() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!session?.user || !post) return;
+    if (post.author.id !== session.user.id) return;
+    if (!confirm("이 게시물을 삭제하시겠습니까?")) return;
+
+    const res = await fetch(`/api/posts/${postId}`, { method: "DELETE" });
+    if (res.ok) {
+      router.push("/feed");
+    } else {
+      alert("삭제에 실패했습니다");
+    }
+  };
+
   if (loading) {
     return (
       <div className="max-w-3xl mx-auto px-4 py-8 text-center text-gray-500">
@@ -149,14 +163,25 @@ export default function PostDetailPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-6">
-      {/* 뒤로가기 */}
-      <button
-        onClick={() => router.back()}
-        className="flex items-center gap-1 text-gray-400 hover:text-white text-sm mb-4 transition-colors"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        뒤로
-      </button>
+      {/* 뒤로가기 + 삭제 */}
+      <div className="flex items-center justify-between mb-4">
+        <button
+          onClick={() => router.back()}
+          className="flex items-center gap-1 text-gray-400 hover:text-white text-sm transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          뒤로
+        </button>
+        {session?.user?.id === post?.author.id && !postId.startsWith("mock-") && (
+          <button
+            onClick={handleDelete}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            삭제
+          </button>
+        )}
+      </div>
 
       {/* 카테고리 + 아티스트 */}
       <div className="flex items-center gap-2 mb-3">

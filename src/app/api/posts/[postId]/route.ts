@@ -37,3 +37,31 @@ export async function GET(
     },
   });
 }
+
+// DELETE /api/posts/[postId] — 삭제
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: { postId: string } }
+) {
+  const session = await auth();
+  if (!session?.user?.id) {
+    return NextResponse.json({ success: false, error: "인증 필요" }, { status: 401 });
+  }
+
+  const post = await prisma.post.findUnique({
+    where: { id: params.postId },
+    select: { authorId: true },
+  });
+
+  if (!post) {
+    return NextResponse.json({ success: false, error: "없는 게시물" }, { status: 404 });
+  }
+
+  if (post.authorId !== session.user.id) {
+    return NextResponse.json({ success: false, error: "권한 없음" }, { status: 403 });
+  }
+
+  await prisma.post.delete({ where: { id: params.postId } });
+
+  return NextResponse.json({ success: true });
+}

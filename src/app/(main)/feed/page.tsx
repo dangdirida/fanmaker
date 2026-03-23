@@ -143,7 +143,7 @@ export default function FeedPage() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [totalCount, setTotalCount] = useState(0);
+  const [_totalCount, setTotalCount] = useState(0);
   const [useMock, setUseMock] = useState(false);
   const observerRef = useRef<HTMLDivElement>(null);
   const loadingRef = useRef(false);
@@ -181,11 +181,12 @@ export default function FeedPage() {
         if (data.success) {
           setPosts((prev) => {
             const apiPosts = reset ? data.data : [...prev, ...data.data];
-            if (apiPosts.length === 0 && pageNum === 1) {
-              setUseMock(true);
-            } else {
+            // ★ mock 데이터를 항상 함께 표시 (page 1일 때만 mock 추가)
+            if (pageNum === 1 && !category && !artistId) {
               setUseMock(false);
+              return apiPosts;
             }
+            setUseMock(apiPosts.length === 0);
             return apiPosts;
           });
           setHasMore(pageNum < data.pagination.totalPages);
@@ -276,8 +277,12 @@ export default function FeedPage() {
     }
   };
 
-  const displayPosts = useMock ? getFilteredMockPosts() : posts;
-  const displayCount = useMock ? displayPosts.length : totalCount;
+  // mock 데이터와 실제 데이터를 항상 합쳐서 표시
+  const mockPosts = getFilteredMockPosts();
+  const displayPosts = posts.length > 0
+    ? [...posts, ...mockPosts.filter(mp => !posts.find(p => p.id === mp.id))]
+    : mockPosts;
+  const displayCount = displayPosts.length;
 
   return (
     <div className="max-w-7xl mx-auto px-4 md:px-6 py-6">
