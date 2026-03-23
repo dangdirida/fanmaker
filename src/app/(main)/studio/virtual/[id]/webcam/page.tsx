@@ -355,11 +355,13 @@ export default function WebcamExperiencePage() {
                 rLL.rotation.x = L(rLL.rotation.x, Math.min(0, pose.RightLowerLeg.x ?? 0), amt);
                 rLL.rotation.z = L(rLL.rotation.z, (pose.RightLowerLeg.z ?? 0) * 0.3, amt);
               }
-              if (lFoot && pose.LeftFoot) {
-                lFoot.rotation.x = L(lFoot.rotation.x, (pose.LeftFoot.x ?? 0) * 0.5, amt);
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const poseAny = pose as any;
+              if (lFoot && poseAny.LeftFoot) {
+                lFoot.rotation.x = L(lFoot.rotation.x, (poseAny.LeftFoot.x ?? 0) * 0.5, amt);
               }
-              if (rFoot && pose.RightFoot) {
-                rFoot.rotation.x = L(rFoot.rotation.x, (pose.RightFoot.x ?? 0) * 0.5, amt);
+              if (rFoot && poseAny.RightFoot) {
+                rFoot.rotation.x = L(rFoot.rotation.x, (poseAny.RightFoot.x ?? 0) * 0.5, amt);
               }
 
               // 점프 감지 - hips Y 위치로 판단
