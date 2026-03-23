@@ -27,26 +27,16 @@ export async function POST(req: NextRequest) {
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-  const prompt = `K-pop 컨셉 디렉터로서 아래 정보를 바탕으로 K-pop 컨셉 키트를 생성해주세요.
-
-아티스트: ${artistName}
-무드: ${mood}
-키워드: ${(keywords || []).join(", ") || "없음"}
-대표색상: ${primaryColor}
-${albumName ? `앨범 방향: ${albumName}` : ""}
-${targetAudience ? `타겟: ${targetAudience}` : ""}
-
-반드시 JSON만 출력하세요. 설명이나 마크다운 없이:
-{"albumTitle":"앨범타이틀","titleTrack":"타이틀곡명","concept":"컨셉설명2-3줄","tagline":"태그라인10자이내","tracks":[{"title":"트랙명","mood":"분위기","description":"한줄설명"},{"title":"트랙명","mood":"분위기","description":"한줄설명"},{"title":"트랙명","mood":"분위기","description":"한줄설명"},{"title":"트랙명","mood":"분위기","description":"한줄설명"},{"title":"트랙명","mood":"분위기","description":"한줄설명"}],"palette":["${primaryColor}","#hex2","#hex3","#hex4","#hex5"],"visualDirection":"비주얼방향2-3줄","styling":"스타일링2-3줄","stageDirection":"무대연출2-3줄","moodKeywords":["키워드1","키워드2","키워드3","키워드4","키워드5","키워드6"],"coverStyle":"앨범커버스타일"}`;
-
   try {
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
-    const conceptData = parseJSON(text);
-    return NextResponse.json({ success: true, data: conceptData });
+    const result = await model.generateContent(
+      `K-pop 컨셉 키트를 JSON으로만 생성하세요. 마크다운 없이 JSON만 출력.
+아티스트:${artistName} 무드:${mood} 키워드:${(keywords||[]).join(",")} 색상:${primaryColor}${albumName?` 앨범:${albumName}`:""}${targetAudience?` 타겟:${targetAudience}`:""}
+{"albumTitle":"타이틀","titleTrack":"곡명","concept":"컨셉2-3줄","tagline":"태그라인10자","tracks":[{"title":"트랙","mood":"분위기","description":"설명"},{"title":"트랙","mood":"분위기","description":"설명"},{"title":"트랙","mood":"분위기","description":"설명"},{"title":"트랙","mood":"분위기","description":"설명"},{"title":"트랙","mood":"분위기","description":"설명"}],"palette":["${primaryColor}","#hex","#hex","#hex","#hex"],"visualDirection":"비주얼2-3줄","styling":"스타일2-3줄","stageDirection":"무대2-3줄","moodKeywords":["k1","k2","k3","k4","k5","k6"],"coverStyle":"커버스타일"}`
+    );
+    return NextResponse.json({ success: true, data: parseJSON(result.response.text()) });
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
-    console.error("Concept generation error:", msg);
+    console.error("Concept error:", msg);
     return NextResponse.json({ success: false, error: msg.substring(0, 100) }, { status: 500 });
   }
 }
