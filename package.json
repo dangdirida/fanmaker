@@ -16,6 +16,7 @@
     "@anthropic-ai/sdk": "^0.80.0",
     "@auth/prisma-adapter": "^2.11.1",
     "@base-ui/react": "^1.2.0",
+    "@google/generative-ai": "^0.24.1",
     "@pixiv/three-vrm": "^3.5.1",
     "@prisma/client": "^5.22.0",
     "@radix-ui/react-slot": "^1.2.4",
