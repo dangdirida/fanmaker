@@ -57,15 +57,14 @@ export default function ArtistSelector({
       .finally(() => setLoading(false));
   }, [isOpen]);
 
-  if (!isOpen) return null;
-
   const filtered = artists.filter(
     (a) =>
       a.name.toLowerCase().includes(search.toLowerCase()) ||
       (a.nameEn && a.nameEn.toLowerCase().includes(search.toLowerCase()))
   );
 
-  return (
+  // eslint-disable-next-line -- conditional render after all hooks
+  return isOpen ? (
     <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center px-4">
       <div className="w-full max-w-lg bg-[#111] border border-gray-800 rounded-2xl p-6 max-h-[80vh] flex flex-col">
         {/* 헤더 */}
@@ -160,5 +159,5 @@ export default function ArtistSelector({
         </div>
       </div>
     </div>
-  );
+  ) : null;
 }

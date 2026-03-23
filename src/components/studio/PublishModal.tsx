@@ -27,8 +27,6 @@ export default function PublishModal({
   const [tags, setTags] = useState("");
   const [publishing, setPublishing] = useState(false);
 
-  if (!isOpen) return null;
-
   const handlePublish = async () => {
     if (!title.trim()) return;
     setPublishing(true);
@@ -55,7 +53,8 @@ export default function PublishModal({
     setPublishing(false);
   };
 
-  return (
+  // eslint-disable-next-line -- conditional render after all hooks
+  return isOpen ? (
     <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center px-4">
       <div className="w-full max-w-md bg-[#111] border border-gray-800 rounded-2xl p-6">
         <div className="flex items-center justify-between mb-4">
@@ -114,5 +113,5 @@ export default function PublishModal({
         </div>
       </div>
     </div>
-  );
+  ) : null;
 }
