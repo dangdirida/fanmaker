@@ -54,6 +54,17 @@ export async function GET(req: NextRequest) {
       include: {
         author: { select: { id: true, nickname: true, image: true } },
         artist: { select: { id: true, name: true } },
+        virtualIdol: {
+          select: {
+            hairColor: true,
+            hairLength: true,
+            skinTone: true,
+            eyeColor: true,
+            outfitStyle: true,
+            accessories: true,
+            gender: true,
+          },
+        },
         _count: { select: { reactions: true, comments: true } },
         reactions: session?.user?.id
           ? { where: { userId: session.user.id }, select: { type: true } }
@@ -73,6 +84,7 @@ export async function GET(req: NextRequest) {
     createdAt: post.createdAt,
     author: post.author,
     artist: post.artist,
+    virtualIdol: post.virtualIdol || null,
     reactionCount: post._count.reactions,
     commentCount: post._count.comments,
     myReactions: post.reactions ? post.reactions.map((r) => r.type) : [],

@@ -151,10 +151,18 @@ export default function VirtualStudioListPage() {
                         </button>
                       </>
                     ) : (
-                      <Link href={`/post/${idol.postId}`}
-                        className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium bg-black text-white rounded-xl hover:bg-gray-800 transition-colors">
-                        <ExternalLink className="w-3 h-3" /> 피드 보기
-                      </Link>
+                      <div className="flex gap-2">
+                        <Link href={`/post/${idol.postId}`}
+                          className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium bg-black text-white rounded-xl hover:bg-gray-800 transition-colors">
+                          <ExternalLink className="w-3 h-3" /> 피드 보기
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(idol.id)}
+                          className="flex items-center justify-center gap-1.5 py-2 px-3 text-xs font-medium text-red-500 bg-red-50 rounded-xl hover:bg-red-100 transition-colors"
+                        >
+                          <Trash2 className="w-3 h-3" />
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>
