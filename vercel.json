@@ -2,6 +2,7 @@
   "buildCommand": "prisma generate && next build",
   "functions": {
     "app/api/ai/**": { "maxDuration": 300 },
+    "src/app/api/ai/concept/generate/route.ts": { "maxDuration": 60 },
     "app/api/upload": { "maxDuration": 120 },
     "app/api/payments/webhook": { "maxDuration": 30 }
   }
