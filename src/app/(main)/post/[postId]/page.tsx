@@ -162,66 +162,99 @@ export default function PostDetailPage() {
 
       {/* ── 버추얼 아이돌 전용 섹션 ── */}
       {isVirtual && vi && (
-        <div className="mb-8 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden bg-white dark:bg-gray-900">
-          {/* 캐릭터 프리뷰 */}
-          <div className="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950 dark:to-blue-950 flex flex-col sm:flex-row items-center gap-6 p-6">
-            {/* SVG 캐릭터 */}
-            <div className="w-40 h-56 flex-shrink-0">
-              <CharacterSilhouette
-                hairColor={vi.hairColor}
-                hairLength={vi.hairLength}
-                skinTone={vi.skinTone}
-                eyeColor={vi.eyeColor}
-                outfitStyle={vi.outfitStyle}
-                accessories={vi.accessories}
-                gender={vi.gender}
-                stylePreset="idol"
-              />
-            </div>
-            {/* 캐릭터 정보 */}
-            <div className="flex-1 text-center sm:text-left">
-              <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white mb-2">{vi.name}</h2>
-              {vi.concept && (
-                <div className="flex flex-wrap gap-1.5 mb-3 justify-center sm:justify-start">
-                  {vi.concept.split(",").map((c, i) => (
-                    <span key={i} className="px-2.5 py-0.5 rounded-full bg-cyan-100 dark:bg-cyan-900 text-cyan-700 dark:text-cyan-300 text-xs font-medium">{c.trim()}</span>
-                  ))}
-                </div>
-              )}
-              {vi.personality && <p className="text-sm text-gray-500 mb-3 line-clamp-2">{vi.personality}</p>}
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-2">
-                  <p className="text-gray-400 mb-0.5">목소리</p>
-                  <p className="font-medium text-gray-700 dark:text-gray-300">{VOICE_LABELS[vi.voiceType] || vi.voiceType}</p>
-                </div>
-                <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-2">
-                  <p className="text-gray-400 mb-0.5">의상</p>
-                  <p className="font-medium text-gray-700 dark:text-gray-300">{OUTFIT_LABELS[vi.outfitStyle] || vi.outfitStyle}</p>
-                </div>
-                {vi.positions.length > 0 && (
-                  <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-2 col-span-2">
-                    <p className="text-gray-400 mb-1">포지션</p>
-                    <div className="flex flex-wrap gap-1">
-                      {vi.positions.slice(0, 4).map(p => (
-                        <span key={p} className="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-[10px]">{p}</span>
-                      ))}
-                    </div>
+        <div className="mb-8 rounded-2xl border border-gray-200 dark:border-gray-800 overflow-hidden">
+          {/* 캐릭터 + 정보 영역 */}
+          <div className="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950 dark:to-blue-950 p-6">
+            <div className="flex flex-col sm:flex-row items-center gap-6">
+              {/* SVG 캐릭터 - 실제 만든 옵션 그대로 전달 */}
+              <div className="w-48 h-64 flex-shrink-0 drop-shadow-lg">
+                <CharacterSilhouette
+                  hairColor={vi.hairColor}
+                  hairLength={vi.hairLength}
+                  skinTone={vi.skinTone}
+                  eyeColor={vi.eyeColor}
+                  outfitStyle={vi.outfitStyle}
+                  accessories={vi.accessories}
+                  gender={vi.gender}
+                  stylePreset={vi.concept?.split(",")[0]?.trim() || "idol"}
+                />
+              </div>
+
+              {/* 캐릭터 정보 */}
+              <div className="flex-1 text-center sm:text-left">
+                <p className="text-xs font-semibold text-cyan-600 dark:text-cyan-400 uppercase tracking-widest mb-1">Virtual Idol</p>
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-3">{vi.name}</h2>
+
+                {vi.concept && (
+                  <div className="flex flex-wrap gap-1.5 mb-3 justify-center sm:justify-start">
+                    {vi.concept.split(",").map((c, i) => (
+                      <span key={i} className="px-3 py-1 rounded-full bg-cyan-100 dark:bg-cyan-900 text-cyan-700 dark:text-cyan-300 text-xs font-medium">
+                        {c.trim()}
+                      </span>
+                    ))}
                   </div>
                 )}
+
+                {vi.personality && (
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 leading-relaxed line-clamp-2">
+                    {vi.personality}
+                  </p>
+                )}
+
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="bg-white/70 dark:bg-gray-800/70 rounded-xl p-3">
+                    <p className="text-gray-400 text-[10px] uppercase tracking-wide mb-1">목소리</p>
+                    <p className="font-semibold text-gray-800 dark:text-gray-200">
+                      {VOICE_LABELS[vi.voiceType] || vi.voiceType}
+                    </p>
+                  </div>
+                  <div className="bg-white/70 dark:bg-gray-800/70 rounded-xl p-3">
+                    <p className="text-gray-400 text-[10px] uppercase tracking-wide mb-1">의상</p>
+                    <p className="font-semibold text-gray-800 dark:text-gray-200">
+                      {OUTFIT_LABELS[vi.outfitStyle] || vi.outfitStyle}
+                    </p>
+                  </div>
+                  {vi.positions.length > 0 && (
+                    <div className="bg-white/70 dark:bg-gray-800/70 rounded-xl p-3 col-span-2">
+                      <p className="text-gray-400 text-[10px] uppercase tracking-wide mb-1.5">포지션</p>
+                      <div className="flex flex-wrap gap-1">
+                        {vi.positions.slice(0, 4).map(p => (
+                          <span key={p} className="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-[10px] font-medium">
+                            {p}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {vi.genres.length > 0 && (
+                    <div className="bg-white/70 dark:bg-gray-800/70 rounded-xl p-3 col-span-2">
+                      <p className="text-gray-400 text-[10px] uppercase tracking-wide mb-1.5">장르</p>
+                      <div className="flex flex-wrap gap-1">
+                        {vi.genres.slice(0, 4).map(g => (
+                          <span key={g} className="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-[10px] font-medium">
+                            {g}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
 
           {/* 체험 버튼 */}
-          <div className="p-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
+          <div className="p-4 bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
             <Link
               href={`/studio/virtual/${vi.id}/webcam`}
-              className="flex items-center justify-center gap-2.5 w-full py-3.5 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-sm hover:from-purple-700 hover:to-pink-700 transition-all shadow-md shadow-purple-500/20"
+              className="flex items-center justify-center gap-2.5 w-full py-4 rounded-xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-bold text-sm hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg shadow-purple-500/25 active:scale-95"
             >
-              <Camera className="w-4 h-4" />
+              <Camera className="w-5 h-5" />
               {vi.name} 캐릭터로 직접 체험하기
             </Link>
-            <p className="text-center text-xs text-gray-400 mt-2">카메라로 내 움직임을 캐릭터가 따라해요</p>
+            <p className="text-center text-xs text-gray-400 mt-2">
+              카메라로 내 움직임을 캐릭터가 실시간으로 따라해요
+            </p>
           </div>
         </div>
       )}
