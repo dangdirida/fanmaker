@@ -13,7 +13,7 @@ import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import CommentSection from "@/components/feed/CommentSection";
 import { MOCK_POSTS, type MockPost } from "@/lib/mockPosts";
-import CharacterSilhouette from "@/app/(main)/studio/virtual/[id]/components/CharacterSilhouette";
+import VRMStaticPreview from "@/components/feed/VRMStaticPreview";
 
 function mockToPostDetail(mock: MockPost): PostDetail {
   return {
@@ -166,17 +166,15 @@ export default function PostDetailPage() {
           {/* 캐릭터 + 정보 영역 */}
           <div className="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950 dark:to-blue-950 p-6">
             <div className="flex flex-col sm:flex-row items-center gap-6">
-              {/* SVG 캐릭터 - 실제 만든 옵션 그대로 전달 */}
-              <div className="w-48 h-64 flex-shrink-0 drop-shadow-lg">
-                <CharacterSilhouette
+              {/* VRM 3D 캐릭터 렌더링 */}
+              <div className="flex-shrink-0 drop-shadow-xl">
+                <VRMStaticPreview
+                  gender={vi.gender}
                   hairColor={vi.hairColor}
-                  hairLength={vi.hairLength}
                   skinTone={vi.skinTone}
                   eyeColor={vi.eyeColor}
-                  outfitStyle={vi.outfitStyle}
-                  accessories={vi.accessories}
-                  gender={vi.gender}
-                  stylePreset={vi.concept?.split(",")[0]?.trim() || "idol"}
+                  width={200}
+                  height={300}
                 />
               </div>
 
