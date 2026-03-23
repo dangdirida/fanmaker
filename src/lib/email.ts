@@ -43,7 +43,7 @@ export async function sendWelcomeEmail(to: string, nickname: string) {
     await resend.emails.send({
       from: FROM_EMAIL,
       to,
-      subject: `팬메이커에 오신 걸 환영해요, ${nickname}님! 🎤`,
+      subject: `팬메이커에 오신 걸 환영해요, ${nickname}님! `,
       html: emailLayout(`
         <h2 style="color:#ffffff;margin:0 0 12px;font-size:20px;">환영해요, ${nickname}님!</h2>
         <p style="color:#aaa;font-size:14px;line-height:1.6;margin:0 0 8px;">
@@ -74,7 +74,7 @@ export async function sendReactionNotificationEmail(
     await resend.emails.send({
       from: FROM_EMAIL,
       to,
-      subject: `내 창작물에 ${reactionCount}개의 반응이 달렸어요 ✨`,
+      subject: `내 창작물에 ${reactionCount}개의 반응이 달렸어요 `,
       html: emailLayout(`
         <h2 style="color:#ffffff;margin:0 0 12px;font-size:20px;">${nickname}님, 축하해요!</h2>
         <p style="color:#aaa;font-size:14px;line-height:1.6;margin:0 0 8px;">
@@ -102,7 +102,7 @@ export async function sendCommentNotificationEmail(
     await resend.emails.send({
       from: FROM_EMAIL,
       to,
-      subject: `${commenterNickname}님이 내 창작물에 댓글을 남겼어요 💬`,
+      subject: `${commenterNickname}님이 내 창작물에 댓글을 남겼어요 `,
       html: emailLayout(`
         <h2 style="color:#ffffff;margin:0 0 12px;font-size:20px;">${nickname}님, 새 댓글이에요!</h2>
         <p style="color:#aaa;font-size:14px;line-height:1.6;margin:0 0 8px;">

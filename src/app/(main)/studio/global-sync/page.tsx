@@ -34,16 +34,16 @@ type SubtitleLine = {
 };
 
 const SUPPORTED_LANGUAGES = [
-  { code: "en", name: "영어", flag: "🇺🇸" },
-  { code: "ja", name: "일본어", flag: "🇯🇵" },
-  { code: "zh-CN", name: "중국어(간체)", flag: "🇨🇳" },
-  { code: "zh-TW", name: "중국어(번체)", flag: "🇹🇼" },
-  { code: "es", name: "스페인어", flag: "🇪🇸" },
-  { code: "pt", name: "포르투갈어", flag: "🇧🇷" },
-  { code: "th", name: "태국어", flag: "🇹🇭" },
-  { code: "id", name: "인도네시아어", flag: "🇮🇩" },
-  { code: "vi", name: "베트남어", flag: "🇻🇳" },
-  { code: "fr", name: "프랑스어", flag: "🇫🇷" },
+  { code: "en", name: "영어", flag: "" },
+  { code: "ja", name: "일본어", flag: "" },
+  { code: "zh-CN", name: "중국어(간체)", flag: "" },
+  { code: "zh-TW", name: "중국어(번체)", flag: "" },
+  { code: "es", name: "스페인어", flag: "" },
+  { code: "pt", name: "포르투갈어", flag: "" },
+  { code: "th", name: "태국어", flag: "" },
+  { code: "id", name: "인도네시아어", flag: "" },
+  { code: "vi", name: "베트남어", flag: "" },
+  { code: "fr", name: "프랑스어", flag: "" },
 ];
 
 export default function GlobalSyncPage() {
@@ -344,7 +344,7 @@ export default function GlobalSyncPage() {
             <div className="bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl p-4">
               <label className="text-sm text-gray-500 dark:text-gray-400 mb-2 block">원본 언어</label>
               <div className="flex items-center gap-3 bg-gray-200 dark:bg-gray-800 rounded-lg px-4 py-3">
-                <span className="text-lg">🇰🇷</span>
+                <span className="text-lg"></span>
                 <span className="text-gray-900 dark:text-white font-medium">한국어</span>
                 <span className="text-xs text-gray-400 dark:text-gray-500 ml-auto">고정</span>
               </div>
@@ -376,7 +376,7 @@ export default function GlobalSyncPage() {
             {/* 번역 방향 표시 */}
             <div className="flex items-center justify-center gap-4 py-4">
               <div className="flex items-center gap-2 bg-gray-100 dark:bg-gray-900 px-4 py-2 rounded-full">
-                <span>🇰🇷</span>
+                <span></span>
                 <span className="text-sm text-gray-300">한국어</span>
               </div>
               <Languages className="w-5 h-5 text-black" />
@@ -467,7 +467,7 @@ export default function GlobalSyncPage() {
                 <div className="bg-gray-100 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-xl p-4">
                   <div className="flex items-center justify-between text-sm">
                     <div className="flex items-center gap-2">
-                      <span>🇰🇷</span>
+                      <span></span>
                       <span className="text-gray-600 dark:text-gray-300">한국어</span>
                     </div>
                     <Languages className="w-4 h-4 text-black" />
@@ -507,7 +507,7 @@ export default function GlobalSyncPage() {
                     {/* 원본 한국어 */}
                     <div>
                       <label className="text-[10px] text-gray-500 uppercase tracking-wider mb-1 block">
-                        🇰🇷 원본 (한국어)
+                         원본 (한국어)
                       </label>
                       <input
                         type="text"

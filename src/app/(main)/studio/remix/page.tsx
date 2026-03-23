@@ -32,12 +32,12 @@ type RemixResult = {
 };
 
 const REMIX_STYLES = [
-  { value: "dance-pop", label: "댄스팝", icon: "💃" },
-  { value: "acoustic", label: "어쿠스틱", icon: "🎸" },
-  { value: "synthwave", label: "신스웨이브", icon: "🌊" },
-  { value: "lo-fi", label: "로파이", icon: "🎧" },
-  { value: "edm", label: "EDM", icon: "🔊" },
-  { value: "r&b", label: "R&B", icon: "🎤" },
+  { value: "dance-pop", label: "댄스팝", icon: "" },
+  { value: "acoustic", label: "어쿠스틱", icon: "" },
+  { value: "synthwave", label: "신스웨이브", icon: "" },
+  { value: "lo-fi", label: "로파이", icon: "" },
+  { value: "edm", label: "EDM", icon: "" },
+  { value: "r&b", label: "R&B", icon: "" },
 ];
 
 export default function RemixStudioPage() {
@@ -225,7 +225,7 @@ export default function RemixStudioPage() {
                     : "bg-gray-200 dark:bg-gray-800 text-gray-400 dark:text-gray-500"
               }`}
             >
-              {step > i + 1 ? "✓" : i + 1}
+              {step > i + 1 ? "" : i + 1}
             </div>
             <span
               className={`text-xs ${step === i + 1 ? "text-gray-900 dark:text-white font-medium" : "text-gray-400 dark:text-gray-500"}`}

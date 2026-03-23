@@ -37,25 +37,25 @@ const ACTIVITY_TYPES = [
     value: "LIGHT",
     label: "라이트팬",
     description: "좋아하는 아티스트 콘텐츠를 감상해요",
-    emoji: "💖",
+    emoji: "",
   },
   {
     value: "CREATIVE",
     label: "창작팬",
     description: "팬아트, 리믹스 등 직접 만들어요",
-    emoji: "🎨",
+    emoji: "",
   },
   {
     value: "GLOBAL",
     label: "글로벌팬",
     description: "해외 팬들과 소통하고 번역해요",
-    emoji: "🌍",
+    emoji: "",
   },
   {
     value: "CREATOR",
     label: "예비 크리에이터",
     description: "프로 크리에이터를 꿈꿔요",
-    emoji: "⭐",
+    emoji: "",
   },
 ];
 

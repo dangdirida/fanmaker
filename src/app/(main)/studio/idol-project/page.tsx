@@ -170,9 +170,9 @@ export default function IdolProjectPage() {
             <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 block">분위기</label>
             <div className="grid grid-cols-3 gap-3">
               {[
-                {key:"bright" as const, emoji:"☀️", label:"밝은", desc:"희망적·청량"},
-                {key:"dark" as const, emoji:"🌙", label:"어두운", desc:"신비·강렬"},
-                {key:"neutral" as const, emoji:"⚖️", label:"중립", desc:"균형·다양"},
+                {key:"bright" as const, emoji:"️", label:"밝은", desc:"희망적·청량"},
+                {key:"dark" as const, emoji:"", label:"어두운", desc:"신비·강렬"},
+                {key:"neutral" as const, emoji:"️", label:"중립", desc:"균형·다양"},
               ].map(m => (
                 <button key={m.key} onClick={() => setWMood(m.key)}
                   className={`flex flex-col items-center gap-1 p-4 rounded-2xl border-2 transition-all ${wMood===m.key ? "border-black bg-black text-white" : "border-gray-200 dark:border-gray-700 hover:border-gray-300"}`}
@@ -194,7 +194,7 @@ export default function IdolProjectPage() {
           {worldResult && (
             <div className="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-950 dark:to-indigo-950 rounded-2xl p-5 border border-purple-200 dark:border-purple-800 space-y-4">
               <div className="flex items-center gap-2">
-                <span className="text-lg">✨</span>
+                <span className="text-lg"></span>
                 <h3 className="font-extrabold text-gray-900 dark:text-white text-lg">{worldResult.title}</h3>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{worldResult.summary}</p>
@@ -254,7 +254,7 @@ export default function IdolProjectPage() {
               {ACTIVITY_FORMATS.map(f => (
                 <button key={f} onClick={() => setActivityFormats(prev => prev.includes(f)?prev.filter(x=>x!==f):[...prev,f])}
                   className={`px-3 py-1.5 rounded-xl text-xs font-medium border-2 transition-all ${activityFormats.includes(f)?"border-pink-500 bg-pink-50 dark:bg-pink-950 text-pink-700 dark:text-pink-300":"border-gray-200 dark:border-gray-700 text-gray-500 hover:border-gray-300"}`}
-                >{activityFormats.includes(f) ? "✓ " : ""}{f}</button>
+                >{activityFormats.includes(f) ? " " : ""}{f}</button>
               ))}
             </div>
           </div>

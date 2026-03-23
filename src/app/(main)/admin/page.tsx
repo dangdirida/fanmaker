@@ -13,19 +13,19 @@ interface Stats {
 }
 
 const statCards = [
-  { key: "totalUsers", label: "총 유저", icon: "👥" },
+  { key: "totalUsers", label: "총 유저", icon: "" },
   { key: "todayUsers", label: "오늘 가입", icon: "🆕" },
-  { key: "totalPosts", label: "총 게시물", icon: "📝" },
-  { key: "todayPosts", label: "오늘 게시물", icon: "📄" },
-  { key: "proUsers", label: "Pro 유저", icon: "⭐" },
-  { key: "totalAIJobs", label: "AI 작업 수", icon: "🤖" },
+  { key: "totalPosts", label: "총 게시물", icon: "" },
+  { key: "todayPosts", label: "오늘 게시물", icon: "" },
+  { key: "proUsers", label: "Pro 유저", icon: "" },
+  { key: "totalAIJobs", label: "AI 작업 수", icon: "" },
 ] as const;
 
 const quickLinks = [
-  { href: "/admin/users", label: "유저 관리", icon: "👥" },
-  { href: "/admin/posts", label: "게시물 관리", icon: "📝" },
-  { href: "/admin/artists", label: "아티스트 관리", icon: "🎤" },
-  { href: "/admin/notices", label: "공지사항", icon: "📢" },
+  { href: "/admin/users", label: "유저 관리", icon: "" },
+  { href: "/admin/posts", label: "게시물 관리", icon: "" },
+  { href: "/admin/artists", label: "아티스트 관리", icon: "" },
+  { href: "/admin/notices", label: "공지사항", icon: "" },
 ];
 
 export default function AdminDashboardPage() {

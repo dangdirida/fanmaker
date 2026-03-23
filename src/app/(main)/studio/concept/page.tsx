@@ -5,14 +5,14 @@ import { Sparkles, Music, Palette, Mic, ChevronRight, RotateCcw, Share2, Downloa
 import PublishModal from "@/components/studio/PublishModal";
 
 const MOODS = [
-  { key: "다크판타지", emoji: "🌑", desc: "어둡고 신비로운" },
-  { key: "청량", emoji: "🧊", desc: "시원하고 상쾌한" },
-  { key: "로맨틱", emoji: "🌸", desc: "달콤하고 감성적인" },
-  { key: "파워풀", emoji: "⚡", desc: "강렬하고 에너지 넘치는" },
-  { key: "사이버펑크", emoji: "🤖", desc: "미래적이고 실험적인" },
-  { key: "자연/힐링", emoji: "🍃", desc: "따뜻하고 포근한" },
-  { key: "레트로", emoji: "📼", desc: "80-90s 감성" },
-  { key: "몽환", emoji: "🌙", desc: "꿈결같이 흐릿한" },
+  { key: "다크판타지", emoji: "", desc: "어둡고 신비로운" },
+  { key: "청량", emoji: "", desc: "시원하고 상쾌한" },
+  { key: "로맨틱", emoji: "", desc: "달콤하고 감성적인" },
+  { key: "파워풀", emoji: "", desc: "강렬하고 에너지 넘치는" },
+  { key: "사이버펑크", emoji: "", desc: "미래적이고 실험적인" },
+  { key: "자연/힐링", emoji: "", desc: "따뜻하고 포근한" },
+  { key: "레트로", emoji: "", desc: "80-90s 감성" },
+  { key: "몽환", emoji: "", desc: "꿈결같이 흐릿한" },
 ];
 
 const AUDIENCES = ["10대 팬덤", "20대 글로벌", "전연령 대중", "코어 팬덤", "해외 타겟"];
@@ -139,7 +139,7 @@ export default function ConceptStudioPage() {
 
   const handleCopy = () => {
     if (!result) return;
-    const text = `🎵 ${result.albumTitle}\n📀 타이틀: ${result.titleTrack}\n\n${result.concept}\n\n트랙리스트:\n${result.tracks.map((t,i)=>`${i+1}. ${t.title}`).join("\n")}`;
+    const text = ` ${result.albumTitle}\n 타이틀: ${result.titleTrack}\n\n${result.concept}\n\n트랙리스트:\n${result.tracks.map((t,i)=>`${i+1}. ${t.title}`).join("\n")}`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -206,7 +206,7 @@ export default function ConceptStudioPage() {
           <div>
             <div className="mb-4">
               <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">타이틀 트랙</p>
-              <p className="text-2xl font-bold text-gray-900 dark:text-white">🎵 {result.titleTrack}</p>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white"> {result.titleTrack}</p>
             </div>
             <div className="mb-4">
               <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">컨셉</p>

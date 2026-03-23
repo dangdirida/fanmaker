@@ -538,10 +538,10 @@ export default function WebcamExperiencePage() {
               </p>
             </div>
             <div className="bg-white/5 rounded-xl p-3 text-left space-y-1.5">
-              <p className="text-white/50 text-xs">✓ 고개 돌리기 · 끄덕이기</p>
-              <p className="text-white/50 text-xs">✓ 눈 깜빡임 · 입 벌리기</p>
-              <p className="text-white/50 text-xs">✓ 팔 올리기 · 몸 기울이기</p>
-              <p className="text-white/50 text-xs">✓ 다리 움직임 · 점프</p>
+              <p className="text-white/50 text-xs"> 고개 돌리기 · 끄덕이기</p>
+              <p className="text-white/50 text-xs"> 눈 깜빡임 · 입 벌리기</p>
+              <p className="text-white/50 text-xs"> 팔 올리기 · 몸 기울이기</p>
+              <p className="text-white/50 text-xs"> 다리 움직임 · 점프</p>
             </div>
             <button
               onClick={startExperience}

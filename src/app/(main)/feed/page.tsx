@@ -124,8 +124,8 @@ function ArtistFilter({
           className="mt-1 text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
         >
           {expanded
-            ? "접기 ▲"
-            : `더보기 ▼ (${displayArtists.length}개 아티스트)`}
+            ? "접기 "
+            : `더보기  (${displayArtists.length}개 아티스트)`}
         </button>
       )}
     </div>
@@ -181,7 +181,7 @@ export default function FeedPage() {
         if (data.success) {
           setPosts((prev) => {
             const apiPosts = reset ? data.data : [...prev, ...data.data];
-            // ★ mock 데이터를 항상 함께 표시 (page 1일 때만 mock 추가)
+            //  mock 데이터를 항상 함께 표시 (page 1일 때만 mock 추가)
             if (pageNum === 1 && !category && !artistId) {
               setUseMock(false);
               return apiPosts;
