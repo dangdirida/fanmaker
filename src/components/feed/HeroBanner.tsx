@@ -30,7 +30,7 @@ const slides = [
     sub: "로고부터 앨범커버까지 컨셉 키트를 제작해보세요",
     cta: "컨셉 제작하기 →",
     href: "/studio/concept",
-    icon: "️",
+    icon: "",
     stats: ["5,200+ 컨셉", "앨범커버 포함", "무료 다운로드"],
     badges: ["AI 기반", "무료"],
   },

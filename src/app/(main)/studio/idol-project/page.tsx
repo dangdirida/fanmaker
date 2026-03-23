@@ -170,9 +170,9 @@ export default function IdolProjectPage() {
             <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 block">분위기</label>
             <div className="grid grid-cols-3 gap-3">
               {[
-                {key:"bright" as const, emoji:"️", label:"밝은", desc:"희망적·청량"},
+                {key:"bright" as const, emoji:"", label:"밝은", desc:"희망적·청량"},
                 {key:"dark" as const, emoji:"", label:"어두운", desc:"신비·강렬"},
-                {key:"neutral" as const, emoji:"️", label:"중립", desc:"균형·다양"},
+                {key:"neutral" as const, emoji:"", label:"중립", desc:"균형·다양"},
               ].map(m => (
                 <button key={m.key} onClick={() => setWMood(m.key)}
                   className={`flex flex-col items-center gap-1 p-4 rounded-2xl border-2 transition-all ${wMood===m.key ? "border-black bg-black text-white" : "border-gray-200 dark:border-gray-700 hover:border-gray-300"}`}
@@ -512,8 +512,8 @@ export default function IdolProjectPage() {
             <Users className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white">AI 아이돌 프로젝트</h1>
-            <p className="text-sm text-gray-400">AI와 함께 나만의 아이돌 그룹을 기획하세요</p>
+            <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white">아이돌 프로젝트</h1>
+            <p className="text-sm text-gray-400">나만의 아이돌 그룹을 기획하세요</p>
           </div>
         </div>
       </div>

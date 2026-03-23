@@ -16,117 +16,115 @@ async function callClaude(prompt: string, maxTokens = 1000): Promise<string> {
   return msg.content[0].type === "text" ? msg.content[0].text : "";
 }
 
+function parseJSON(text: string): Record<string, unknown> {
+  const match = text.match(/\{[\s\S]*\}/);
+  if (!match) throw new Error("JSON not found in response");
+  return JSON.parse(match[0]);
+}
+
 export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ success: false, error: "인증 필요" }, { status: 401 });
   }
 
-  const { action, data } = await req.json();
+  let body: { action: string; data: Record<string, unknown> };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ success: false, error: "잘못된 요청" }, { status: 400 });
+  }
+
+  const { action, data } = body;
 
   try {
-    // ── 세계관 생성 ──
     if (action === "worldbuilding") {
-      const { keywords, mood } = data;
+      const keywords = String(data.keywords || "");
+      const mood = String(data.mood || "bright");
       const moodLabel = mood === "bright" ? "밝고 희망적인" : mood === "dark" ? "어둡고 신비로운" : "중립적이고 균형 잡힌";
-      const text = await callClaude(`K-pop 아이돌 그룹의 세계관을 생성해주세요.
 
+      const text = await callClaude(
+        `K-pop 아이돌 그룹의 세계관을 생성해주세요.
 키워드: ${keywords}
 분위기: ${moodLabel}
 
-아래 JSON 형식으로만 응답하세요:
-{
-  "title": "세계관 제목 (한글, 10자 이내)",
-  "summary": "세계관 요약 (2-3문장, 한글)",
-  "background": "세계관 배경 설명 (4-5문장, 한글)",
-  "conflict": "중심 갈등 또는 미션 (2-3문장, 한글)",
-  "symbolism": "핵심 상징 또는 모티프 (1-2문장, 한글)",
-  "keywords": ["핵심키워드1", "핵심키워드2", "핵심키워드3", "핵심키워드4", "핵심키워드5"]
-}`, 800);
-
-      const json = JSON.parse(text.match(/\{[\s\S]*\}/)![0]);
-      return NextResponse.json({ success: true, data: json });
+반드시 JSON만 응답하세요 (다른 텍스트, 설명, 마크다운 없이):
+{"title":"세계관제목","summary":"요약2-3문장","background":"배경4-5문장","conflict":"중심갈등2-3문장","symbolism":"핵심상징1-2문장","keywords":["키워드1","키워드2","키워드3","키워드4","키워드5"]}`,
+        800
+      );
+      return NextResponse.json({ success: true, data: parseJSON(text) });
     }
 
-    // ── 그룹 이름 생성 ──
     if (action === "names") {
-      const { keywords, mood, worldTitle, genres, differentiation } = data;
-      const text = await callClaude(`K-pop 아이돌 그룹 이름 후보 10개를 생성해주세요.
+      const keywords = String(data.keywords || "");
+      const mood = String(data.mood || "bright");
+      const worldTitle = String(data.worldTitle || "");
+      const genres = Array.isArray(data.genres) ? (data.genres as string[]).join(", ") : "K-pop";
+      const differentiation = String(data.differentiation || "");
 
+      const text = await callClaude(
+        `K-pop 아이돌 그룹 이름 후보 10개를 생성해주세요.
 세계관 키워드: ${keywords}
 분위기: ${mood}
-세계관 제목: ${worldTitle || "없음"}
-장르: ${genres?.join(", ") || "K-pop"}
-차별화 포인트: ${differentiation || "없음"}
+세계관: ${worldTitle}
+장르: ${genres}
+차별화: ${differentiation}
 
-아래 JSON 형식으로만 응답하세요:
-{
-  "candidates": [
-    {"name": "한글이름", "meaning": "의미 설명", "romanization": "영문"},
-    {"name": "한글이름", "meaning": "의미 설명", "romanization": "영문"},
-    {"name": "한글이름", "meaning": "의미 설명", "romanization": "영문"},
-    {"name": "한글이름", "meaning": "의미 설명", "romanization": "영문"},
-    {"name": "한글이름", "meaning": "의미 설명", "romanization": "영문"},
-    {"name": "한글이름", "meaning": "의미 설명", "romanization": "영문"},
-    {"name": "한글이름", "meaning": "의미 설명", "romanization": "영문"},
-    {"name": "한글이름", "meaning": "의미 설명", "romanization": "영문"},
-    {"name": "한글이름", "meaning": "의미 설명", "romanization": "영문"},
-    {"name": "한글이름", "meaning": "의미 설명", "romanization": "영문"}
-  ]
-}`, 1000);
-
-      const json = JSON.parse(text.match(/\{[\s\S]*\}/)![0]);
-      return NextResponse.json({ success: true, data: json });
+반드시 JSON만 응답하세요:
+{"candidates":[{"name":"이름","meaning":"의미설명","romanization":"영문"},{"name":"이름","meaning":"의미설명","romanization":"영문"},{"name":"이름","meaning":"의미설명","romanization":"영문"},{"name":"이름","meaning":"의미설명","romanization":"영문"},{"name":"이름","meaning":"의미설명","romanization":"영문"},{"name":"이름","meaning":"의미설명","romanization":"영문"},{"name":"이름","meaning":"의미설명","romanization":"영문"},{"name":"이름","meaning":"의미설명","romanization":"영문"},{"name":"이름","meaning":"의미설명","romanization":"영문"},{"name":"이름","meaning":"의미설명","romanization":"영문"}]}`,
+        1000
+      );
+      return NextResponse.json({ success: true, data: parseJSON(text) });
     }
 
-    // ── 멤버 캐릭터 AI 생성 ──
     if (action === "member") {
-      const { memberIndex, groupName, worldSummary, genres } = data;
-      const text = await callClaude(`K-pop 아이돌 그룹 "${groupName}"의 멤버 ${memberIndex + 1}의 캐릭터를 생성해주세요.
+      const memberIndex = Number(data.memberIndex ?? 0);
+      const groupName = String(data.groupName || "");
+      const worldSummary = String(data.worldSummary || "");
+      const genres = Array.isArray(data.genres) ? (data.genres as string[]).join(", ") : "K-pop";
 
-세계관: ${worldSummary || "없음"}
-장르: ${genres?.join(", ") || "K-pop"}
+      const text = await callClaude(
+        `K-pop 아이돌 그룹 "${groupName}"의 멤버 ${memberIndex + 1}의 캐릭터를 생성해주세요.
+세계관: ${worldSummary}
+장르: ${genres}
 
-아래 JSON으로만 응답:
-{
-  "name": "한글이름 (1-2자)",
-  "nameEn": "영문이름",
-  "personality": "성격 설명 2문장",
-  "role": "세계관 내 역할 1문장",
-  "catchphrase": "이 멤버의 시그니처 문구 (10자 이내)"
-}`, 400);
-
-      const json = JSON.parse(text.match(/\{[\s\S]*\}/)![0]);
-      return NextResponse.json({ success: true, data: json });
+반드시 JSON만 응답하세요:
+{"name":"한글이름","nameEn":"영문이름","personality":"성격2문장","role":"역할1문장","catchphrase":"시그니처문구10자이내"}`,
+        400
+      );
+      return NextResponse.json({ success: true, data: parseJSON(text) });
     }
 
-    // ── 전체 프로필 카드 생성 ──
     if (action === "finalProfile") {
-      const { groupName, worldbuilding, groupConcept, members } = data;
-      const text = await callClaude(`K-pop 아이돌 그룹 "${groupName}"의 공식 프로필 소개글을 작성해주세요.
+      const groupName = String(data.groupName || "");
+      const worldbuilding = data.worldbuilding as Record<string, unknown> | null;
+      const groupConcept = data.groupConcept as Record<string, unknown> | null;
+      const members = Array.isArray(data.members)
+        ? (data.members as Array<{name: string}>).map(m => m.name).filter(Boolean).join(", ")
+        : "";
 
-세계관: ${worldbuilding?.summary || "없음"}
-장르: ${groupConcept?.genres?.join(", ") || "K-pop"}
-멤버: ${members?.map((m: { name: string }) => m.name).join(", ")}
-차별화: ${groupConcept?.differentiation || "없음"}
+      const text = await callClaude(
+        `K-pop 아이돌 그룹 "${groupName}"의 공식 프로필을 작성해주세요.
+세계관: ${worldbuilding?.summary || ""}
+장르: ${Array.isArray(groupConcept?.genres) ? (groupConcept.genres as string[]).join(", ") : "K-pop"}
+멤버: ${members}
+차별화: ${String(groupConcept?.differentiation || "")}
 
-아래 JSON으로만 응답:
-{
-  "officialBio": "공식 소개문 (3-4문장, 한글)",
-  "debutConcept": "데뷔 컨셉 및 타이틀 (1-2문장)",
-  "fandomName": "팬덤 이름 및 의미",
-  "colorCode": "#hex색상코드 (그룹 대표색)",
-  "colorName": "색상 이름",
-  "slogan": "그룹 슬로건 (한글 15자 이내)"
-}`, 600);
-
-      const json = JSON.parse(text.match(/\{[\s\S]*\}/)![0]);
-      return NextResponse.json({ success: true, data: json });
+반드시 JSON만 응답하세요:
+{"officialBio":"공식소개3-4문장","debutConcept":"데뷔컨셉1-2문장","fandomName":"팬덤이름및의미","colorCode":"#hex색상","colorName":"색상이름","slogan":"슬로건15자이내"}`,
+        600
+      );
+      return NextResponse.json({ success: true, data: parseJSON(text) });
     }
 
     return NextResponse.json({ success: false, error: "알 수 없는 action" }, { status: 400 });
-  } catch (error) {
-    console.error("Idol project error:", error);
-    return NextResponse.json({ success: false, error: String(error).substring(0, 100) }, { status: 500 });
+
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error(`Idol project [${action}] error:`, msg);
+    return NextResponse.json(
+      { success: false, error: msg.substring(0, 150) },
+      { status: 500 }
+    );
   }
 }
