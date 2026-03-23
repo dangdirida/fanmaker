@@ -72,13 +72,24 @@ export async function DELETE(
   }
 
   const { id } = await params;
-  const existing = await prisma.virtualIdol.findFirst({
-    where: { id, userId: session.user.id, isDraft: true },
-  });
-  if (!existing) {
-    return NextResponse.json({ success: false, error: "삭제할 수 없습니다" }, { status: 404 });
-  }
+  try {
+    const existing = await prisma.virtualIdol.findFirst({
+      where: { id, userId: session.user.id },
+      select: { id: true, userId: true, postId: true },
+    });
+    if (!existing) {
+      return NextResponse.json({ success: false, error: "삭제할 수 없습니다" }, { status: 404 });
+    }
 
-  await prisma.virtualIdol.delete({ where: { id } });
-  return NextResponse.json({ success: true });
+    // 연결된 Post 먼저 삭제
+    if (existing.postId) {
+      await prisma.post.delete({ where: { id: existing.postId } }).catch(() => {});
+    }
+
+    await prisma.virtualIdol.delete({ where: { id } });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ success: false, error: "삭제 실패" }, { status: 500 });
+  }
 }
