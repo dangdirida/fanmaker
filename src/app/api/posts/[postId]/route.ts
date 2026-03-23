@@ -15,6 +15,14 @@ export async function GET(
     include: {
       author: { select: { id: true, nickname: true, image: true } },
       artist: { select: { id: true, name: true, nameEn: true } },
+      virtualIdol: {
+        select: {
+          id: true, name: true, hairColor: true, hairLength: true,
+          skinTone: true, eyeColor: true, outfitStyle: true, accessories: true,
+          gender: true, concept: true, personality: true,
+          voiceType: true, positions: true, genres: true,
+        },
+      },
       _count: { select: { reactions: true, comments: true } },
       reactions: session?.user?.id
         ? { where: { userId: session.user.id }, select: { type: true } }
@@ -34,6 +42,7 @@ export async function GET(
     data: {
       ...post,
       myReactions: post.reactions ? post.reactions.map((r) => r.type) : [],
+      virtualIdol: post.virtualIdol ?? null,
     },
   });
 }
