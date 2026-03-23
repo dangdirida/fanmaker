@@ -167,14 +167,14 @@ export default function PostDetailPage() {
           <div className="bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950 dark:to-blue-950 p-6">
             <div className="flex flex-col sm:flex-row items-center gap-6">
               {/* VRM 3D 캐릭터 렌더링 */}
-              <div className="flex-shrink-0 drop-shadow-xl">
+              <div className="flex-shrink-0 drop-shadow-xl rounded-xl overflow-hidden">
                 <VRMStaticPreview
                   gender={vi.gender}
                   hairColor={vi.hairColor}
                   skinTone={vi.skinTone}
                   eyeColor={vi.eyeColor}
-                  width={200}
-                  height={300}
+                  width={180}
+                  height={260}
                 />
               </div>
 
