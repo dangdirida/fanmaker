@@ -73,15 +73,10 @@ export async function DELETE(
 
   const { id } = await params;
   const existing = await prisma.virtualIdol.findFirst({
-    where: { id, userId: session.user.id },
+    where: { id, userId: session.user.id, isDraft: true },
   });
   if (!existing) {
     return NextResponse.json({ success: false, error: "삭제할 수 없습니다" }, { status: 404 });
-  }
-
-  // 연결된 Post도 같이 삭제
-  if (existing.postId) {
-    await prisma.post.delete({ where: { id: existing.postId } }).catch(() => {});
   }
 
   await prisma.virtualIdol.delete({ where: { id } });

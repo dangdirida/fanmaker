@@ -249,55 +249,25 @@ export default function FeedPage() {
   // 반응 토글
   const handleReaction = async (postId: string, type: string) => {
     if (!session?.user) return;
-    if (useMock) return;
 
-    // ★ Optimistic UI - API 응답 전에 즉시 UI 업데이트
-    const isCurrentlyLiked = posts.find(p => p.id === postId)?.myReactions.includes(type);
-    setPosts((prev) =>
-      prev.map((p) => {
-        if (p.id !== postId) return p;
-        const added = !isCurrentlyLiked;
-        return {
-          ...p,
-          reactionCount: p.reactionCount + (added ? 1 : -1),
-          myReactions: added
-            ? [...p.myReactions, type]
-            : p.myReactions.filter((r) => r !== type),
-        };
-      })
-    );
+    if (useMock) return; // 목데이터는 반응 불가
 
-    // 백그라운드에서 API 호출
-    try {
-      const res = await fetch(`/api/posts/${postId}/reactions`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type }),
-      });
-      if (!res.ok) {
-        // 실패 시 롤백
-        setPosts((prev) =>
-          prev.map((p) => {
-            if (p.id !== postId) return p;
-            return {
-              ...p,
-              reactionCount: p.reactionCount + (isCurrentlyLiked ? 1 : -1),
-              myReactions: isCurrentlyLiked
-                ? [...p.myReactions, type]
-                : p.myReactions.filter((r) => r !== type),
-            };
-          })
-        );
-      }
-    } catch {
-      // 네트워크 오류 시 롤백
+    const res = await fetch(`/api/posts/${postId}/reactions`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type }),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
       setPosts((prev) =>
         prev.map((p) => {
           if (p.id !== postId) return p;
+          const added = data.data.action === "added";
           return {
             ...p,
-            reactionCount: p.reactionCount + (isCurrentlyLiked ? 1 : -1),
-            myReactions: isCurrentlyLiked
+            reactionCount: p.reactionCount + (added ? 1 : -1),
+            myReactions: added
               ? [...p.myReactions, type]
               : p.myReactions.filter((r) => r !== type),
           };

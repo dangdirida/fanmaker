@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -19,7 +18,6 @@ import {
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
-import CharacterSilhouette from "@/app/(main)/studio/virtual/[id]/components/CharacterSilhouette";
 
 // 카테고리별 그라디언트 + 뱃지 스타일
 const CATEGORY_CONFIG: Record<
@@ -101,21 +99,11 @@ interface PostCardProps {
     cheerCount?: number;
     aiScore?: number;
     gradient?: string;
-    virtualIdol?: {
-      hairColor: string;
-      hairLength: string;
-      skinTone: string;
-      eyeColor: string;
-      outfitStyle: string;
-      accessories: string[];
-      gender: string;
-    } | null;
   };
   onReaction: (postId: string, type: string) => void;
 }
 
 export default function PostCard({ post, onReaction }: PostCardProps) {
-  const [likeAnim, setLikeAnim] = useState(false);
   const config = CATEGORY_CONFIG[post.category] || DEFAULT_CONFIG;
   const IconComponent = config.icon;
   const timeAgo = formatDistanceToNow(new Date(post.createdAt), {
@@ -143,26 +131,6 @@ export default function PostCard({ post, onReaction }: PostCardProps) {
             className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
             unoptimized
           />
-        ) : post.category === "VIRTUAL" && post.virtualIdol ? (
-          <div className="w-full h-full bg-gradient-to-br from-cyan-50 to-blue-50 dark:from-cyan-950 dark:to-blue-950 flex items-center justify-center group-hover:scale-105 transition-transform duration-500 ease-out">
-            <div className="h-full w-auto max-w-[60%]">
-              <CharacterSilhouette
-                hairColor={post.virtualIdol.hairColor}
-                hairLength={post.virtualIdol.hairLength}
-                skinTone={post.virtualIdol.skinTone}
-                eyeColor={post.virtualIdol.eyeColor}
-                outfitStyle={post.virtualIdol.outfitStyle}
-                accessories={post.virtualIdol.accessories}
-                gender={post.virtualIdol.gender}
-                stylePreset="idol"
-              />
-            </div>
-            <div className="absolute top-3 left-3">
-              <span className={`px-2.5 py-1 rounded-lg text-xs font-semibold text-white shadow-lg bg-gradient-to-r ${config.badgeGradient}`}>
-                {config.label}
-              </span>
-            </div>
-          </div>
         ) : (
           <div
             className={`w-full h-full bg-gradient-to-br ${config.gradient} relative group-hover:scale-105 transition-transform duration-500 ease-out`}
@@ -268,21 +236,18 @@ export default function PostCard({ post, onReaction }: PostCardProps) {
             <button
               onClick={(e) => {
                 e.preventDefault();
-                setLikeAnim(true);
-                setTimeout(() => setLikeAnim(false), 400);
                 onReaction(post.id, "LIKE");
               }}
-              className={`flex items-center gap-1 transition-all duration-150 ${
+              className={`flex items-center gap-1 transition-all duration-200 ${
                 post.myReactions.includes("LIKE")
-                  ? "text-red-500"
-                  : "hover:text-red-500"
-              } ${likeAnim ? "scale-125" : "scale-100"}`}
-              style={{ transition: "transform 0.15s cubic-bezier(0.34,1.56,0.64,1)" }}
+                  ? "text-red-500 scale-110"
+                  : "hover:text-red-500 hover:scale-110"
+              }`}
             >
               <Heart
-                className={`w-4 h-4 transition-all duration-150 ${
+                className={`w-4 h-4 ${
                   post.myReactions.includes("LIKE") ? "fill-current" : ""
-                } ${likeAnim ? "drop-shadow-[0_0_6px_rgba(239,68,68,0.8)]" : ""}`}
+                }`}
               />
               <span className="text-xs font-medium">{likeCount}</span>
             </button>
