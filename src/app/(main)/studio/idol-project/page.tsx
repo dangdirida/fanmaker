@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Sparkles, Users, Music, Star, ChevronRight, RotateCcw, Share2, Loader2, Wand2, Check } from "lucide-react";
 import PublishModal from "@/components/studio/PublishModal";
 
@@ -21,6 +22,7 @@ interface FinalProfile {
 }
 
 export default function IdolProjectPage() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [showPublishModal, setShowPublishModal] = useState(false);
 
@@ -477,7 +479,16 @@ export default function IdolProjectPage() {
                         </div>
                       )}
                       {m.catchphrase && <p className="text-xs text-gray-400 mt-2 italic">&quot;{m.catchphrase}&quot;</p>}
-                    </div>
+                    
+              <button
+                onClick={() => {
+                  const params = new URLSearchParams({ memberName: m.name || `${String.fromCharCode(47724)+String.fromCharCode(48264)+String.fromCharCode(48260)} ${i + 1}` });
+                  router.push(`/studio/virtual/new?${params.toString()}`);
+                }}
+                className="mt-3 w-full py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-all"
+              >
+                버추얼 캐릭터 만들기
+              </button></div>
                   ))}
                 </div>
               </div>
