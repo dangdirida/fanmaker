@@ -257,6 +257,109 @@ export default function PostDetailPage() {
         </div>
       )}
 
+      {/* ── 아이돌 프로젝트 전용 섹션 ── */}
+      {post.category === "IDOL_PROJECT" && post.contentData && (() => {
+        const d = post.contentData as {
+          groupName?: string;
+          worldbuilding?: { title?: string; summary?: string; keywords?: string[] };
+          groupConcept?: { genres?: string[]; differentiation?: string };
+          members?: { name?: string; positions?: string[]; character?: string; nationality?: string; catchphrase?: string }[];
+          finalProfile?: { officialBio?: string; debutConcept?: string; fandomName?: string; colorCode?: string; colorName?: string; slogan?: string };
+        };
+        if (!d.groupName && !d.finalProfile) return null;
+        const color = d.finalProfile?.colorCode || "#8b5cf6";
+        return (
+          <div className="mb-8 rounded-2xl border-2 border-gray-100 dark:border-gray-800 overflow-hidden">
+            {/* 그룹 헤더 */}
+            <div className="h-2" style={{ backgroundColor: color }} />
+            <div className="p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-950 dark:to-gray-900">
+              <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color }}>Idol Project</p>
+              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-1">{d.groupName}</h2>
+              {d.finalProfile?.slogan && (
+                <p className="text-sm italic text-gray-500 mb-4">&quot;{d.finalProfile.slogan}&quot;</p>
+              )}
+              {d.finalProfile?.officialBio && (
+                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4">{d.finalProfile.officialBio}</p>
+              )}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+                {d.finalProfile?.debutConcept && (
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-3 border border-gray-100 dark:border-gray-700">
+                    <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-1">데뷔 컨셉</p>
+                    <p className="text-xs font-bold text-gray-900 dark:text-white">{d.finalProfile.debutConcept}</p>
+                  </div>
+                )}
+                {d.finalProfile?.fandomName && (
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-3 border border-gray-100 dark:border-gray-700">
+                    <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-1">팬덤</p>
+                    <p className="text-xs font-bold text-gray-900 dark:text-white">{d.finalProfile.fandomName}</p>
+                  </div>
+                )}
+                {d.groupConcept?.genres && d.groupConcept.genres.length > 0 && (
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-3 border border-gray-100 dark:border-gray-700 col-span-2">
+                    <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-1.5">장르</p>
+                    <div className="flex flex-wrap gap-1">
+                      {d.groupConcept.genres.map((g: string, i: number) => (
+                        <span key={i} className="px-2 py-0.5 rounded-full text-[10px] font-medium text-white" style={{ backgroundColor: color }}>{g}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              {/* 세계관 */}
+              {d.worldbuilding?.title && (
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-100 dark:border-gray-700 mb-4">
+                  <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-1">세계관</p>
+                  <p className="text-sm font-bold text-gray-900 dark:text-white mb-1">{d.worldbuilding.title}</p>
+                  {d.worldbuilding.summary && (
+                    <p className="text-xs text-gray-500 leading-relaxed">{d.worldbuilding.summary}</p>
+                  )}
+                  {d.worldbuilding.keywords && d.worldbuilding.keywords.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {d.worldbuilding.keywords.map((kw: string, i: number) => (
+                        <span key={i} className="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 text-[10px]">{kw}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+              {/* 멤버 카드 */}
+              {d.members && d.members.length > 0 && (
+                <div>
+                  <p className="text-xs font-bold text-gray-700 dark:text-gray-300 mb-2">멤버 라인업</p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {d.members.map((m, i: number) => (
+                      <div key={i} className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-100 dark:border-gray-700">
+                        <div className="w-9 h-9 rounded-full flex items-center justify-center text-white font-extrabold text-sm mb-2" style={{ backgroundColor: color }}>
+                          {m.name ? m.name[0] : String(i + 1)}
+                        </div>
+                        <p className="font-bold text-gray-900 dark:text-white text-sm">{m.name || `멤버 ${i + 1}`}</p>
+                        {m.nationality && <p className="text-[10px] text-gray-400">{m.nationality}</p>}
+                        {m.positions && m.positions.length > 0 && (
+                          <div className="flex flex-wrap gap-1 mt-1.5">
+                            {m.positions.slice(0, 2).map((p: string, pi: number) => (
+                              <span key={pi} className="text-[10px] px-1.5 py-0.5 rounded-full text-white" style={{ backgroundColor: color }}>{p}</span>
+                            ))}
+                          </div>
+                        )}
+                        {m.catchphrase && (
+                          <p className="text-[10px] text-gray-400 mt-1.5 italic">&quot;{m.catchphrase}&quot;</p>
+                        )}
+                        <a
+                          href={`/studio/virtual/new?memberName=${encodeURIComponent(m.name || `멤버 ${i + 1}`)}`}
+                          className="mt-2 block w-full py-1.5 rounded-lg text-[10px] font-bold text-white text-center bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-all"
+                        >
+                          버추얼 캐릭터 만들기
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })()}
+
       {/* 일반 썸네일 (버추얼 아닌 경우) */}
       {!isVirtual && post.thumbnailUrl && (
         <div className="mb-6 rounded-xl overflow-hidden">
