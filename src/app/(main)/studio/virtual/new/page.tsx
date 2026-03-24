@@ -1,21 +1,26 @@
 "use client";
-
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 
 export default function NewVirtualIdolPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    fetch("/api/virtual-idols", { method: "POST" })
+    const initialName = searchParams.get("memberName") || undefined;
+    fetch("/api/virtual-idols", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ initialName }),
+    })
       .then((r) => r.json())
       .then((d) => {
         if (d.success) router.replace(`/studio/virtual/${d.data.id}`);
         else router.replace("/studio/virtual");
       })
       .catch(() => router.replace("/studio/virtual"));
-  }, [router]);
+  }, [router, searchParams]);
 
   return (
     <div className="min-h-[60vh] flex items-center justify-center">
