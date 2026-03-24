@@ -269,93 +269,104 @@ export default function PostDetailPage() {
         if (!d.groupName && !d.finalProfile) return null;
         const color = d.finalProfile?.colorCode || "#8b5cf6";
         return (
-          <div className="mb-8 rounded-2xl border-2 border-gray-100 dark:border-gray-800 overflow-hidden">
-            {/* 그룹 헤더 */}
-            <div className="h-2" style={{ backgroundColor: color }} />
-            <div className="p-6 bg-gradient-to-br from-gray-50 to-white dark:from-gray-950 dark:to-gray-900">
-              <p className="text-xs font-bold uppercase tracking-widest mb-1" style={{ color }}>Idol Project</p>
-              <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-1">{d.groupName}</h2>
-              {d.finalProfile?.slogan && (
-                <p className="text-sm italic text-gray-500 mb-4">&quot;{d.finalProfile.slogan}&quot;</p>
-              )}
-              {d.finalProfile?.officialBio && (
-                <p className="text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4">{d.finalProfile.officialBio}</p>
-              )}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-                {d.finalProfile?.debutConcept && (
-                  <div className="bg-white dark:bg-gray-800 rounded-xl p-3 border border-gray-100 dark:border-gray-700">
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-1">데뷔 컨셉</p>
-                    <p className="text-xs font-bold text-gray-900 dark:text-white">{d.finalProfile.debutConcept}</p>
+          <div className="mb-8 space-y-4">
+            {/* 그룹 헤더 카드 */}
+            <div className="rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-800">
+              <div className="h-1.5" style={{ backgroundColor: color }} />
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-1">Idol Project</p>
+                    <h2 className="text-2xl font-extrabold text-gray-900 dark:text-white leading-tight">{d.groupName}</h2>
+                    {d.finalProfile?.slogan && (
+                      <p className="text-sm italic text-gray-400 mt-1">&quot;{d.finalProfile.slogan}&quot;</p>
+                    )}
                   </div>
-                )}
-                {d.finalProfile?.fandomName && (
-                  <div className="bg-white dark:bg-gray-800 rounded-xl p-3 border border-gray-100 dark:border-gray-700">
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-1">팬덤</p>
-                    <p className="text-xs font-bold text-gray-900 dark:text-white">{d.finalProfile.fandomName}</p>
-                  </div>
-                )}
-                {d.groupConcept?.genres && d.groupConcept.genres.length > 0 && (
-                  <div className="bg-white dark:bg-gray-800 rounded-xl p-3 border border-gray-100 dark:border-gray-700 col-span-2">
-                    <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-1.5">장르</p>
-                    <div className="flex flex-wrap gap-1">
-                      {d.groupConcept.genres.map((g: string, i: number) => (
-                        <span key={i} className="px-2 py-0.5 rounded-full text-[10px] font-medium text-white" style={{ backgroundColor: color }}>{g}</span>
-                      ))}
+                  {d.finalProfile?.colorCode && (
+                    <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                      <div className="w-8 h-8 rounded-lg shadow-sm border border-white" style={{ backgroundColor: color }} />
+                      <p className="text-[10px] text-gray-400">{d.finalProfile.colorName}</p>
                     </div>
+                  )}
+                </div>
+                {d.finalProfile?.officialBio && (
+                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4">{d.finalProfile.officialBio}</p>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  {d.finalProfile?.debutConcept && (
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
+                      <p className="text-[10px] text-gray-400">데뷔 컨셉</p>
+                      <p className="text-[10px] font-bold text-gray-700 dark:text-gray-200">{d.finalProfile.debutConcept}</p>
+                    </div>
+                  )}
+                  {d.finalProfile?.fandomName && (
+                    <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
+                      <p className="text-[10px] text-gray-400">팬덤</p>
+                      <p className="text-[10px] font-bold text-gray-700 dark:text-gray-200">{d.finalProfile.fandomName}</p>
+                    </div>
+                  )}
+                  {d.groupConcept?.genres && d.groupConcept.genres.map((g: string, i: number) => (
+                    <span key={i} className="px-3 py-1.5 rounded-full text-[10px] font-bold text-white" style={{ backgroundColor: color }}>{g}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* 세계관 카드 */}
+            {d.worldbuilding?.title && (
+              <div className="rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-2">세계관</p>
+                <p className="text-base font-extrabold text-gray-900 dark:text-white mb-1.5">{d.worldbuilding.title}</p>
+                {d.worldbuilding.summary && (
+                  <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">{d.worldbuilding.summary}</p>
+                )}
+                {d.worldbuilding.keywords && d.worldbuilding.keywords.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mt-3">
+                    {d.worldbuilding.keywords.map((kw: string, i: number) => (
+                      <span key={i} className="px-2.5 py-1 rounded-full bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-gray-500 text-[10px] font-medium">{kw}</span>
+                    ))}
                   </div>
                 )}
               </div>
-              {/* 세계관 */}
-              {d.worldbuilding?.title && (
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-100 dark:border-gray-700 mb-4">
-                  <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-1">세계관</p>
-                  <p className="text-sm font-bold text-gray-900 dark:text-white mb-1">{d.worldbuilding.title}</p>
-                  {d.worldbuilding.summary && (
-                    <p className="text-xs text-gray-500 leading-relaxed">{d.worldbuilding.summary}</p>
-                  )}
-                  {d.worldbuilding.keywords && d.worldbuilding.keywords.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {d.worldbuilding.keywords.map((kw: string, i: number) => (
-                        <span key={i} className="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 text-[10px]">{kw}</span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-              {/* 멤버 카드 */}
-              {d.members && d.members.length > 0 && (
-                <div>
-                  <p className="text-xs font-bold text-gray-700 dark:text-gray-300 mb-2">멤버 라인업</p>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {d.members.map((m, i: number) => (
-                      <div key={i} className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-100 dark:border-gray-700">
-                        <div className="w-9 h-9 rounded-full flex items-center justify-center text-white font-extrabold text-sm mb-2" style={{ backgroundColor: color }}>
+            )}
+
+            {/* 멤버 라인업 */}
+            {d.members && d.members.length > 0 && (
+              <div className="rounded-2xl border border-gray-100 dark:border-gray-800 p-5">
+                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-3">멤버 라인업</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                  {d.members.map((m, i: number) => (
+                    <div key={i} className="group rounded-xl p-4 bg-gray-50 dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                      <div className="flex items-center gap-2.5 mb-2">
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-extrabold text-xs flex-shrink-0" style={{ backgroundColor: color }}>
                           {m.name ? m.name[0] : String(i + 1)}
                         </div>
-                        <p className="font-bold text-gray-900 dark:text-white text-sm">{m.name || `멤버 ${i + 1}`}</p>
-                        {m.nationality && <p className="text-[10px] text-gray-400">{m.nationality}</p>}
-                        {m.positions && m.positions.length > 0 && (
-                          <div className="flex flex-wrap gap-1 mt-1.5">
-                            {m.positions.slice(0, 2).map((p: string, pi: number) => (
-                              <span key={pi} className="text-[10px] px-1.5 py-0.5 rounded-full text-white" style={{ backgroundColor: color }}>{p}</span>
-                            ))}
-                          </div>
-                        )}
-                        {m.catchphrase && (
-                          <p className="text-[10px] text-gray-400 mt-1.5 italic">&quot;{m.catchphrase}&quot;</p>
-                        )}
-                        <a
-                          href={`/studio/virtual/new?memberName=${encodeURIComponent(m.name || `멤버 ${i + 1}`)}`}
-                          className="mt-2 block w-full py-1.5 rounded-lg text-[10px] font-bold text-white text-center bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition-all"
-                        >
-                          버추얼 캐릭터 만들기
-                        </a>
+                        <div className="min-w-0">
+                          <p className="font-bold text-gray-900 dark:text-white text-sm leading-tight truncate">{m.name || `멤버 ${i + 1}`}</p>
+                          {m.nationality && <p className="text-[10px] text-gray-400 leading-tight">{m.nationality}</p>}
+                        </div>
                       </div>
-                    ))}
-                  </div>
+                      {m.positions && m.positions.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-2">
+                          {m.positions.slice(0, 2).map((p: string, pi: number) => (
+                            <span key={pi} className="text-[10px] px-1.5 py-0.5 rounded-md font-medium" style={{ backgroundColor: color + "20", color: color }}>{p}</span>
+                          ))}
+                        </div>
+                      )}
+                      {m.catchphrase && (
+                        <p className="text-[10px] text-gray-400 mb-2.5 italic leading-relaxed">&quot;{m.catchphrase}&quot;</p>
+                      )}
+                      <a
+                        href={`/studio/virtual/new?memberName=${encodeURIComponent(m.name || `멤버 ${i + 1}`)}`}
+                        className="block w-full py-1.5 rounded-lg text-[10px] font-bold text-white text-center bg-gray-900 dark:bg-white dark:text-gray-900 hover:bg-gray-700 dark:hover:bg-gray-200 transition-colors"
+                      >
+                        버추얼 캐릭터 만들기
+                      </a>
+                    </div>
+                  ))}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         );
       })()}
