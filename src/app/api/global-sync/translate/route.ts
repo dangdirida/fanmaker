@@ -1,17 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 
-export const maxDuration = 30;
+export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 
-async function translateText(text: string, targetLang: string): Promise<string> {
-  if (!text.trim()) return text;
-  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ko|${targetLang}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  if (data.responseStatus === 200) return data.responseData.translatedText;
-  throw new Error("Translation failed: " + data.responseDetails);
-}
+const LANG_NAMES: Record<string, string> = {
+  en: "English", ja: "Japanese", "zh-CN": "Simplified Chinese",
+  "zh-TW": "Traditional Chinese", es: "Spanish", pt: "Portuguese",
+  th: "Thai", id: "Indonesian", vi: "Vietnamese", fr: "French",
+};
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -24,18 +21,43 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: "texts 배열 필요" }, { status: 400 });
   }
 
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return NextResponse.json({ success: false, error: "API key not configured" }, { status: 500 });
+  }
+
+  const langName = LANG_NAMES[targetLang] || targetLang;
+  const numbered = texts.map((t: string, i: number) => `[${i + 1}] ${t}`).join("\n");
+  const prompt = `Translate each numbered subtitle line from Korean to ${langName}.
+Keep the [number] tags exactly as-is. Only translate the text after the tag.
+Return only the translated lines in the same format, nothing else.
+
+${numbered}`;
+
   try {
-    const batchSize = 5;
-    const results: string[] = [];
-    for (let i = 0; i < texts.length; i += batchSize) {
-      const batch = texts.slice(i, i + batchSize);
-      const translated = await Promise.all(batch.map((t: string) => translateText(t, targetLang).catch(() => t)));
-      results.push(...translated);
-      if (i + batchSize < texts.length) await new Promise((r) => setTimeout(r, 200));
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        generationConfig: { maxOutputTokens: 8000, temperature: 0.2 },
+      }),
+    });
+
+    const data = await res.json();
+    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+    const map: Record<number, string> = {};
+    for (const line of raw.split("\n")) {
+      const match = line.match(/^\[(\d+)\]\s*(.+)/);
+      if (match) map[parseInt(match[1])] = match[2].trim();
     }
+
+    const results = texts.map((t: string, i: number) => map[i + 1] || t);
     return NextResponse.json({ success: true, data: results });
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
     return NextResponse.json({ success: false, error: msg }, { status: 500 });
   }
 }
