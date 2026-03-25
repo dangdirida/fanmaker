@@ -482,8 +482,16 @@ export default function WebcamExperiencePage() {
       let handsTracking = false;
 
       try {
-        const { Hands } = await import('@mediapipe/hands');
-        const H = Hands;
+        // CDN에서 직접 로드 (npm dynamic import 대신)
+        await new Promise<void>((resolve) => {
+          const s = document.createElement('script');
+          s.src = 'https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469404/hands.js';
+          s.onload = () => resolve();
+          s.onerror = () => resolve();
+          document.head.appendChild(s);
+        });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const H = (window as any).Hands;
         if (H) {
           handsInstance = new H({
             locateFile: (f: string) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469404/${f}`,
