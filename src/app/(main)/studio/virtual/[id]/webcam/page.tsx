@@ -491,7 +491,9 @@ export default function WebcamExperiencePage() {
           document.head.appendChild(s);
         });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const H = (window as any).Hands;
+        const w = window as any;
+        const H = w.Hands || w.hands?.Hands || w.mediapipe?.Hands;
+        console.log("Hands object:", typeof H, Object.keys(w).filter(k => k.toLowerCase().includes('hand')));
         if (H) {
           handsInstance = new H({
             locateFile: (f: string) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469404/${f}`,
