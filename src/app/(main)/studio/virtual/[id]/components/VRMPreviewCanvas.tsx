@@ -88,8 +88,8 @@ function applyMatColor(vrm: any, matKey: string, color: string, THREE: any) {
   });
 }
 
-function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender }: {
-  hairColor: string; skinTone: string; eyeColor: string; gender: string;
+function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender, outfitStyle }: {
+  hairColor: string; skinTone: string; eyeColor: string; gender: string; outfitStyle?: string;
 }) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
@@ -151,9 +151,23 @@ function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender }: {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         loader.register((parser: any) => new VRMLoaderPlugin(parser));
 
-        const modelUrl = gender === "male"
-          ? "/models/base_male.vrm"
-          : "/models/base_female.vrm";
+        const OUTFIT_MAP_FEMALE: Record<string, string> = {
+          casual: '/models/female_casual.vrm',
+          cute: '/models/female_cute.vrm',
+          dress: '/models/female_dress.vrm',
+          sports: '/models/female_sports.vrm',
+          flower: '/models/female_flower.vrm',
+          white: '/models/female_white.vrm',
+        };
+        const OUTFIT_MAP_MALE: Record<string, string> = {
+          casual: '/models/male_casual.vrm',
+          cute: '/models/male_cute.vrm',
+          dress: '/models/male_dress.vrm',
+          sports: '/models/male_sports.vrm',
+          white: '/models/male_white.vrm',
+        };
+        const outfitMap = gender === 'male' ? OUTFIT_MAP_MALE : OUTFIT_MAP_FEMALE;
+        const modelUrl = (outfitStyle && outfitMap[outfitStyle]) || (gender === 'male' ? '/models/base_male.vrm' : '/models/base_female.vrm');
 
         loader.load(
           modelUrl,
@@ -263,7 +277,7 @@ function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender }: {
         }
       }
     };
-  }, [gender]);
+  }, [gender, outfitStyle]);
 
   // 헤어 색상
   useEffect(() => {
@@ -330,6 +344,7 @@ export default function VRMPreviewCanvas(props: Props) {
         skinTone={props.skinTone}
         eyeColor={props.eyeColor}
         gender={props.gender}
+        outfitStyle={props.outfitStyle}
       />
     </CanvasErrorBoundary>
   );

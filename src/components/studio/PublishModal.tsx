@@ -26,31 +26,53 @@ export default function PublishModal({
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
   const [publishing, setPublishing] = useState(false);
+  const [autoThumb, setAutoThumb] = useState<string | null>(null);
 
   const handlePublish = async () => {
     if (!title.trim()) return;
     setPublishing(true);
+    try {
+      let finalThumbUrl = thumbnailUrl || autoThumb || null;
 
-    const res = await fetch("/api/posts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: title.trim(),
-        description: description.trim() || null,
-        category,
-        artistId: artistId || null,
-        thumbnailUrl: thumbnailUrl || null,
-        contentData,
-        fileUrls: fileUrls || [],
-        tags: tags ? tags.split(",").map((t) => t.trim()).filter(Boolean) : [],
-      }),
-    });
+      if (category === "IDOL_PROJECT" && !finalThumbUrl) {
+        try {
+          const worldbuilding = (contentData as Record<string, unknown>).worldbuilding as string || "";
+          const groupName = (contentData as Record<string, unknown>).groupName as string || "";
+          const thumbRes = await fetch("/api/ai/thumbnail/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ prompt: `K-pop idol group "${groupName}": ${worldbuilding}` }),
+          });
+          const thumbData = await thumbRes.json();
+          if (thumbData.success && thumbData.imageUrl) {
+            finalThumbUrl = thumbData.imageUrl;
+            setAutoThumb(thumbData.imageUrl);
+          }
+        } catch { /* fallback */ }
+      }
 
-    if (res.ok) {
-      onClose();
-      window.location.href = "/feed";
+      const res = await fetch("/api/posts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: title.trim(),
+          description: description.trim() || null,
+          category,
+          artistId: artistId || null,
+          thumbnailUrl: finalThumbUrl,
+          contentData,
+          fileUrls: fileUrls || [],
+          tags: tags ? tags.split(",").map((t) => t.trim()).filter(Boolean) : [],
+        }),
+      });
+
+      if (res.ok) {
+        onClose();
+        window.location.href = "/feed";
+      }
+    } finally {
+      setPublishing(false);
     }
-    setPublishing(false);
   };
 
   // eslint-disable-next-line -- conditional render after all hooks

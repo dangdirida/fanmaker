@@ -115,6 +115,7 @@ export default function VirtualStudioListPage() {
                       name={idol.name}
                       gender={idol.gender}
                       hairColor={idol.hairColor}
+                      outfitStyle={idol.outfitStyle}
                       size={56}
                     />
                   </div>

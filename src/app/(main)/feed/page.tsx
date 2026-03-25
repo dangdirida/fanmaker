@@ -371,7 +371,7 @@ export default function FeedPage() {
       {displayPosts.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {displayPosts.map((post) => (
-            <PostCard key={post.id} post={post} onReaction={handleReaction} />
+            <PostCard key={post.id} post={post} onReaction={handleReaction} currentUserId={session?.user?.id ?? undefined} />
           ))}
         </div>
       ) : (

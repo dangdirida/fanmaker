@@ -76,6 +76,7 @@ export async function GET(req: NextRequest) {
     reactionCount: post._count.reactions,
     commentCount: post._count.comments,
     myReactions: post.reactions ? post.reactions.map((r) => r.type) : [],
+    contentData: post.contentData,
   }));
 
   return NextResponse.json({

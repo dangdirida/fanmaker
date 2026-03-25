@@ -173,6 +173,7 @@ export default function PostDetailPage() {
                   hairColor={vi.hairColor}
                   skinTone={vi.skinTone}
                   eyeColor={vi.eyeColor}
+                  outfitStyle={vi.outfitStyle}
                   width={180}
                   height={260}
                 />

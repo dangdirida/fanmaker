@@ -7,10 +7,11 @@ interface Props {
   name: string;
   gender: string;
   hairColor: string;
+  outfitStyle?: string;
   size?: number;
 }
 
-export default function IdolThumbnail({ idolId, name, gender, hairColor, size = 56 }: Props) {
+export default function IdolThumbnail({ idolId, name, gender, hairColor, outfitStyle, size = 56 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [captured, setCaptured] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
@@ -43,7 +44,22 @@ export default function IdolThumbnail({ idolId, name, gender, hairColor, size = 
         dir.position.set(0, 2, 2);
         scene.add(dir);
 
-        const modelUrl = gender === "male" ? "/models/base_male.vrm" : "/models/base_female.vrm";
+        const OUTFIT_MAP_FEMALE: Record<string, string> = {
+          casual: '/models/female_casual.vrm',
+          cute: '/models/female_cute.vrm',
+          dress: '/models/female_dress.vrm',
+          flower: '/models/female_flower.vrm',
+          white: '/models/female_white.vrm',
+        };
+        const OUTFIT_MAP_MALE: Record<string, string> = {
+          casual: '/models/male_casual.vrm',
+          cute: '/models/male_cute.vrm',
+          dress: '/models/male_dress.vrm',
+          sports: '/models/male_sports.vrm',
+          white: '/models/male_white.vrm',
+        };
+        const outfitMap = gender === 'male' ? OUTFIT_MAP_MALE : OUTFIT_MAP_FEMALE;
+        const modelUrl = (outfitStyle && outfitMap[outfitStyle]) || (gender === 'male' ? '/models/base_male.vrm' : '/models/base_female.vrm');
 
         const loader = new GLTFLoader();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -88,7 +104,7 @@ export default function IdolThumbnail({ idolId, name, gender, hairColor, size = 
     })();
 
     return () => { disposed = true; };
-  }, [idolId, gender, hairColor, size]);
+  }, [idolId, gender, hairColor, outfitStyle, size]);
 
   if (failed || !captured) {
     return (

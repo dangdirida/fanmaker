@@ -47,7 +47,10 @@ export default function VirtualIdolWizardPage() {
       .then((r) => r.json())
       .then((d) => {
         if (d.success) {
-          setIdol(d.data);
+          // outfitStyle이 없거나 구버전 값이면 기본값으로 설정
+          const validOutfits = ['casual','cute','dress','flower','sports','white'];
+          const outfitStyle = validOutfits.includes(d.data.outfitStyle) ? d.data.outfitStyle : 'casual';
+          setIdol({ ...d.data, outfitStyle });
           setCurrentStep(d.data.step || 1);
         } else {
           router.replace("/studio/virtual");
@@ -134,6 +137,7 @@ export default function VirtualIdolWizardPage() {
           {currentStep === 2 && (
             <Step2_Appearance
               idol={idol}
+              gender={idol.gender}
               onUpdate={handleUpdate}
               onPrev={() => goToStep(1)}
               onNext={() => goToStep(3)}

@@ -7,12 +7,13 @@ interface Props {
   hairColor: string;
   skinTone: string;
   eyeColor: string;
+  outfitStyle?: string;
   width?: number;
   height?: number;
 }
 
 export default function VRMStaticPreview({
-  gender, hairColor, skinTone, eyeColor,
+  gender, hairColor, skinTone, eyeColor, outfitStyle,
   width = 200,
   height = 300,
 }: Props) {
@@ -38,13 +39,13 @@ export default function VRMStaticPreview({
         renderer.setSize(width, height);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.outputColorSpace = THREE.SRGBColorSpace;
-        renderer.setClearColor(0x000000, 0);
+        renderer.setClearColor(0xffffff, 1);
         container.appendChild(renderer.domElement);
 
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(30, width / height, 0.1, 100);
-        camera.position.set(0, 1.0, 2.8);
-        camera.lookAt(0, 0.9, 0);
+        const camera = new THREE.PerspectiveCamera(28, width / height, 0.1, 100);
+        camera.position.set(0, 1.45, 1.4);
+        camera.lookAt(0, 1.35, 0);
 
         scene.add(new THREE.AmbientLight(0xffffff, 2.2));
         const dir = new THREE.DirectionalLight(0xfff0e0, 1.4);
@@ -54,7 +55,22 @@ export default function VRMStaticPreview({
         fill.position.set(-2, 1, 1);
         scene.add(fill);
 
-        const modelUrl = gender === "male" ? "/models/base_male.vrm" : "/models/base_female.vrm";
+        const OUTFIT_MAP_FEMALE: Record<string, string> = {
+          casual: '/models/female_casual.vrm',
+          cute: '/models/female_cute.vrm',
+          dress: '/models/female_dress.vrm',
+          flower: '/models/female_flower.vrm',
+          white: '/models/female_white.vrm',
+        };
+        const OUTFIT_MAP_MALE: Record<string, string> = {
+          casual: '/models/male_casual.vrm',
+          cute: '/models/male_cute.vrm',
+          dress: '/models/male_dress.vrm',
+          sports: '/models/male_sports.vrm',
+          white: '/models/male_white.vrm',
+        };
+        const outfitMap = gender === 'male' ? OUTFIT_MAP_MALE : OUTFIT_MAP_FEMALE;
+        const modelUrl = (outfitStyle && outfitMap[outfitStyle]) || (gender === 'male' ? '/models/base_male.vrm' : '/models/base_female.vrm');
 
         const loader = new GLTFLoader();
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -130,7 +146,7 @@ export default function VRMStaticPreview({
       renderer?.dispose();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gender, hairColor, skinTone, eyeColor]);
+  }, [gender, hairColor, skinTone, eyeColor, outfitStyle]);
 
   return (
     <div
@@ -140,7 +156,7 @@ export default function VRMStaticPreview({
       <div
         style={{
           position: "absolute", inset: 0,
-          background: "linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%)",
+          background: "#ffffff",
           borderRadius: "12px",
         }}
       />

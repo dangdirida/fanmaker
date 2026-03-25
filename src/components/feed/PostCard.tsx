@@ -1,4 +1,7 @@
 "use client";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+const VRMStaticPreview = dynamic(() => import("@/components/feed/VRMStaticPreview"), { ssr: false });
 
 import Link from "next/link";
 import Image from "next/image";
@@ -99,11 +102,53 @@ interface PostCardProps {
     cheerCount?: number;
     aiScore?: number;
     gradient?: string;
+    contentData?: Record<string, unknown>;
+    authorId?: string;
   };
   onReaction: (postId: string, type: string) => void;
+  currentUserId?: string;
 }
 
-export default function PostCard({ post, onReaction }: PostCardProps) {
+
+function VirtualThumbnail({ contentData }: { contentData?: Record<string, unknown> }) {
+  const [vrmData, setVrmData] = useState<Record<string, string> | null>(null);
+
+  useEffect(() => {
+    if (!contentData) return;
+    const data = contentData as Record<string, string>;
+    if (data.hairColor && data.skinTone && data.eyeColor && data.gender) {
+      setVrmData({ hairColor: data.hairColor, skinTone: data.skinTone, eyeColor: data.eyeColor, outfitStyle: data.outfitStyle || "casual", gender: data.gender });
+      return;
+    }
+    if (!data.virtualIdolId) return;
+    fetch("/api/virtual-idols/preview?id=" + data.virtualIdolId)
+      .then(r => r.json())
+      .then(d => { if (d.success) setVrmData(d.data); })
+      .catch(() => {});
+  }, [contentData]);
+
+  if (!vrmData) return (
+    <div className="w-full h-full bg-white flex items-center justify-center">
+      <div className="w-8 h-8 border-2 border-gray-200 border-t-gray-400 rounded-full animate-spin" />
+    </div>
+  );
+
+  return (
+    <div className="w-full h-full bg-white flex items-center justify-center">
+      <VRMStaticPreview
+        gender={vrmData.gender}
+        hairColor={vrmData.hairColor}
+        skinTone={vrmData.skinTone}
+        eyeColor={vrmData.eyeColor}
+        outfitStyle={vrmData.outfitStyle}
+        width={320}
+        height={240}
+      />
+    </div>
+  );
+}
+
+export default function PostCard({ post, onReaction, currentUserId }: PostCardProps) {
   const config = CATEGORY_CONFIG[post.category] || DEFAULT_CONFIG;
   const IconComponent = config.icon;
   const timeAgo = formatDistanceToNow(new Date(post.createdAt), {
@@ -111,6 +156,12 @@ export default function PostCard({ post, onReaction }: PostCardProps) {
     locale: ko,
   });
 
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!confirm("게시물을 삭제할까요?")) return;
+    await fetch("/api/posts/" + post.id, { method: "DELETE" });
+    window.location.reload();
+  };
   const likeCount = post.reactionCount;
   const cheerCount = post.cheerCount ?? Math.floor(post.reactionCount * 0.7);
   const aiScore = post.aiScore ?? Math.floor(post.reactionCount * 0.3);
@@ -122,14 +173,27 @@ export default function PostCard({ post, onReaction }: PostCardProps) {
     >
       {/* 썸네일 */}
       <div className="aspect-video relative overflow-hidden">
-        {post.thumbnailUrl ? (
+        {currentUserId && currentUserId === post.authorId && (
+          <button onClick={handleDelete} className="absolute top-2 right-2 z-10 w-7 h-7 bg-black/50 hover:bg-red-500 text-white rounded-full flex items-center justify-center text-xs transition-colors">
+            ✕
+          </button>
+        )}
+        {post.category === 'VIRTUAL' && post.contentData ? (
+          <VirtualThumbnail contentData={post.contentData as Record<string, unknown>} />
+        ) : post.thumbnailUrl ? (
           <Image
             src={post.thumbnailUrl}
             alt={post.title}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
+            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out w-full h-full"
             unoptimized
+          />
+        ) : post.thumbnailUrl ? null : post.contentData && (post.contentData as Record<string, unknown>).youtubeUrl ? (
+          <img
+            src={`https://img.youtube.com/vi/${((post.contentData as Record<string, unknown>).youtubeUrl as string).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/)?.[1]}/hqdefault.jpg`}
+            alt={post.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out"
           />
         ) : (
           <div
