@@ -36,7 +36,8 @@ export default function PublishModal({
 
       if (category === "IDOL_PROJECT" && !finalThumbUrl) {
         try {
-          const worldbuilding = (contentData as Record<string, unknown>).worldbuilding as string || "";
+          const wb = (contentData as Record<string, unknown>).worldbuilding;
+          const worldbuilding = typeof wb === "string" ? wb : (wb ? JSON.stringify(wb).substring(0, 200) : "");
           const groupName = (contentData as Record<string, unknown>).groupName as string || "";
           const thumbRes = await fetch("/api/ai/thumbnail/generate", {
             method: "POST",

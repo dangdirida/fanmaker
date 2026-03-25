@@ -126,22 +126,45 @@ export default function GlobalSyncPage() {
       const videoId = getYoutubeId(youtubeUrl);
       if (!videoId) throw new Error("유효한 YouTube URL이 아닙니다");
 
-      const transcriptRes = await fetch("/api/global-sync/transcript", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ videoId }),
-      });
-      const transcriptData = await transcriptRes.json();
-      if (!transcriptRes.ok || !transcriptData.success) {
-        alert(transcriptData.error || "자막을 가져오지 못했습니다");
-        return;
+      // 클라이언트에서 직접 YouTube timedtext API 호출
+      let transcriptData: { success: boolean; data: SubtitleLine[]; message?: string } = { success: false, data: [] };
+
+      const langs = ["ko", "ko", "en"];
+      const kinds = ["", "asr", ""];
+      for (let i = 0; i < langs.length; i++) {
+        const kindParam = kinds[i] ? `&kind=${kinds[i]}` : "";
+        const timedUrl = `https://www.youtube.com/api/timedtext?v=${videoId}&lang=${langs[i]}${kindParam}&fmt=json3`;
+        try {
+          const tr = await fetch(timedUrl);
+          if (tr.ok) {
+            const td = await tr.json();
+            if (td.events && td.events.length > 0) {
+              const fmt = (ms: number) => {
+                const h = Math.floor(ms/3600000).toString().padStart(2,"0");
+                const m = Math.floor((ms%3600000)/60000).toString().padStart(2,"0");
+                const s = Math.floor((ms%60000)/1000).toString().padStart(2,"0");
+                const ms2 = (ms%1000).toString().padStart(3,"0");
+                return `${h}:${m}:${s},${ms2}`;
+              };
+              const lines = td.events
+                .filter((e: {segs?: unknown[]}) => e.segs)
+                .map((e: {tStartMs: number; dDurationMs?: number; segs: Array<{utf8: string}>}, idx: number) => {
+                  const text = e.segs.map((s: {utf8: string}) => s.utf8).join("").replace(/\n/g," ").trim();
+                  if (!text || text === " ") return null;
+                  return { id: idx+1, startTime: fmt(e.tStartMs), endTime: fmt(e.tStartMs+(e.dDurationMs||3000)), startMs: e.tStartMs, original: text, translated: "" };
+                })
+                .filter(Boolean);
+              if (lines.length > 0) {
+                transcriptData = { success: true, data: lines as SubtitleLine[] };
+                break;
+              }
+            }
+          }
+        } catch { /* try next */ }
       }
-      if (!transcriptData.data || transcriptData.data.length === 0) {
-        if (transcriptData.noCaption) {
-          alert("이 영상에서 자막을 추출하지 못했습니다.\n\n원인: YouTube 자막이 비활성화되어 있거나, 자동 생성 자막도 없는 영상입니다.\n\n다른 영상을 사용하거나, 자막이 활성화된 영상을 선택해주세요.");
-        } else {
-          alert("자막 데이터가 비어 있습니다. 다시 시도해주세요.");
-        }
+
+      if (!transcriptData.success || transcriptData.data.length === 0) {
+        alert("이 영상에는 자막이 없습니다. 자막이 활성화된 영상을 사용해주세요.");
         return;
       }
 
