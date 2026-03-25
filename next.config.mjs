@@ -42,6 +42,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "cdn.jsdelivr.net",
       },
+      {
+        protocol: "https",
+        hostname: "image.pollinations.ai",
+      },
     ],
   },
   webpack: (config, { isServer }) => {

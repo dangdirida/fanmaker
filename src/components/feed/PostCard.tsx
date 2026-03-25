@@ -181,14 +181,11 @@ export default function PostCard({ post, onReaction, currentUserId }: PostCardPr
         {post.category === 'VIRTUAL' && post.contentData ? (
           <VirtualThumbnail contentData={post.contentData as Record<string, unknown>} />
         ) : post.thumbnailUrl ? (
-          <Image
-            src={post.thumbnailUrl}
-            alt={post.title}
-            fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover group-hover:scale-105 transition-transform duration-500 ease-out w-full h-full"
-            unoptimized
-          />
+          post.thumbnailUrl.startsWith('data:') || post.thumbnailUrl.includes('pollinations') ? (
+            <img src={post.thumbnailUrl} alt={post.title} className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out" />
+          ) : (
+            <Image src={post.thumbnailUrl} alt={post.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out w-full h-full" unoptimized />
+          )
         ) : post.thumbnailUrl ? null : post.contentData && (post.contentData as Record<string, unknown>).youtubeUrl ? (
           <img
             src={`https://img.youtube.com/vi/${((post.contentData as Record<string, unknown>).youtubeUrl as string).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([a-zA-Z0-9_-]{11})/)?.[1]}/hqdefault.jpg`}
