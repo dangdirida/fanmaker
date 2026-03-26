@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Sparkles, X } from 'lucide-react';
+import { Sparkles, X, Maximize2, Minimize2 } from 'lucide-react';
 
 import { useIdolGameStore } from '@/store/useIdolGameStore';
 import {
@@ -64,6 +64,10 @@ export default function IdolGamePlayPage() {
   // 에너지 모달
   const [showEnergyModal, setShowEnergyModal] = useState(false);
 
+  // 전체화면
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const gameContainerRef = useRef<HTMLDivElement>(null);
+
   // 대화 박스 높이 참조
   const dialogRef = useRef<HTMLDivElement>(null);
   const [dialogHeight, setDialogHeight] = useState(180);
@@ -71,6 +75,32 @@ export default function IdolGamePlayPage() {
   // 오토세이브 인터벌 참조
   const saveIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isTransitioningRef = useRef(false);
+
+  // ------------------------------------------------------------------
+  // 전체화면 토글
+  // ------------------------------------------------------------------
+  const toggleFullscreen = useCallback(async () => {
+    const el = gameContainerRef.current;
+    if (!el) return;
+
+    if (!document.fullscreenElement) {
+      try {
+        await el.requestFullscreen();
+      } catch {
+        // 전체화면 미지원 시 무시
+      }
+    } else {
+      await document.exitFullscreen();
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleChange);
+    return () => document.removeEventListener('fullscreenchange', handleChange);
+  }, []);
 
   // ------------------------------------------------------------------
   // goToScene: 씬 전환 핵심 함수
@@ -429,7 +459,7 @@ export default function IdolGamePlayPage() {
   const isEnding = !!scene?.isEnding && !!scene?.endingData;
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-black">
+    <div ref={gameContainerRef} className="flex h-screen flex-col overflow-hidden bg-black">
       {/* ======== StatBar ======== */}
       <div className="relative z-10" style={{ height: 52 }}>
         <StatBar
@@ -555,6 +585,15 @@ export default function IdolGamePlayPage() {
         >
           <SaveToast show={store.showSaveToast} />
         </div>
+
+        {/* 전체화면 토글 버튼 */}
+        <button
+          onClick={toggleFullscreen}
+          className="absolute bottom-4 right-4 z-30 flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 bg-black/50 text-white/60 backdrop-blur-sm transition-colors hover:bg-black/70 hover:text-white"
+          title={isFullscreen ? '화면 축소' : '화면 확대'}
+        >
+          {isFullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+        </button>
 
         {/* TransitionOverlay */}
         <div
