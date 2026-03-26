@@ -1,96 +1,65 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import Anthropic from "@anthropic-ai/sdk";
 
-const STYLE_LABELS: Record<string, string> = {
-  "dance-pop": "댄스팝",
-  acoustic: "어쿠스틱",
-  synthwave: "신스웨이브",
-  "lo-fi": "로파이 힙합",
-  edm: "EDM",
-  "r&b": "R&B",
-  jazz: "재즈",
-  tropical: "트로피컬 하우스",
-};
+export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) {
-    return NextResponse.json(
-      { success: false, error: "인증이 필요합니다" },
-      { status: 401 }
-    );
+    return NextResponse.json({ success: false, error: "인증 필요" }, { status: 401 });
   }
 
-  const { style, bpm, key: keyShift, artistName } = await req.json();
+  const body = await req.json();
+  const { artist, style, mood, originalSong } = body;
 
-  if (!style) {
-    return NextResponse.json(
-      { success: false, error: "스타일을 선택해주세요" },
-      { status: 400 }
-    );
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return NextResponse.json({ success: false, error: "API 키 없음" }, { status: 500 });
   }
 
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  if (!apiKey || apiKey === "your-anthropic-api-key") {
-    return NextResponse.json(
-      { success: false, error: "ANTHROPIC_API_KEY가 설정되지 않았습니다" },
-      { status: 500 }
-    );
-  }
+  const prompt = `당신은 K-pop 전문 음악 프로듀서입니다.
+다음 정보를 바탕으로 리믹스 컨셉을 한국어로 생성해주세요.
 
-  const styleLabel = STYLE_LABELS[style] || style;
-  const keyText =
-    keyShift === 0
-      ? "원키 유지"
-      : keyShift > 0
-        ? `+${keyShift} 반음 올림`
-        : `${keyShift} 반음 내림`;
-  const artistText = artistName ? `${artistName}의 곡` : "K-pop 곡";
+아티스트: ${artist}
+리믹스 스타일: ${style || "자유"}
+무드: ${mood || "자유"}
+원곡: ${originalSong || "자유"}
 
-  const prompt = `당신은 K-pop 리믹스 전문 프로듀서입니다.
-
-${artistText}을 "${styleLabel}" 스타일로 리믹스하려고 합니다.
-BPM: ${bpm}, 키: ${keyText}
-
-아래 항목을 한국어로 상세하고 창의적으로 작성해주세요:
-
-1. **리믹스 컨셉** (3~4문장): 이 리믹스의 전체적인 방향성과 느낌
-2. **편곡 방향** (4~5항목): 구체적인 편곡 변경 사항 (인트로, 벌스, 코러스, 브릿지, 아웃트로)
-3. **추천 악기 & 사운드** (5~6개): 이 스타일에 어울리는 핵심 악기와 사운드 디자인
-4. **예상 분위기 키워드** (5~6개): 한 단어로 표현하는 분위기 키워드
-5. **프로듀서 코멘트** (2~3문장): 리믹스의 하이라이트 포인트와 리스너에게 전하는 말
-
-각 섹션은 제목을 포함해서 마크다운 형식으로 작성해주세요.`;
+다음 JSON 형식으로만 응답하세요 (마크다운 없이):
+{
+  "remixTitle": "리믹스 제목",
+  "remixStyle": "리믹스 스타일 설명 (50자 이내)",
+  "bpm": "추천 BPM (숫자만)",
+  "key": "추천 키 (예: C Major)",
+  "instruments": ["악기1", "악기2", "악기3"],
+  "structure": "곡 구조 설명 (예: 인트로-버스-코러스-브릿지)",
+  "lyrics": "가사 방향성 (50자 이내)",
+  "productionTips": ["프로덕션 팁1", "프로덕션 팁2", "프로덕션 팁3"],
+  "referenceArtists": ["레퍼런스 아티스트1", "레퍼런스 아티스트2"],
+  "uniqueElement": "이 리믹스의 독특한 요소 (50자 이내)"
+}`;
 
   try {
-    const client = new Anthropic({ apiKey });
-
-    const message = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1024,
-      messages: [{ role: "user", content: prompt }],
-    });
-
-    const textBlock = message.content.find((b) => b.type === "text");
-    const resultText = textBlock?.text || "리믹스 컨셉 생성에 실패했습니다.";
-
-    return NextResponse.json({
-      success: true,
-      data: {
-        remixConcept: resultText,
-        style: styleLabel,
-        bpm,
-        keyShift,
-        artistName: artistName || null,
-      },
-    });
-  } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "AI 생성 중 오류가 발생했습니다";
-    return NextResponse.json(
-      { success: false, error: message },
-      { status: 500 }
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.9, maxOutputTokens: 1024 },
+        }),
+      }
     );
+
+    const data = await res.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    const clean = text.replace(/```json|```/g, "").trim();
+    const parsed = JSON.parse(clean);
+
+    return NextResponse.json({ success: true, data: parsed });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ success: false, error: msg }, { status: 500 });
   }
 }

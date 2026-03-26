@@ -1,16 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export const maxDuration = 60;
-export const dynamic = "force-dynamic";
-
-function parseJSON(text: string): Record<string, unknown> {
-  const cleaned = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
-  const match = cleaned.match(/\{[\s\S]*\}/);
-  if (!match) throw new Error("JSON not found");
-  return JSON.parse(match[0]);
-}
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -18,25 +9,59 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, error: "인증 필요" }, { status: 401 });
   }
 
-  const { artistName, mood, keywords, primaryColor, albumName, targetAudience } = await req.json();
+  const body = await req.json();
+  const { artist, mood, keywords, targetAudience, albumDirection, colorCode } = body;
+
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    return NextResponse.json({ success: false, error: "GEMINI_API_KEY 없음" }, { status: 500 });
+    return NextResponse.json({ success: false, error: "API 키 없음" }, { status: 500 });
   }
 
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+  const prompt = `당신은 K-pop 전문 크리에이티브 디렉터입니다.
+다음 정보를 바탕으로 K-pop 컨셉 키트를 한국어로 생성해주세요.
+
+아티스트: ${artist}
+무드: ${mood}
+키워드: ${(keywords || []).join(", ")}
+타겟 오디언스: ${targetAudience || "전 연령"}
+앨범/타이틀 방향: ${albumDirection || "자유"}
+대표 색상: ${colorCode || "#000000"}
+
+다음 JSON 형식으로만 응답하세요 (마크다운 없이):
+{
+  "conceptTitle": "컨셉 제목 (10자 이내)",
+  "conceptDescription": "컨셉 설명 (100자 이내)",
+  "albumTitle": "앨범 타이틀 추천",
+  "titleTrack": "타이틀 곡명 추천",
+  "visualDirection": "비주얼 방향성 (50자 이내)",
+  "styleKeywords": ["스타일 키워드1", "스타일 키워드2", "스타일 키워드3"],
+  "colorPalette": ["색상1", "색상2", "색상3"],
+  "moodBoard": ["무드보드 요소1", "무드보드 요소2", "무드보드 요소3"],
+  "targetMessage": "팬들에게 전달할 메시지 (50자 이내)",
+  "marketingAngle": "마케팅 포인트 (50자 이내)"
+}`;
 
   try {
-    const result = await model.generateContent(
-      `K-pop 컨셉 키트를 JSON으로만 생성하세요. 마크다운 없이 JSON만 출력.
-아티스트:${artistName} 무드:${mood} 키워드:${(keywords||[]).join(",")} 색상:${primaryColor}${albumName?` 앨범:${albumName}`:""}${targetAudience?` 타겟:${targetAudience}`:""}
-{"albumTitle":"타이틀","titleTrack":"곡명","concept":"컨셉2-3줄","tagline":"태그라인10자","tracks":[{"title":"트랙","mood":"분위기","description":"설명"},{"title":"트랙","mood":"분위기","description":"설명"},{"title":"트랙","mood":"분위기","description":"설명"},{"title":"트랙","mood":"분위기","description":"설명"},{"title":"트랙","mood":"분위기","description":"설명"}],"palette":["${primaryColor}","#hex","#hex","#hex","#hex"],"visualDirection":"비주얼2-3줄","styling":"스타일2-3줄","stageDirection":"무대2-3줄","moodKeywords":["k1","k2","k3","k4","k5","k6"],"coverStyle":"커버스타일"}`
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.9, maxOutputTokens: 1024 },
+        }),
+      }
     );
-    return NextResponse.json({ success: true, data: parseJSON(result.response.text()) });
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.error("Concept error:", msg);
-    return NextResponse.json({ success: false, error: msg.substring(0, 100) }, { status: 500 });
+
+    const data = await res.json();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+    const clean = text.replace(/```json|```/g, "").trim();
+    const parsed = JSON.parse(clean);
+
+    return NextResponse.json({ success: true, data: parsed });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    return NextResponse.json({ success: false, error: msg }, { status: 500 });
   }
 }
