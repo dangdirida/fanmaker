@@ -1,4 +1,7 @@
 "use client";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -27,6 +30,18 @@ const quickLinks = [
   { href: "/admin/artists", label: "아티스트 관리", icon: "" },
   { href: "/admin/notices", label: "공지사항", icon: "" },
 ];
+
+function useAdminGuard() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  useEffect(() => {
+    if (status === "loading") return;
+    if (!session || (session.user as {role?: string}).role !== "ADMIN") {
+      router.replace("/feed");
+    }
+  }, [session, status, router]);
+  return session;
+}
 
 export default function AdminDashboardPage() {
   const [stats, setStats] = useState<Stats | null>(null);
