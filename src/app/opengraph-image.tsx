@@ -12,32 +12,31 @@ export default async function Image() {
         style={{
           width: "1200px",
           height: "630px",
-          background: "linear-gradient(135deg, #0a0a0a 0%, #1a0512 50%, #0a0a0a 100%)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          background: "linear-gradient(135deg, #0a0a0a 0%, #1a0512 60%, #0d0d0d 100%)",
           position: "relative",
           overflow: "hidden",
         }}
       >
-        {/* 배경 글로우 */}
+        {/* 글로우 왼쪽 */}
         <div style={{
           position: "absolute",
-          width: "600px",
-          height: "600px",
+          width: "700px", height: "700px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(255,61,127,0.25) 0%, transparent 70%)",
-          left: "-100px",
-          top: "-100px",
+          background: "radial-gradient(circle, rgba(255,61,127,0.2) 0%, transparent 65%)",
+          left: "-200px", top: "-200px",
+          display: "flex",
         }} />
+        {/* 글로우 오른쪽 */}
         <div style={{
           position: "absolute",
-          width: "400px",
-          height: "400px",
+          width: "500px", height: "500px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(255,61,127,0.15) 0%, transparent 70%)",
-          right: "-50px",
-          bottom: "-100px",
+          background: "radial-gradient(circle, rgba(255,61,127,0.1) 0%, transparent 65%)",
+          right: "-100px", bottom: "-150px",
+          display: "flex",
         }} />
 
         {/* 중앙 콘텐츠 */}
@@ -48,60 +47,62 @@ export default async function Image() {
           justifyContent: "center",
           textAlign: "center",
           gap: "0px",
-          zIndex: 10,
         }}>
-          {/* 로고 아이콘 */}
+          {/* 아이콘 */}
           <div style={{
-            width: "80px",
-            height: "80px",
-            borderRadius: "20px",
-            background: "rgba(255,61,127,0.2)",
+            width: "88px", height: "88px",
+            borderRadius: "22px",
+            background: "rgba(255,61,127,0.18)",
+            border: "1.5px solid rgba(255,61,127,0.35)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            marginBottom: "24px",
-            border: "1px solid rgba(255,61,127,0.3)",
+            marginBottom: "28px",
           }}>
-            <svg width="40" height="40" viewBox="0 0 32 32">
-              <path d="M18 4L10 18h7l-3 10 12-14h-8l4-10z" fill="#ff3d7f"/>
-            </svg>
+            <div style={{
+              fontSize: "40px",
+              display: "flex",
+            }}>⚡</div>
           </div>
 
           {/* 타이틀 */}
           <div style={{
-            fontSize: "88px",
+            fontSize: "96px",
             fontWeight: "900",
             color: "#ffffff",
-            letterSpacing: "-3px",
+            letterSpacing: "-4px",
             lineHeight: "1",
-            marginBottom: "20px",
+            marginBottom: "22px",
+            display: "flex",
           }}>
             FanMaker
           </div>
 
           {/* 핑크 라인 */}
           <div style={{
-            width: "80px",
-            height: "4px",
+            width: "72px", height: "4px",
             borderRadius: "2px",
             background: "#ff3d7f",
-            marginBottom: "24px",
+            marginBottom: "22px",
+            display: "flex",
           }} />
 
           {/* 서브타이틀 */}
           <div style={{
-            fontSize: "28px",
-            color: "#888888",
-            letterSpacing: "4px",
-            marginBottom: "16px",
+            fontSize: "26px",
+            color: "#999999",
+            letterSpacing: "5px",
+            marginBottom: "14px",
+            display: "flex",
           }}>
             K-POP 팬 창작 플랫폼
           </div>
 
-          {/* 태그라인 */}
+          {/* 설명 */}
           <div style={{
-            fontSize: "20px",
+            fontSize: "19px",
             color: "#555555",
+            display: "flex",
           }}>
             AI로 직접 프로듀싱하는 K-pop 팬 창작 커뮤니티
           </div>
