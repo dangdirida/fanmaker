@@ -24,6 +24,7 @@ import {
   Crown,
   Sun,
   Moon,
+  Gamepad2,
 } from "lucide-react";
 
 const studioSubMenus = [
@@ -33,6 +34,7 @@ const studioSubMenus = [
   { label: "퍼포먼스", href: "/studio/performance", icon: Users },
   { label: "아이돌 프로젝트", href: "/studio/idol-project", icon: Sparkles },
   { label: "글로벌 싱크", href: "/studio/global-sync", icon: Globe },
+  { label: "아이돌 키우기", href: "/studio/idol-game", icon: Gamepad2 },
 ];
 
 const mobileMenus = [

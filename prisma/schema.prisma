@@ -41,6 +41,7 @@ model User {
   votes            Vote[]
   aiJobs           AIJob[]
   virtualIdols     VirtualIdol[]
+  idolGameSave     IdolGameSave?
 }
 
 enum ActivityType {
@@ -291,6 +292,29 @@ model VirtualIdol {
   updatedAt    DateTime @updatedAt
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   post         Post?    @relation(fields: [postId], references: [id])
+}
+
+model IdolGameSave {
+  id               String    @id @default(cuid())
+  userId           String    @unique
+  slotIndex        Int       @default(0)
+  groupName        String
+  groupType        String
+  concept          String
+  membersJson      Json
+  statsJson        Json
+  stage            String    @default("연습생")
+  week             Int       @default(1)
+  energy           Int       @default(5)
+  energyResetAt    DateTime?
+  currentSceneId   String    @default("ch1_intro")
+  flagsJson        Json      @default("{}")
+  choiceHistory    String[]  @default([])
+  conceptBoardJson Json      @default("{}")
+  playtimeMinutes  Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
