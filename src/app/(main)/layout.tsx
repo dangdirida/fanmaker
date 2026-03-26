@@ -34,7 +34,6 @@ const studioSubMenus = [
   { label: "퍼포먼스", href: "/studio/performance", icon: Users },
   { label: "아이돌 프로젝트", href: "/studio/idol-project", icon: Sparkles },
   { label: "글로벌 싱크", href: "/studio/global-sync", icon: Globe },
-  { label: "아이돌 키우기", href: "/studio/idol-game", icon: Gamepad2 },
 ];
 
 const mobileMenus = [
@@ -59,6 +58,7 @@ export default function MainLayout({
 
   const pageTitle = (() => {
     if (pathname === "/feed") return "팬 유니버스";
+    if (pathname.startsWith("/studio/idol-game")) return "아이돌 키우기";
     if (pathname.startsWith("/studio")) return "창작 스튜디오";
     if (pathname.startsWith("/profile")) return "내 프로필";
     if (pathname.startsWith("/artist")) return "아티스트";
@@ -138,6 +138,19 @@ export default function MainLayout({
                 </div>
               )}
             </div>
+
+            {/* 아이돌 키우기 */}
+            <Link
+              href="/studio/idol-game"
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                pathname.startsWith("/studio/idol-game")
+                  ? "bg-black text-white"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+              }`}
+            >
+              <Gamepad2 className="w-5 h-5" />
+              <span>아이돌 키우기</span>
+            </Link>
 
             {/* 내 프로필 */}
             <Link
@@ -374,6 +387,14 @@ export default function MainLayout({
                   </Link>
                 );
               })}
+              <Link
+                href="/studio/idol-game"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                <Gamepad2 className="w-5 h-5" />
+                아이돌 키우기
+              </Link>
               <Link
                 href="/profile"
                 onClick={() => setMobileMenuOpen(false)}
