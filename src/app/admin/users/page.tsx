@@ -82,7 +82,7 @@ export default function AdminUsersPage() {
               <th className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500">플랜</th>
               <th className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500">역할</th>
               <th className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500">가입일</th>
-              <th className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500">관리</th>
+              <th className="px-5 py-3.5 text-right text-xs font-semibold text-gray-500"></th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
