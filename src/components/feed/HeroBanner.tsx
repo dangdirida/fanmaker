@@ -102,7 +102,7 @@ export default function HeroBanner() {
       onMouseLeave={() => setPaused(false)}
     >
       {/* 배경: 순수 블랙 + radial gradient */}
-      <div className="absolute inset-0 bg-black" />
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-950 via-purple-950/80 to-gray-900" />
       <div
         className="absolute inset-0"
         style={{
