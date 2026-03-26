@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Search, Plus, Trash2 } from "lucide-react";
+import { Search, Trash2 } from "lucide-react";
 
 interface Artist {
   id: string;

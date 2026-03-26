@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Users, FileText, Music, Bell, TrendingUp, Eye, Heart, Star, ArrowUpRight, Activity } from "lucide-react";
+import { Users, FileText, Music, Bell, TrendingUp, Star, ArrowUpRight, Activity } from "lucide-react";
 
 interface Stats {
   totalUsers: number;
