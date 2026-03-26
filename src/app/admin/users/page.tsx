@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Search, UserCheck, UserX, Shield } from "lucide-react";
+import { Search, UserCheck, UserX, Shield, Trash2 } from "lucide-react";
 
 interface User {
   id: string;
@@ -133,8 +133,8 @@ export default function AdminUsersPage() {
                       </button>
                     )}
                     <button onClick={() => handleDelete(user.id, user.nickname || user.email || "?")}
-                      className="flex items-center gap-1 px-2.5 py-1 text-xs bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors">
-                      <UserX className="w-3 h-3" /> 삭제
+                      className="p-1.5 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                      <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </td>
