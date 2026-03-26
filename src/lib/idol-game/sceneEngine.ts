@@ -161,22 +161,59 @@ export function getNextSceneId(
 const BG_BASE_PATH = '/backgrounds/idol-game';
 
 /**
- * Returns the primary (jpg) background image URL for a given background key.
+ * 씬 bg 키 -> 실제 파일명 매핑.
+ * 파일이 없는 키는 가장 비슷한 기존 파일로 대체.
+ *
+ * 실제 파일:
+ *   conference_room.jpg, practice_room.jpg, practice_room_night.jpg,
+ *   dorm_room.jpg, dorm_room_night.jpg
  */
-export function getBgUrl(bgKey: string): string {
-  return `${BG_BASE_PATH}/${bgKey}.jpg`;
+const BG_FILE_MAP: Record<string, string> = {
+  // 직접 매핑
+  conference: 'conference_room',
+  practice: 'practice_room',
+  practice_night: 'practice_room_night',
+  dorm: 'dorm_room',
+  dorm_night: 'dorm_room_night',
+  // 파일 미보유 - 유사 배경으로 대체
+  eval_hall: 'conference_room',
+  backstage: 'practice_room_night',
+  music_show: 'practice_room',
+  concert: 'practice_room_night',
+  debut_stage: 'practice_room_night',
+  recording: 'dorm_room',
+  photo_studio: 'dorm_room',
+  airport: 'conference_room',
+  overseas: 'practice_room_night',
+  award: 'conference_room',
+  award_win: 'conference_room',
+  rooftop: 'dorm_room_night',
+  press: 'conference_room',
+  sns_viral: 'dorm_room',
+  crisis_stage: 'practice_room_night',
+};
+
+function resolveFilename(bgKey: string): string {
+  return BG_FILE_MAP[bgKey] ?? bgKey;
 }
 
 /**
- * Returns the fallback (png) background image URL for a given background key.
+ * Returns the background image URL for a given scene bg key.
+ * Resolves the key to the actual filename first.
+ */
+export function getBgUrl(bgKey: string): string {
+  return `${BG_BASE_PATH}/${resolveFilename(bgKey)}.jpg`;
+}
+
+/**
+ * Returns the fallback (png) background image URL.
  */
 export function getFallbackBgUrl(bgKey: string): string {
-  return `${BG_BASE_PATH}/${bgKey}.png`;
+  return `${BG_BASE_PATH}/${resolveFilename(bgKey)}.png`;
 }
 
 /**
  * img onError handler that switches from .jpg to .png fallback once.
- * Attach this to the onError prop of an <img> element.
  */
 export function handleBgImageError(
   e: React.SyntheticEvent<HTMLImageElement>,
@@ -184,7 +221,6 @@ export function handleBgImageError(
 ): void {
   const img = e.currentTarget;
   const fallback = getFallbackBgUrl(bgKey);
-  // Only attempt fallback once to avoid infinite loops
   if (!img.src.endsWith(fallback)) {
     img.src = fallback;
   }

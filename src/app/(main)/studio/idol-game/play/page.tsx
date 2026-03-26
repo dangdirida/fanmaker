@@ -472,8 +472,8 @@ export default function IdolGamePlayPage() {
 
       {/* ======== GameArea ======== */}
       <div className="relative flex-1 overflow-hidden">
-        {/* SceneRenderer - 배경 */}
-        <div className="absolute inset-0">
+        {/* z-0: SceneRenderer - 배경 */}
+        <div className="absolute inset-0 z-0">
           <SceneRenderer
             bgKey={bgKey}
             spotlight={spotlight}
@@ -481,14 +481,14 @@ export default function IdolGamePlayPage() {
           />
         </div>
 
-        {/* Characters */}
+        {/* z-5: Characters - 배경 위, 대화창 아래 */}
         <div
-          className="absolute left-0 right-0 flex items-end justify-center"
-          style={{ bottom: dialogHeight + 20 }}
+          className="absolute bottom-0 left-0 right-0 z-[5] flex items-end justify-center"
+          style={{ bottom: 0 }}
         >
           <div
-            className="flex items-end justify-center gap-2"
-            style={{ width: '100%', maxWidth: 600 }}
+            className="flex items-end justify-center"
+            style={{ width: '100%', maxWidth: 700, gap: members.length > 5 ? 2 : 8 }}
           >
             {visibleMembers.map((memberIdx) => {
               const member = members[memberIdx];
@@ -496,18 +496,24 @@ export default function IdolGamePlayPage() {
 
               const isActive =
                 activeMemberIndex === -1 || activeMemberIndex === memberIdx;
+
+              // 캐릭터 크기: 화면 높이의 ~70% 차지하도록 크게
               const memberWidth =
-                members.length <= 4
-                  ? 80
-                  : members.length <= 6
-                    ? 64
-                    : 52;
+                members.length <= 3
+                  ? 120
+                  : members.length <= 5
+                    ? 100
+                    : members.length <= 7
+                      ? 80
+                      : 64;
               const memberHeight =
-                members.length <= 4
-                  ? 140
-                  : members.length <= 6
-                    ? 110
-                    : 90;
+                members.length <= 3
+                  ? 280
+                  : members.length <= 5
+                    ? 240
+                    : members.length <= 7
+                      ? 200
+                      : 160;
 
               return (
                 <div
@@ -515,9 +521,10 @@ export default function IdolGamePlayPage() {
                   className="transition-all duration-300"
                   style={{
                     transform: isActive
-                      ? 'scale(1.05) translateY(-6px)'
+                      ? 'scale(1.05) translateY(-8px)'
                       : 'scale(0.96)',
                     filter: isActive ? 'brightness(1)' : 'brightness(0.6)',
+                    marginBottom: dialogHeight,
                   }}
                 >
                   <VRMViewer
@@ -534,19 +541,21 @@ export default function IdolGamePlayPage() {
           </div>
         </div>
 
+        {/* z-10: UI 오버레이 */}
+
         {/* SceneTitleFlash */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
           <SceneTitleFlash title={titleFlash} />
         </div>
 
         {/* StatChangePopup */}
-        <div className="absolute right-4 top-[60px]">
+        <div className="absolute right-4 top-[8px] z-10">
           <StatChangePopup changes={store.statChanges} />
         </div>
 
         {/* EnergyBar (StatChangePopup이 없을 때) */}
         {!store.statChanges && (
-          <div className="absolute right-4 top-[60px]">
+          <div className="absolute right-4 top-[8px] z-10">
             <EnergyBar current={store.energy} max={energyMax} />
           </div>
         )}
@@ -554,7 +563,7 @@ export default function IdolGamePlayPage() {
         {/* ConceptBoardPanel */}
         {showConceptBoard && (
           <div
-            className="absolute right-4"
+            className="absolute right-4 z-10"
             style={{ bottom: dialogHeight + 20 }}
           >
             <ConceptBoardPanel
@@ -567,7 +576,7 @@ export default function IdolGamePlayPage() {
 
         {/* VirtualStudioBtn */}
         {showVirtualStudioBtn && (
-          <div className="absolute left-4 top-[60px]">
+          <div className="absolute left-4 top-[8px] z-10">
             <button
               onClick={() => setVirtualStudioOpen(true)}
               className="flex items-center gap-2 rounded-xl border border-purple-500/30 bg-black/60 px-3 py-2 text-xs font-medium text-purple-300 backdrop-blur-md transition-colors hover:bg-purple-900/40"
@@ -580,7 +589,7 @@ export default function IdolGamePlayPage() {
 
         {/* SaveToast */}
         <div
-          className="absolute left-1/2 -translate-x-1/2"
+          className="absolute left-1/2 z-10 -translate-x-1/2"
           style={{ bottom: dialogHeight + 10 }}
         >
           <SaveToast show={store.showSaveToast} />
@@ -589,13 +598,14 @@ export default function IdolGamePlayPage() {
         {/* 전체화면 토글 버튼 */}
         <button
           onClick={toggleFullscreen}
-          className="absolute bottom-4 right-4 z-30 flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 bg-black/50 text-white/60 backdrop-blur-sm transition-colors hover:bg-black/70 hover:text-white"
+          className="absolute bottom-4 right-4 z-10 flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 bg-black/50 text-white/60 backdrop-blur-sm transition-colors hover:bg-black/70 hover:text-white"
+          style={{ bottom: dialogHeight + 10 }}
           title={isFullscreen ? '화면 축소' : '화면 확대'}
         >
           {isFullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
         </button>
 
-        {/* TransitionOverlay */}
+        {/* z-20: TransitionOverlay - 최상단 */}
         <div
           className="pointer-events-none absolute inset-0 z-20 bg-black transition-opacity duration-[350ms]"
           style={{ opacity: store.isTransitioning ? 1 : 0 }}

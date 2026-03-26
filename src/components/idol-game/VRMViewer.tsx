@@ -155,13 +155,13 @@ export default function VRMViewer({
         const scene = new THREE.Scene();
 
         const camera = new THREE.PerspectiveCamera(
-          20,
+          45,
           width / height,
           0.1,
           20
         );
-        camera.position.set(0, 0.8, 4);
-        camera.lookAt(0, 0.8, 0);
+        camera.position.set(0, 0.75, 3.2);
+        camera.lookAt(0, 0.75, 0);
 
         const ambient = new THREE.AmbientLight(0xffffff, 1.2);
         scene.add(ambient);
