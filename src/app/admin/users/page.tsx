@@ -31,6 +31,17 @@ export default function AdminUsersPage() {
     u.nickname?.toLowerCase().includes(search.toLowerCase())
   );
 
+  const handleDelete = async (userId: string, name: string) => {
+    if (!confirm(`${name} 유저를 삭제할까요? 이 작업은 되돌릴 수 없습니다.`)) return;
+    const res = await fetch(`/api/admin/users/${userId}`, { method: "DELETE" });
+    const data = await res.json();
+    if (data.success) {
+      setUsers(prev => prev.filter(u => u.id !== userId));
+    } else {
+      alert(data.error || "삭제 실패");
+    }
+  };
+
   const handleRoleChange = async (userId: string, role: string) => {
     await fetch(`/api/admin/users/${userId}`, {
       method: "PATCH",
@@ -121,6 +132,10 @@ export default function AdminUsersPage() {
                         <UserX className="w-3 h-3" /> 일반
                       </button>
                     )}
+                    <button onClick={() => handleDelete(user.id, user.nickname || user.email || "?")}
+                      className="flex items-center gap-1 px-2.5 py-1 text-xs bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors">
+                      <UserX className="w-3 h-3" /> 삭제
+                    </button>
                   </div>
                 </td>
               </tr>
