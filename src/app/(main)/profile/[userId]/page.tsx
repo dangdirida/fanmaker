@@ -227,6 +227,9 @@ export default function ProfilePage() {
   return (
     <div className="max-w-4xl mx-auto px-4">
       {/* 프로필 헤더 */}
+      <div className="w-full h-40 bg-gradient-to-br from-purple-600 via-pink-500 to-rose-400 relative">
+        <div className="absolute inset-0 bg-black/20" />
+      </div>
       <div className="pt-8 pb-6">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
           {/* 아바타 */}
