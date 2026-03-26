@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { Search, ChevronRight, FileText, X } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Artist {
   id: string;
@@ -24,6 +25,26 @@ interface Post {
 const CATEGORY_LABELS: Record<string, string> = {
   REMIX: "리믹스", VIRTUAL: "버추얼", CONCEPT: "컨셉",
   PERFORMANCE: "퍼포먼스", IDOL_PROJECT: "아이돌 프로젝트", GLOBAL_SYNC: "글로벌 싱크",
+};
+
+
+const ARTIST_IMAGES: Record<string, string> = {
+  "(G)I-DLE": "/images/1.png",
+  "aespa": "/images/2.png",
+  "BLACKPINK": "/images/3.png",
+  "BTS": "/images/4.png",
+  "ENHYPEN": "/images/5.jpg",
+  "EXO": "/images/6.jpg",
+  "IVE": "/images/7.jpg",
+  "LE SSERAFIM": "/images/8.jpg",
+  "LNGSHOT": "/images/9.png",
+  "NCT WISH": "/images/10.jpg",
+  "NewJeans": "/images/11.jpg",
+  "Red Velvet": "/images/12.jpg",
+  "SEVENTEEN": "/images/13.jpg",
+  "SHINee": "/images/14.png",
+  "Stray Kids": "/images/15.jpg",
+  "TWICE": "/images/16.jpg",
 };
 
 const AGENCY_COLORS: Record<string, string> = {
@@ -124,8 +145,8 @@ export default function AdminArtistsPage() {
                       }`}>
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-full bg-gray-100 overflow-hidden flex items-center justify-center flex-shrink-0">
-                          {artist.groupImageUrl ? (
-                            <img src={artist.groupImageUrl} alt={artist.name} className="w-full h-full object-cover" />
+                          {ARTIST_IMAGES[artist.name] || artist.groupImageUrl ? (
+                            <Image src={ARTIST_IMAGES[artist.name] || artist.groupImageUrl!} alt={artist.name} width={36} height={36} className="w-full h-full object-cover rounded-full" />
                           ) : (
                             <span className="text-xs font-bold text-gray-500">{artist.name.charAt(0)}</span>
                           )}
@@ -163,8 +184,8 @@ export default function AdminArtistsPage() {
             <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-gray-100 overflow-hidden flex items-center justify-center">
-                  {selectedArtist.groupImageUrl ? (
-                    <img src={selectedArtist.groupImageUrl} alt={selectedArtist.name} className="w-full h-full object-cover" />
+                  {ARTIST_IMAGES[selectedArtist.name] || selectedArtist.groupImageUrl ? (
+                    <Image src={ARTIST_IMAGES[selectedArtist.name] || selectedArtist.groupImageUrl!} alt={selectedArtist.name} width={32} height={32} className="w-full h-full object-cover rounded-full" />
                   ) : (
                     <span className="text-xs font-bold text-gray-500">{selectedArtist.name.charAt(0)}</span>
                   )}
