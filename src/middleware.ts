@@ -1,22 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
+import { auth } from "@/lib/auth";
 
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET });
+  const session = await auth();
   const { pathname } = req.nextUrl;
 
-  // 로그인 필요 경로
+  // 미로그인 → 로그인 페이지
   const protectedPaths = ["/studio", "/profile", "/admin"];
   const isProtected = protectedPaths.some((p) => pathname.startsWith(p));
-
-  // 미로그인 → 로그인 페이지
-  if (isProtected && !token) {
+  if (isProtected && !session?.user) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
   // /admin → ADMIN role 필수
   if (pathname.startsWith("/admin")) {
-    if (!token || token.role !== "ADMIN") {
+    const role = (session?.user as { role?: string } | undefined)?.role;
+    if (role !== "ADMIN") {
       return NextResponse.redirect(new URL("/feed", req.url));
     }
   }
