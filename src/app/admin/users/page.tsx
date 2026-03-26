@@ -6,9 +6,12 @@ interface User {
   id: string;
   nickname: string | null;
   email: string | null;
+  name: string | null;
   role: string;
+  isPro: boolean;
+  isSuspended: boolean;
   createdAt: string;
-  _count: { posts: number };
+  activityType: string;
 }
 
 export default function AdminUsersPage() {
@@ -65,7 +68,7 @@ export default function AdminUsersPage() {
             <tr className="border-b border-gray-100">
               <th className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500">유저</th>
               <th className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500">이메일</th>
-              <th className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500">게시물</th>
+              <th className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500">플랜</th>
               <th className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500">역할</th>
               <th className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500">가입일</th>
               <th className="px-5 py-3.5 text-left text-xs font-semibold text-gray-500">관리</th>
@@ -93,7 +96,7 @@ export default function AdminUsersPage() {
                   </div>
                 </td>
                 <td className="px-5 py-4 text-sm text-gray-500">{user.email}</td>
-                <td className="px-5 py-4 text-sm text-gray-900">{user._count.posts}</td>
+                <td className="px-5 py-4"><span className={`px-2 py-0.5 rounded-full text-xs ${user.isPro ? "bg-amber-50 text-amber-700" : "bg-gray-100 text-gray-500"}`}>{user.isPro ? "Pro" : "Free"}</span></td>
                 <td className="px-5 py-4">
                   <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${
                     user.role === "ADMIN" ? "bg-purple-50 text-purple-700" : "bg-gray-100 text-gray-600"
