@@ -18,14 +18,14 @@ export const metadata: Metadata = {
   openGraph: {
     title: "FanMaker",
     description: "AI로 나만의 K-pop 콘텐츠를 만들어보세요",
-    images: [{ url: "/og-thumbnail.png", width: 1200, height: 630, alt: "FanMaker - K-pop 팬 창작 플랫폼" }],
+
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "FanMaker",
     description: "AI로 나만의 K-pop 콘텐츠를 만들어보세요",
-    images: [{ url: "/og-thumbnail.png", width: 1200, height: 630, alt: "FanMaker - K-pop 팬 창작 플랫폼" }],
+
   },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }, { url: "/favicon.png", sizes: "32x32" }],
