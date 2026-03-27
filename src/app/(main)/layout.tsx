@@ -11,7 +11,6 @@ import {
   Sparkles,
   User,
   ChevronDown,
-  Music,
   ImageIcon,
   Palette,
   Users,
@@ -28,7 +27,6 @@ import {
 } from "lucide-react";
 
 const studioSubMenus = [
-  { label: "리믹스", href: "/studio/remix", icon: Music },
   { label: "버추얼", href: "/studio/virtual", icon: ImageIcon },
   { label: "컨셉", href: "/studio/concept", icon: Palette },
   { label: "퍼포먼스", href: "/studio/performance", icon: Users },
@@ -38,7 +36,7 @@ const studioSubMenus = [
 
 const mobileMenus = [
   { label: "홈", href: "/feed", icon: Home },
-  { label: "스튜디오", href: "/studio/remix", icon: Sparkles },
+  { label: "스튜디오", href: "/studio/virtual", icon: Sparkles },
   { label: "프로필", href: "/profile", icon: User },
 ];
 

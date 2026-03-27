@@ -5,19 +5,9 @@ import Link from "next/link";
 
 const slides = [
   {
-    tag: " AI 리믹스",
-    title: "내가 직접 만드는\nK-pop 리믹스",
-    sub: "좋아하는 아이돌 음원을 AI로 재탄생시켜 보세요",
-    cta: "리믹스 시작하기 →",
-    href: "/studio/remix",
-    icon: "",
-    stats: ["12,000+ 리믹스", "340개 아티스트", "실시간 AI 생성"],
-    badges: ["AI 기반", "무료"],
-  },
-  {
     tag: " 버추얼 스튜디오",
-    title: "나만의 버추얼\n아이돌 디자인",
-    sub: "AI로 버추얼 아이돌의 비주얼을 직접 만들어보세요",
+    title: "나만의 버추얼\n아이돌을 직접 디자인하세요",
+    sub: "AI로 세상에 없던 나만의 버추얼 아이돌을 만들어보세요",
     cta: "캐릭터 만들기 →",
     href: "/studio/virtual",
     icon: "",
@@ -26,7 +16,7 @@ const slides = [
   },
   {
     tag: " 컨셉 디자인",
-    title: "다음 앨범 컨셉,\n팬이 먼저 만든다",
+    title: "다음 앨범 컨셉,\n내가 먼저 만든다",
     sub: "로고부터 앨범커버까지 컨셉 키트를 제작해보세요",
     cta: "컨셉 제작하기 →",
     href: "/studio/concept",
@@ -47,7 +37,7 @@ const slides = [
   {
     tag: " 글로벌 싱크",
     title: "K-pop을\n전 세계 언어로",
-    sub: "내가 좋아하는 아티스트의 콘텐츠를 다국어로 번역·공유해요",
+    sub: "나만의 가상 아이돌 콘텐츠를 다국어로 번역·공유해요",
     cta: "번역 시작하기 →",
     href: "/studio/global-sync",
     icon: "",

@@ -14,38 +14,13 @@ const TABS = [
 
 const CATEGORIES = [
   { key: "", label: "전체" },
-  { key: "REMIX", label: "리믹스" },
-  { key: "VIRTUAL", label: "버추얼" },
+  { key: "VIRTUAL", label: "버추얼 아이돌" },
   { key: "CONCEPT", label: "컨셉" },
   { key: "PERFORMANCE", label: "퍼포먼스" },
   { key: "IDOL_PROJECT", label: "아이돌 프로젝트" },
   { key: "GLOBAL_SYNC", label: "글로벌 싱크" },
 ];
 
-const DEFAULT_ARTISTS = [
-  "BTS",
-  "BLACKPINK",
-  "aespa",
-  "SEVENTEEN",
-  "NewJeans",
-  "IVE",
-  "Stray Kids",
-  "TWICE",
-  "EXO",
-  "NCT WISH",
-  "LE SSERAFIM",
-  "ITZY",
-  "TXT",
-  "ENHYPEN",
-  "Red Velvet",
-  "(G)I-DLE",
-  "ATEEZ",
-  "NMIXX",
-  "RIIZE",
-  "ILLIT",
-];
-
-type Artist = { id: string; name: string };
 type Post = {
   id: string;
   title: string;
@@ -64,82 +39,13 @@ type Post = {
   aiScore?: number;
 };
 
-function ArtistFilter({
-  artists,
-  artistId,
-  onSelect,
-}: {
-  artists: Artist[];
-  artistId: string;
-  onSelect: (id: string) => void;
-}) {
-  const [expanded, setExpanded] = useState(false);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const [needsExpand, setNeedsExpand] = useState(false);
-
-  const displayArtists =
-    artists.length > 0
-      ? artists
-      : DEFAULT_ARTISTS.map((name, i) => ({ id: `default-${i}`, name }));
-
-  const allChips = [{ id: "", name: "전체 아티스트" }, ...displayArtists];
-
-  useEffect(() => {
-    if (contentRef.current) {
-      setNeedsExpand(contentRef.current.scrollHeight > 44);
-    }
-  }, [displayArtists]);
-
-  return (
-    <div className="relative">
-      <div
-        ref={contentRef}
-        className="flex flex-wrap gap-2 overflow-hidden transition-all duration-300 pb-2"
-        style={{
-          maxHeight: expanded
-            ? `${contentRef.current?.scrollHeight || 500}px`
-            : "40px",
-        }}
-      >
-        {allChips.map((a) => (
-          <button
-            key={a.id}
-            onClick={() => onSelect(a.id)}
-            className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-              artistId === a.id
-                ? "bg-black text-white"
-                : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
-            }`}
-          >
-            {a.name}
-          </button>
-        ))}
-      </div>
-      {!expanded && needsExpand && (
-        <div className="absolute right-0 top-0 h-[40px] w-20 bg-gradient-to-l from-white dark:from-[#0a0a0a] to-transparent pointer-events-none" />
-      )}
-      {needsExpand && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="mt-1 text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-        >
-          {expanded
-            ? "접기 "
-            : `더보기  (${displayArtists.length}개 아티스트)`}
-        </button>
-      )}
-    </div>
-  );
-}
-
 export default function FeedPage() {
   const { data: session } = useSession();
   const [tab, setTab] = useState("all");
   const [category, setCategory] = useState("");
-  const [artistId, setArtistId] = useState("");
+  const artistId = "";
   const [sort, setSort] = useState("latest");
   const [posts, setPosts] = useState<Post[]>([]);
-  const [artists, setArtists] = useState<Artist[]>([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -148,15 +54,6 @@ export default function FeedPage() {
   const observerRef = useRef<HTMLDivElement>(null);
   const loadingRef = useRef(false);
 
-  // 아티스트 목록 로드
-  useEffect(() => {
-    fetch("/api/artists")
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) setArtists(data.data);
-      })
-      .catch(() => {});
-  }, []);
 
   // 게시물 로드
   const fetchPosts = useCallback(
@@ -232,14 +129,6 @@ export default function FeedPage() {
     let filtered = [...MOCK_POSTS];
     if (category) {
       filtered = filtered.filter((p) => p.category === category);
-    }
-    if (artistId) {
-      const artistName = DEFAULT_ARTISTS.find(
-        (_, i) => `default-${i}` === artistId
-      );
-      if (artistName) {
-        filtered = filtered.filter((p) => p.artist?.name === artistName);
-      }
     }
     if (sort === "popular") {
       filtered.sort((a, b) => b.reactionCount - a.reactionCount);
@@ -330,13 +219,6 @@ export default function FeedPage() {
           ))}
         </div>
 
-        {/* 아티스트 필터 칩 */}
-        <ArtistFilter
-          artists={artists}
-          artistId={artistId}
-          onSelect={setArtistId}
-        />
-
         {/* 카운트 + 정렬 */}
         <div className="flex items-center justify-between">
           <p className="text-sm text-gray-400">
@@ -377,7 +259,7 @@ export default function FeedPage() {
       ) : (
         !loading && (
           <div className="text-center text-gray-400 py-20">
-            아직 창작물이 없어요. 첫 작품을 올려보세요!
+            아직 창작물이 없어요. 첫 번째로 가상 아이돌을 만들어보세요!
           </div>
         )
       )}

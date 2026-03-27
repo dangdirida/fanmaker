@@ -14,9 +14,9 @@ export default function LoginPage() {
           <h1 className="text-4xl font-bold bg-gradient-to-r from-black to-gray-700 bg-clip-text text-transparent">
             FanMaker
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">K-pop 팬 창작 플랫폼</p>
+          <p className="text-gray-600 dark:text-gray-400 text-lg">나만의 가상 K-pop 아이돌 창작 플랫폼</p>
           <p className="text-gray-400 dark:text-gray-500 text-sm">
-            AI로 나만의 K-pop 콘텐츠를 만들어보세요
+            나만의 가상 아이돌을 만들고 공유해보세요
           </p>
         </div>
 

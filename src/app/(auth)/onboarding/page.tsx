@@ -13,30 +13,13 @@ type Artist = {
   groupImageUrl: string | null;
 };
 
-const artistImages: Record<string, string> = {
-  "(G)I-DLE": "/images/1.png",
-  "aespa": "/images/2.png",
-  "BLACKPINK": "/images/3.png",
-  "BTS": "/images/4.png",
-  "ENHYPEN": "/images/5.jpg",
-  "EXO": "/images/6.jpg",
-  "IVE": "/images/7.jpg",
-  "LE SSERAFIM": "/images/8.jpg",
-  "LNGSHOT": "/images/9.png",
-  "NCT WISH": "/images/10.jpg",
-  "NewJeans": "/images/11.jpg",
-  "Red Velvet": "/images/12.jpg",
-  "SEVENTEEN": "/images/13.jpg",
-  "SHINee": "/images/14.png",
-  "Stray Kids": "/images/15.jpg",
-  "TWICE": "/images/16.jpg",
-};
+const artistImages: Record<string, string> = {};
 
 const ACTIVITY_TYPES = [
   {
     value: "LIGHT",
     label: "라이트팬",
-    description: "좋아하는 아티스트 콘텐츠를 감상해요",
+    description: "나만의 가상 아이돌 콘텐츠를 감상해요",
     emoji: "",
   },
   {

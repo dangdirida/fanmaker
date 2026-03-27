@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "FanMaker - K-pop 팬 창작 플랫폼";
+export const alt = "팬메이커 - 나만의 가상 K-pop 아이돌 창작 플랫폼";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
