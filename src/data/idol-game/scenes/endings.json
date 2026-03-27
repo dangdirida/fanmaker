@@ -1,6 +1,113 @@
 [
-  {"id":"ending_global","chapter":6,"bg":"overseas","spotlight":true,"titleFlash":"Ending -- 글로벌 레전드","speaker":"내레이터","text":"이제 이 팀의 이름은 전 세계가 알고 있습니다.\n\n국내를 넘어, 언어를 넘어.\n\nK-POP이라는 장르의 새로운 이정표가 됐습니다.\n\n프로듀서님. 처음부터 지금까지, 모든 선택이 여기로 이어졌습니다.","activeMemberIndex":-1,"isDancing":true,"isEnding":true,"endingData":{"type":"global","title":"글로벌 레전드 엔딩","description":"국경을 넘은 K-POP의 이정표. 전 세계 팬들의 마음을 사로잡았습니다. 당신이 만든 그룹이 새로운 역사를 썼어요.","finalStats":true,"unlockedRoutes":["award_route_2nd","crisis_route_2nd"],"shareCardText":"글로벌 레전드 엔딩 달성. 전 세계 무대를 정복한 나의 아이돌."}},
-  {"id":"ending_award","chapter":6,"bg":"award_win","spotlight":true,"titleFlash":"Ending -- 대상","speaker":"시상식 MC","text":"\"올해의 대상은...\"\n\n...\n\n...\n\n\"축하합니다.\"\n\n멤버들은 눈물을 흘린다.\n당신을 향해 고개를 숙인다.\n\n\"프로듀서님. 감사합니다.\"\n\n음원, 무대, 팬덤, 평가. 모든 것을 장악한 완전체. K-POP 역사에 이름이 남는다.","activeMemberIndex":-1,"isEnding":true,"endingData":{"type":"award","title":"대상 엔딩 -- 완벽한 왕좌","description":"국내 최정상, 모든 시상식 대상 수상. 음원부터 무대, 팬덤까지 완벽하게 장악한 레전드 아이돌이 됐습니다.","finalStats":true,"unlockedRoutes":["global_route_2nd","solo_route_2nd"],"shareCardText":"대상 엔딩 달성. 모든 걸 가진 왕좌의 아이돌."}},
-  {"id":"ending_solo_good","chapter":6,"bg":"concert","spotlight":true,"titleFlash":"Ending -- 슈퍼스타 패밀리","speaker":"내레이터","text":"그룹도, 솔로도.\n\n모두 빛났습니다.\n\n각자의 이름이 대중에게 각인됐지만, 무대 위에서 다시 하나가 됐습니다.\n\n팬들은 말했습니다.\n\"솔로도 좋은데, 같이 있는 게 제일 좋아.\"","activeMemberIndex":-1,"isDancing":true,"isEnding":true,"endingData":{"type":"legend","title":"슈퍼스타 패밀리 엔딩","description":"그룹과 솔로를 모두 성공시킨 완벽한 밸런스. 멤버 개개인이 슈퍼스타가 되면서도, 팀으로서의 유대감을 지켜냈습니다.","finalStats":true,"unlockedRoutes":["award_route_2nd"],"shareCardText":"슈퍼스타 패밀리 엔딩 달성. 솔로도, 그룹도 모두 정복."}},
-  {"id":"ending_crisis","chapter":6,"bg":"crisis_stage","speaker":"내레이터","text":"멤버 한 명이 활동을 중단했습니다.\n\n빈 무대가 허전하게 남았습니다.\n\n하지만 -- 팬들은 기다리겠다고 했습니다.\n\"다시 돌아올 때까지 여기 있을게.\" 라고.\n\n이것도 하나의 이야기입니다.\n\n다음엔, 다른 선택을 해볼 수 있어요.","activeMemberIndex":-1,"isEnding":true,"endingData":{"type":"crisis","title":"위기 엔딩 -- 멈춤","description":"무리한 활동의 대가. 하지만 이 이야기도 끝이 아닙니다. 팬들은 기다리고 있고, 언제든 다시 시작할 수 있어요. 2회차에서 다른 선택을 해보세요.","finalStats":true,"unlockedRoutes":["global_route_2nd","award_route_2nd","crisis_hidden"],"shareCardText":"위기 엔딩 달성. 멈춤도 하나의 선택이었다."}}
+  {
+    "id": "ending_first_place",
+    "chapter": 6,
+    "bg": "music_show",
+    "spotlight": true,
+    "speaker": "멤버",
+    "text": "프로듀서님... 우리 해냈어요. 진짜 해냈어요.",
+    "isEnding": true,
+    "isDancing": true,
+    "endingData": {
+      "type": "legend",
+      "title": "음악방송 1위 엔딩",
+      "description": "데뷔 1년 만에 음악방송 정상. 차세대 대표 보이그룹으로 도약했습니다. 당신이 만든 이름이 전광판 위에서 빛납니다.",
+      "finalStats": true,
+      "shareCardText": "음악방송 1위 엔딩 달성!"
+    }
+  },
+  {
+    "id": "ending_global",
+    "chapter": 6,
+    "bg": "overseas",
+    "spotlight": true,
+    "speaker": "내레이션",
+    "text": "국내보다 먼저 해외가 알아봤다. 그룹의 이름은 이제 세계가 부른다.",
+    "isEnding": true,
+    "isDancing": true,
+    "endingData": {
+      "type": "global",
+      "title": "글로벌 스타 엔딩",
+      "description": "국내 1위는 아니었지만, 해외에서 폭발적인 반응을 얻었습니다. 월드 투어 티켓이 전석 매진됐습니다.",
+      "finalStats": true,
+      "shareCardText": "글로벌 스타 엔딩 달성!"
+    }
+  },
+  {
+    "id": "ending_artistry",
+    "chapter": 6,
+    "bg": "practice",
+    "speaker": "내레이션",
+    "text": "대중성보다 음악성으로 증명한 팀. 차트보다 오래 남는 이름이 됐다.",
+    "isEnding": true,
+    "endingData": {
+      "type": "award",
+      "title": "실력파 명문 그룹 엔딩",
+      "description": "화제성보다 음악성으로 인정받았습니다. 10년 뒤에도 회자될 레퍼런스 그룹이 됐습니다.",
+      "finalStats": true,
+      "shareCardText": "실력파 명문 그룹 엔딩 달성!"
+    }
+  },
+  {
+    "id": "ending_variety",
+    "chapter": 6,
+    "bg": "backstage",
+    "speaker": "내레이션",
+    "text": "매력 하나로 온 나라를 사로잡았다. 광고판마다, 예능 프로마다 그 얼굴이 보인다.",
+    "isEnding": true,
+    "endingData": {
+      "type": "award",
+      "title": "예능/광고 스타 엔딩",
+      "description": "무대 밖에서도 빛났습니다. 대한민국에서 모르는 사람이 없는 얼굴이 됐습니다.",
+      "finalStats": true,
+      "shareCardText": "예능/광고 스타 엔딩 달성!"
+    }
+  },
+  {
+    "id": "ending_solo",
+    "chapter": 6,
+    "bg": "practice",
+    "speaker": "내레이션",
+    "text": "그룹의 핵심이 솔로로 날아올랐다. 또 다른 시작이었다.",
+    "isEnding": true,
+    "endingData": {
+      "type": "legend",
+      "title": "솔로 데뷔 엔딩",
+      "description": "특정 스탯이 극단적으로 성장한 결과, 솔로 아티스트로서 새 챕터를 열었습니다.",
+      "finalStats": true,
+      "shareCardText": "솔로 데뷔 엔딩 달성!"
+    }
+  },
+  {
+    "id": "ending_rebuild",
+    "chapter": 6,
+    "bg": "practice",
+    "speaker": "내레이션",
+    "text": "무너졌지만 끝은 아니었다. 다시 쌓아 올리는 것, 그것도 프로듀서의 이야기다.",
+    "isEnding": true,
+    "endingData": {
+      "type": "crisis",
+      "title": "재정비 엔딩",
+      "description": "이번 시즌은 아쉬웠습니다. 하지만 경험이 쌓였고, 다음엔 더 강해질 거예요.",
+      "finalStats": true,
+      "shareCardText": "재정비 엔딩. 다음엔 꼭 1위!"
+    }
+  },
+  {
+    "id": "ending_legend",
+    "chapter": 6,
+    "bg": "concert",
+    "spotlight": true,
+    "speaker": "내레이션",
+    "text": "이름도 없던 신생 기획사에서 시작해, 전설이 됐다. 당신이 만든 이름이다.",
+    "isEnding": true,
+    "isDancing": true,
+    "endingData": {
+      "type": "legend",
+      "title": "전설의 프로듀서 엔딩",
+      "description": "숨겨진 조건을 모두 충족했습니다. 이 엔딩을 본 프로듀서는 극소수입니다.",
+      "finalStats": true,
+      "shareCardText": "전설의 프로듀서 엔딩 달성!"
+    }
+  }
 ]

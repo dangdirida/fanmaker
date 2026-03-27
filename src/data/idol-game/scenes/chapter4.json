@@ -1,13 +1,74 @@
 [
-  {"id":"ch4_rising_status","chapter":4,"bg":"conference","titleFlash":"Chapter 4 -- 정상으로","speaker":"매니저 박 팀장","text":"이제 \"떠오르는 그룹\"이 아니라, 지켜야 하는 위치에 있습니다.\n\n해외 팬들의 반응이 심상치 않아요.\n\n그리고 대형 결정이 기다리고 있습니다.\n\n지금이 갈림길입니다.","activeMemberIndex":-1,"energyCost":1,"choices":[{"text":"해외 진출 (글로벌 활동 시작)","subText":"성공 시 대형 그룹 도약, 리스크 큼","effect":{"charm":8,"mental":-6},"setFlags":{"global_route":true},"nextSceneId":"ch4_global_route"},{"text":"정규 앨범 준비","subText":"음악성 강화, 팬덤 깊이 증가","effect":{"vocal":10,"dance":4,"mental":5},"setFlags":{"album_route":true},"nextSceneId":"ch4_album_route"},{"text":"전국 투어 콘서트","subText":"팬 결속 극대화, 수익 증가","effect":{"charm":10,"mental":5,"dance":5},"setFlags":{"tour_route":true},"nextSceneId":"ch4_tour_route"},{"text":"유닛 / 개인 활동 시작","subText":"멤버 개별 인기 상승, 팀 균형 흔들림 위험","effect":{"charm":12,"mental":-5},"setFlags":{"unit_route":true},"nextSceneId":"ch4_unit_route"}]},
-  {"id":"ch4_global_route","chapter":4,"bg":"airport","speaker":"내레이터","text":"해외 일정이 잡혔습니다.\n\n처음 밟는 해외 땅. 낯선 언어, 낯선 관중.\n\n하지만 음악에는 언어가 없습니다.\n\n공항에서 팬들이 기다리고 있었습니다. 생각보다 훨씬 많이.","activeMemberIndex":-1,"nextSceneId":"ch4_global_sync_prompt"},
-  {"id":"ch4_global_sync_prompt","chapter":4,"bg":"airport","speaker":"글로벌 매니저","text":"해외 팬들을 위한 콘텐츠가 필요합니다.\n글로벌 싱크 기능으로 팀 소개 영상에 다국어 자막을 만들 수 있어요.\n\n자막을 완성하면 해외 팬덤 수치가 크게 오릅니다.","activeMemberIndex":-1,"choices":[{"text":"글로벌 싱크로 자막을 만든다","subText":"팬메이커 글로벌 싱크 연동","effect":{"charm":10},"setFlags":{"global_sync_done":true},"nextSceneId":"ch4_overseas_stage"},{"text":"일단 무대부터 집중한다","subText":"나중에 글로벌 싱크 가능","effect":{},"nextSceneId":"ch4_overseas_stage"}]},
-  {"id":"ch4_overseas_stage","chapter":4,"bg":"overseas","spotlight":true,"titleFlash":"해외 무대","speaker":"내레이터","text":"해외 페스티벌 무대.\n\n수천 명의 관중. 다들 처음 보는 얼굴들이지만, 노래를 알고 있었다.\n\n후렴구에서 관중이 같이 따라 불렀다.\n\n그 순간 -- 국경은 없었다.","activeMemberIndex":-1,"isDancing":true,"nextSceneId":"ch4_top_choice"},
-  {"id":"ch4_album_route","chapter":4,"bg":"recording","speaker":"음악 감독","text":"속도를 늦췄습니다.\n\n타이틀곡 + 수록곡 다수 제작. 멤버 참여도 상승.\n컨셉 확장 -- 처음보다 훨씬 깊어진 이야기.\n\n연습실이 다시 조용해졌습니다.\n이번엔 버티기가 아니라 완성을 위한 시간입니다.","activeMemberIndex":-1,"nextSceneId":"ch4_album_title_choice"},
-  {"id":"ch4_album_title_choice","chapter":4,"bg":"recording","speaker":"음악 감독","text":"정규 앨범 타이틀곡을 최종 선택해야 합니다.\n\n이 선택이 톱스타 진입을 좌우합니다.","activeMemberIndex":-1,"energyCost":1,"choices":[{"text":"초대중성 히트곡 (귀에 꽂히는 멜로디)","subText":"차트 1위 가능성 높음, 음악성 논란 가능","effect":{"vocal":6,"dance":3,"charm":8,"mental":5},"setFlags":{"hit_song":true},"nextSceneId":"ch4_album_hit"},{"text":"감성 서사형 타이틀곡","subText":"팬덤 결속 최강, 장기적으로 강함","effect":{"vocal":12,"charm":5,"mental":8},"setFlags":{"emotional_song":true},"nextSceneId":"ch4_album_emotional"},{"text":"퍼포먼스 실험곡","subText":"화제성 폭발, 실패 리스크 큼","effect":{"dance":12,"charm":6,"mental":-5},"nextSceneId":"ch4_album_hit"},{"text":"완성형 밸런스 곡 (대중성 + 감성 + 퍼포먼스)","subText":"안정적, 임팩트 다소 부족 가능","effect":{"vocal":6,"dance":6,"charm":6,"mental":6},"nextSceneId":"ch4_album_hit"}]},
-  {"id":"ch4_album_hit","chapter":4,"bg":"music_show","spotlight":true,"speaker":"내레이터","text":"음원 차트 ALL KILL 달성.\n\n음악방송 연속 1위. 길거리, 카페, SNS 전부 이 팀이었습니다.\n\n완벽한 대중 장악 성공.\n\n이제 다음 목표를 향해 나아갈 시간입니다.","activeMemberIndex":-1,"isDancing":true,"nextSceneId":"ch4_top_choice"},
-  {"id":"ch4_album_emotional","chapter":4,"bg":"concert","spotlight":true,"speaker":"내레이터","text":"처음엔 조용했다. 하지만 하나씩, 둘씩.\n\n\"이 노래 들으면 눈물이 나요.\" 라는 댓글이 쌓이기 시작했습니다.\n\n팬들이 이 팀의 이야기에 자신의 이야기를 겹쳐 보기 시작했어요.\n\n단순한 팬덤이 아니라, 진짜 유대감이 형성됐습니다.","activeMemberIndex":-1,"nextSceneId":"ch4_top_choice"},
-  {"id":"ch4_tour_route","chapter":4,"bg":"concert","spotlight":true,"titleFlash":"전국 투어","speaker":"내레이터","text":"서울 -- 부산 -- 대구 -- 광주.\n\n전국을 돌며 팬들을 직접 만났습니다.\n\n공연장이 꽉 찼습니다. 소리가 울렸습니다.\n\n\"오늘 진짜 행복했어요.\" 한 팬이 문 앞에서 말했습니다.\n\n이 무대를 위해 여기까지 온 거라는 걸 다시 느꼈습니다.","activeMemberIndex":-1,"isDancing":true,"nextSceneId":"ch4_top_choice"},
-  {"id":"ch4_unit_route","chapter":4,"bg":"backstage","speaker":"매니저 박 팀장","text":"유닛 활동이 시작됐습니다.\n\n개별 멤버들의 인지도가 크게 올랐어요.\n하지만 팀 전체 활동과 개인 일정이 겹치기 시작했습니다.\n\n멤버 간 갈등의 씨앗이 심어지고 있어요.\n\n지금 어떻게 관리하느냐가 중요합니다.","activeMemberIndex":-1,"energyCost":1,"choices":[{"text":"팀 전체 일정을 우선시한다","subText":"개인 인지도 일부 포기, 팀 결속 유지","effect":{"mental":8,"charm":4},"nextSceneId":"ch4_top_choice"},{"text":"개인 활동도 최대한 밀어준다","subText":"전체 매력 상승, 멘탈 리스크","effect":{"charm":12,"mental":-8},"nextSceneId":"ch4_top_choice"}]},
-  {"id":"ch4_top_choice","chapter":4,"bg":"conference","speaker":"매니저 박 팀장","text":"이제 국내 최정상 그룹을 눈앞에 두고 있습니다.\n\n시상식 시즌이 다가왔어요.\n글로벌 러브콜도 들어오고 있습니다.\n\n다음 목표를 결정해주세요. 이 선택이 엔딩을 결정합니다.","activeMemberIndex":-1,"energyCost":1,"choices":[{"text":"월드 투어 & 글로벌 진출","subText":"성공 시 레전드 루트 진입","effect":{"charm":6,"dance":4,"mental":-4},"setFlags":{"ending_global":true},"nextSceneId":"ch5_global_tour"},{"text":"국내 시상식 올인 (대상을 노린다)","subText":"커리어 정점, 완벽한 왕좌","effect":{"vocal":5,"dance":5,"charm":5},"setFlags":{"ending_award":true},"nextSceneId":"ch5_award_prep"},{"text":"멤버 솔로 데뷔 프로젝트","subText":"개별 슈퍼스타 탄생 가능","effect":{"charm":10,"mental":-4},"setFlags":{"ending_solo":true},"nextSceneId":"ch5_solo_project"},{"text":"무리한 활동 강행 (초고속 확장)","subText":"성공 시 신화 / 실패 시 위기 루트","effect":{"charm":8,"mental":-15},"setFlags":{"ending_risk":true},"nextSceneId":"ch5_risk_route"}]}
+  {
+    "id": "ch4_comeback",
+    "chapter": 4,
+    "bg": "conference",
+    "speaker": "대표",
+    "text": "이번 컴백이 반응 없으면 '가능성 있는 신인'에서 끝납니다. 어떤 방향으로 컴백할까요?",
+    "choices": [
+      { "text": "데뷔 콘셉트 유지 — 팬덤 안정", "effect": { "mental": 4 }, "nextSceneId": "ch4_slump" },
+      { "text": "더 강한 이미지로 변신 — 화제성", "effect": { "dance": 5, "charm": 3 }, "nextSceneId": "ch4_slump" },
+      { "text": "완전히 다른 반전 콘셉트 — 도전", "effect": { "vocal": 4, "charm": 4, "mental": -3 }, "nextSceneId": "ch4_slump" }
+    ]
+  },
+  {
+    "id": "ch4_slump",
+    "chapter": 4,
+    "bg": "practice",
+    "speaker": "멤버",
+    "text": "잘하고 싶은데... 자꾸 '다음에 망하면 끝이다'라는 생각이 들어요. 어떻게 해줄까요?",
+    "choices": [
+      { "text": "훈련량을 더 늘린다", "effect": { "vocal": 5, "dance": 5, "mental": -5 }, "nextSceneId": "ch4_shortform" },
+      { "text": "하루 휴식을 준다", "effect": { "mental": 6 }, "nextSceneId": "ch4_shortform" },
+      { "text": "프로듀서가 직접 대화한다", "effect": { "mental": 5, "charm": 2 }, "nextSceneId": "ch4_shortform" }
+    ]
+  },
+  {
+    "id": "ch4_shortform",
+    "chapter": 4,
+    "bg": "sns_viral",
+    "speaker": "마케팅 담당",
+    "text": "이번엔 팬덤만이 아니라 대중의 손가락을 잡아야 해요. 숏폼 챌린지 방향은?",
+    "choices": [
+      { "text": "챌린지 적극 진행 — 대중 공략", "effect": { "charm": 7 }, "nextSceneId": "ch4_ad" },
+      { "text": "무대 중심 홍보 유지 — 실력 강조", "effect": { "dance": 5, "vocal": 3 }, "nextSceneId": "ch4_ad" },
+      { "text": "팬 참여형 챌린지 — 팬덤 결속", "effect": { "charm": 4, "mental": 3 }, "nextSceneId": "ch4_ad" }
+    ]
+  },
+  {
+    "id": "ch4_ad",
+    "chapter": 4,
+    "bg": "conference",
+    "speaker": "실장",
+    "text": "브랜드 두 곳에서 광고 제안이 왔어요. 하나는 고급 브랜드, 하나는 대중 브랜드입니다. 어떻게 할까요?",
+    "choices": [
+      { "text": "프리미엄 이미지 브랜드 선택", "effect": { "charm": 5, "mental": 2 }, "nextSceneId": "ch4_conflict" },
+      { "text": "대중 친화 브랜드 선택", "effect": { "charm": 7 }, "nextSceneId": "ch4_conflict" },
+      { "text": "광고보다 활동 집중, 보류", "effect": { "vocal": 4, "dance": 4 }, "nextSceneId": "ch4_conflict" }
+    ]
+  },
+  {
+    "id": "ch4_conflict",
+    "chapter": 4,
+    "bg": "conference",
+    "speaker": "실장",
+    "text": "회사 내부에서 스케줄을 더 밀어붙이자는 의견과 컨디션을 챙기자는 의견이 충돌합니다. 어떻게 결정할까요?",
+    "choices": [
+      { "text": "스케줄 강행 — 지금이 기회다", "effect": { "charm": 5, "mental": -5 }, "nextSceneId": "ch4_chart_news" },
+      { "text": "컨디션 조절 우선 — 장기전", "effect": { "mental": 5 }, "nextSceneId": "ch4_chart_news" },
+      { "text": "중요한 일정만 선택 집중", "effect": { "vocal": 3, "dance": 3, "mental": 2 }, "nextSceneId": "ch4_chart_news" }
+    ]
+  },
+  {
+    "id": "ch4_chart_news",
+    "chapter": 4,
+    "bg": "music_show",
+    "speaker": "실장",
+    "text": "음악방송 예고 기사에 그룹명이 처음으로 1위 후보로 언급됐어요. 이제 다들 이름은 기억합니다. 어떻게 반응할까요?",
+    "choices": [
+      { "text": "겸손하게 컨디션 유지", "effect": { "mental": 5 }, "nextSceneId": "ch5_final_strategy" },
+      { "text": "총력전 준비 — 지금이 기회", "effect": { "charm": 6, "mental": -2 }, "nextSceneId": "ch5_final_strategy" },
+      { "text": "팬들에게 직접 고마움 전달", "effect": { "charm": 5, "mental": 3 }, "nextSceneId": "ch5_final_strategy" }
+    ]
+  }
 ]

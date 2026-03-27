@@ -1,9 +1,53 @@
 [
-  {"id":"ch5_global_tour","chapter":5,"bg":"overseas","spotlight":true,"titleFlash":"Chapter 5 -- 글로벌","speaker":"내레이터","text":"미국 -- 일본 -- 유럽 -- 동남아시아.\n\n각국의 팬들이 노래를 알고 있었습니다.\n언어는 달랐지만, 음악이 연결했습니다.\n\n마지막 공연장 -- 수만 명 앞에서.\n\n이것이 K-POP이다, 라고 세계가 말하기 시작했습니다.","activeMemberIndex":-1,"isDancing":true,"nextSceneId":"ending_global"},
-  {"id":"ch5_award_prep","chapter":5,"bg":"backstage","titleFlash":"Chapter 5 -- 시상식","speaker":"매니저 박 팀장","text":"시상식 시즌입니다.\n\n무대 퀄리티를 극한으로 끌어올렸습니다.\n라이브 완성도 최상. 퍼포먼스 + 감정 + 연출 완벽 조합.\n\n한 편의 영화 같은 무대가 완성됐습니다.","activeMemberIndex":-1,"nextSceneId":"ch5_award_stage"},
-  {"id":"ch5_award_stage","chapter":5,"bg":"award","spotlight":true,"speaker":"내레이터","text":"관객이 숨을 죽였습니다.\n\n마지막 엔딩 포즈 --\n\n정적 후 폭발하는 함성.\n\n모든 시상식 대상 후보 진입.\n\"올해의 그룹\" 여론이 형성됐습니다.\n평론 + 팬덤 + 대중을 완벽 장악했습니다.","activeMemberIndex":-1,"isDancing":false,"nextSceneId":"ending_award"},
-  {"id":"ch5_solo_project","chapter":5,"bg":"photo_studio","titleFlash":"Chapter 5 -- 솔로","speaker":"매니저 박 팀장","text":"멤버 솔로 프로젝트가 시작됐습니다.\n\n각자의 색깔이 드러나기 시작했어요.\n그룹과는 다른, 개인만의 이야기.\n\n팬들은 더 깊이 빠져들었습니다.\n\n하지만 팀 활동과 솔로 활동 사이에서, 멤버들의 무게는 달라졌습니다.","activeMemberIndex":0,"nextSceneId":"ch5_solo_tension"},
-  {"id":"ch5_solo_tension","chapter":5,"bg":"dorm_night","speaker":"멤버 (두 번째)","text":"\"나는 왜 솔로 기회가 없는 거야.\"\n\n작은 균열이 생겼습니다.\n\n이 상황을 어떻게 수습하시겠어요?","activeMemberIndex":1,"energyCost":1,"choices":[{"text":"모든 멤버에게 고르게 솔로 기회를 준다","subText":"팀 결속 유지, 일정 복잡해짐","effect":{"mental":10,"charm":6},"nextSceneId":"ending_solo_good"},{"text":"팀 전체 활동으로 다시 집중시킨다","subText":"솔로 프로젝트 축소, 그룹 결속 우선","effect":{"mental":8,"charm":-3},"nextSceneId":"ending_award"}]},
-  {"id":"ch5_risk_route","chapter":5,"bg":"backstage","titleFlash":"Chapter 5 -- 도전","speaker":"내레이터","text":"무리한 일정이 쌓이기 시작했습니다.\n\n방송, 광고, 해외 스케줄, 앨범 준비.\n모두 동시에 진행됐습니다.\n\n멤버들의 눈빛이 조금씩 흐려지고 있습니다.","activeMemberIndex":-1,"nextSceneId":"ch5_risk_decision"},
-  {"id":"ch5_risk_decision","chapter":5,"bg":"practice_night","speaker":"매니저 박 팀장","text":"한 멤버가 건강 이상을 호소했습니다.\n\n스케줄을 강행할지, 잠시 멈출지 결정해야 합니다.\n\n이 선택이 마지막을 결정합니다.","activeMemberIndex":0,"energyCost":1,"choices":[{"text":"멈추고 멤버를 먼저 챙긴다","subText":"일정 일부 취소, 팀 장기 보호","effect":{"mental":15,"charm":-5},"nextSceneId":"ending_award"},{"text":"강행한다, 여기서 멈출 수 없다","subText":"극한의 도전, 위기 루트","effect":{"mental":-20,"dance":8},"nextSceneId":"ending_crisis"}]}
+  {
+    "id": "ch5_final_strategy",
+    "chapter": 5,
+    "bg": "music_show",
+    "speaker": "실장",
+    "text": "컴백 주간입니다. 이번 주 모든 선택이 점수로 돌아옵니다. 전략은?",
+    "choices": [
+      { "text": "라이브 완성도 강화", "effect": { "vocal": 8 }, "nextSceneId": "ch5_last_crisis" },
+      { "text": "퍼포먼스 임팩트 극대화", "effect": { "dance": 8 }, "nextSceneId": "ch5_last_crisis" },
+      { "text": "팬 결집 이벤트 총공세", "effect": { "charm": 8 }, "nextSceneId": "ch5_last_crisis" }
+    ]
+  },
+  {
+    "id": "ch5_last_crisis",
+    "chapter": 5,
+    "bg": "practice",
+    "speaker": "실장",
+    "text": "컴백 직전 변수가 생겼어요. 컨디션 난조, 경쟁 그룹의 초강수. 어떻게 대응할까요?",
+    "choices": [
+      { "text": "일정 유지 후 정면돌파", "effect": { "mental": -3, "vocal": 5, "dance": 5 }, "nextSceneId": "ch5_final_stage" },
+      { "text": "일부 수정해서 안정성 확보", "effect": { "mental": 3 }, "nextSceneId": "ch5_final_stage" },
+      { "text": "팬들에게 상황 공유, 신뢰를 택함", "effect": { "charm": 8, "mental": 4 }, "nextSceneId": "ch5_final_stage" }
+    ]
+  },
+  {
+    "id": "ch5_final_stage",
+    "chapter": 5,
+    "bg": "debut_stage",
+    "speaker": "멤버",
+    "text": "본방송 직전. 무대 뒤, 조명은 아직 꺼져 있어요. 저... 오늘 무대 끝나고 울 수도 있을 것 같아요. 무서워서가 아니라, 여기까지 온 게 믿기지 않아서요. 마지막으로 한마디 해주세요.",
+    "isDancing": true,
+    "choices": [
+      { "text": "\"완벽하려고 하지 마. 네 무대를 해.\"", "effect": { "mental": 5 }, "nextSceneId": "ch5_result" },
+      { "text": "\"오늘은 반드시 이겨야 해.\"", "effect": { "vocal": 3, "dance": 3, "mental": -2 }, "nextSceneId": "ch5_result" },
+      { "text": "\"팬들을 떠올려. 너를 기다린 사람들.\"", "effect": { "charm": 5, "mental": 3 }, "nextSceneId": "ch5_result" }
+    ]
+  },
+  {
+    "id": "ch5_result",
+    "chapter": 5,
+    "bg": "music_show",
+    "speaker": "MC",
+    "text": "이번 주 1위는...",
+    "isDancing": true,
+    "isResult": true,
+    "resultData": {
+      "title": "최종 결과",
+      "description": "모든 선택이 결과로 돌아옵니다."
+    },
+    "nextSceneId": "ending_rebuild"
+  }
 ]

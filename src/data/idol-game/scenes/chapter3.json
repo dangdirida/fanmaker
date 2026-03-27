@@ -1,7 +1,75 @@
 [
-  {"id":"ch3_first_activity","chapter":3,"bg":"music_show","titleFlash":"Chapter 3 -- 첫 활동","speaker":"매니저 박 팀장","text":"드디어 음악방송 무대에 섭니다.\n\n1위 후보에 오르진 못했지만, 이름을 알리기 시작했어요.\n이제 어떤 방향으로 첫 활동을 이어나갈지 결정해야 합니다.","activeMemberIndex":-1,"energyCost":1,"choices":[{"text":"후속곡을 빠르게 컴백 준비한다","subText":"기세 유지, 완성도 위험","effect":{"charm":6,"mental":-4},"nextSceneId":"ch3_sns_viral"},{"text":"예능 출연에 집중한다","subText":"대중 인지도 폭발 상승","effect":{"charm":12,"vocal":-2},"setFlags":{"variety_done":true},"nextSceneId":"ch3_variety_result"},{"text":"라이브 실력을 먼저 강화한다","subText":"실력파 이미지 구축, 장기적 유리","effect":{"vocal":12,"dance":6,"mental":4},"nextSceneId":"ch3_sns_viral"},{"text":"SNS와 챌린지 공략에 집중한다","subText":"바이럴 극대화, 팬 급증 가능","effect":{"charm":10,"dance":5},"setFlags":{"viral_challenge":true},"nextSceneId":"ch3_sns_viral"}]},
-  {"id":"ch3_variety_result","chapter":3,"bg":"backstage","speaker":"매니저 박 팀장","text":"예능 방송 출연 결과입니다.\n\n방송에서 멤버 한 명의 리액션이 화제가 됐습니다.\n\"저 애 누구야?\" 검색량이 치솟았어요.\n\n개인 팬덤이 생기기 시작했지만, 팀 전체 활동과 균형을 맞추는 게 중요합니다.","activeMemberIndex":2,"nextSceneId":"ch3_sns_viral"},
-  {"id":"ch3_sns_viral","chapter":3,"bg":"sns_viral","speaker":"내레이터","text":"안무 챌린지 영상이 올라갔다.\n\n일반인들이 따라 추기 시작했습니다. 인플루언서들도 참여했어요.\n\n그리고 -- 한 영상이 완전히 터졌습니다.\n\n\"중독됨\", \"안무 너무 귀엽다\" 댓글이 폭발했어요.\n음원 차트 역주행 조짐이 보이기 시작했습니다.","activeMemberIndex":-1,"nextSceneId":"ch3_chart_battle"},
-  {"id":"ch3_chart_battle","chapter":3,"bg":"music_show","speaker":"매니저 박 팀장","text":"드디어 음악방송 1위 후보에 처음으로 이름이 올라갔습니다.\n\n상대는 이미 자리를 잡은 인기 그룹입니다.\n\n1위를 노려볼 수 있는 무대 전략을 세워야 해요.","activeMemberIndex":-1,"energyCost":1,"choices":[{"text":"완벽한 라이브로 실력 승부","subText":"안정적, 팬들의 신뢰 상승","effect":{"vocal":5,"mental":4},"nextSceneId":"ch3_first_win"},{"text":"퍼포먼스 극한으로 끌어올린다","subText":"무대 압도, 실수 위험","effect":{"dance":6,"charm":3,"mental":-4},"nextSceneId":"ch3_first_win"},{"text":"팬과의 교감 중심 무대","subText":"투표 화력 극대화","effect":{"charm":8,"mental":5},"nextSceneId":"ch3_first_win"},{"text":"스토리 연출 무대 (감정 + 연기)","subText":"전설급 무대 가능, 고난도","effect":{"charm":12,"vocal":4,"mental":-5},"setFlags":{"legendary_stage":true},"nextSceneId":"ch3_first_win"}]},
-  {"id":"ch3_first_win","chapter":3,"bg":"music_show","spotlight":true,"titleFlash":"첫 1위","speaker":"MC","text":"\"1위는...\"\n\n...\n\n...\n\n\"축하합니다!\"\n\n멤버들은 울면서 서로를 끌어안는다.\n팬들도 함께 울고 있다.\n\n이 순간이 -- 처음이자 전부였다.","activeMemberIndex":-1,"isDancing":false,"isResult":true,"resultData":{"title":"첫 음악방송 1위 달성","description":"팬들과 함께 만들어낸 첫 1위. 멤버들은 눈물을 흘렸고, 팬덤 결속력이 크게 높아졌어요. 이제 인기 아이돌로서의 본격적인 여정이 시작됩니다.","stageUp":"인기 아이돌","weekAdvance":2,"unlockFlag":"first_win"},"nextSceneId":"ch4_rising_status"}
+  {
+    "id": "ch3_debut_stage",
+    "chapter": 3,
+    "bg": "debut_stage",
+    "speaker": "MC",
+    "text": "오늘 데뷔 무대를 갖는 신인 그룹! 조명이 켜지고, 그 이름이 처음으로 세상 앞에 불렸다. 무엇에 집중할까요?",
+    "isDancing": true,
+    "choices": [
+      { "text": "라이브 안정감에 집중", "effect": { "vocal": 5 }, "nextSceneId": "ch3_first_news" },
+      { "text": "표정과 제스처에 집중", "effect": { "charm": 5 }, "nextSceneId": "ch3_first_news" },
+      { "text": "퍼포먼스 임팩트에 집중", "effect": { "dance": 5 }, "nextSceneId": "ch3_first_news" }
+    ]
+  },
+  {
+    "id": "ch3_first_news",
+    "chapter": 3,
+    "bg": "dorm",
+    "speaker": "실장",
+    "text": "데뷔 다음 날 기사 몇 개가 올라왔어요. '가능성 보인 데뷔', '직캠 반응 상승세'. 아직은 작지만 분명히 누군가는 봤습니다. 다음 홍보 전략은?",
+    "choices": [
+      { "text": "팬소통 라이브를 연다", "effect": { "charm": 5, "mental": 2 }, "nextSceneId": "ch3_first_variety" },
+      { "text": "퍼포먼스 직캠을 밀어준다", "effect": { "dance": 4, "charm": 3 }, "nextSceneId": "ch3_first_variety" },
+      { "text": "인터뷰 중심 홍보를 간다", "effect": { "charm": 6 }, "nextSceneId": "ch3_first_variety" }
+    ]
+  },
+  {
+    "id": "ch3_first_variety",
+    "chapter": 3,
+    "bg": "conference",
+    "speaker": "실장",
+    "text": "소규모 웹예능 출연 제안이 들어왔어요. 좋은 기회지만 웃기지 못하면 묻힐 수도 있어요.",
+    "choices": [
+      { "text": "예능 출연 강행", "effect": { "charm": 8, "mental": -3 }, "nextSceneId": "ch3_rival_surge" },
+      { "text": "아직 실력에 집중하며 보류", "effect": { "vocal": 4, "dance": 4 }, "nextSceneId": "ch3_rival_surge" },
+      { "text": "짧은 SNS 콘텐츠로 대체", "effect": { "charm": 4 }, "nextSceneId": "ch3_rival_surge" }
+    ]
+  },
+  {
+    "id": "ch3_rival_surge",
+    "chapter": 3,
+    "bg": "practice",
+    "speaker": "실장",
+    "text": "경쟁 신인 그룹의 영상이 알고리즘을 타며 크게 화제가 됐어요. 지금 우리보다 훨씬 빠르게 올라가고 있어요. 어떻게 대응할까요?",
+    "choices": [
+      { "text": "차별화된 콘셉트를 강화한다", "effect": { "charm": 5 }, "nextSceneId": "ch3_first_controversy" },
+      { "text": "유행 포인트를 일부 따라간다", "effect": { "dance": 4, "charm": 3 }, "nextSceneId": "ch3_first_controversy" },
+      { "text": "팬덤 결속에 올인한다", "effect": { "mental": 4 }, "nextSceneId": "ch3_first_controversy" }
+    ]
+  },
+  {
+    "id": "ch3_first_controversy",
+    "chapter": 3,
+    "bg": "dorm",
+    "speaker": "실장",
+    "text": "편집된 영상 하나로 태도 논란이 생겼어요. 실제 맥락과 다르지만 반응은 빠릅니다. 어떻게 대응할까요?",
+    "choices": [
+      { "text": "빠르게 해명문 발표", "effect": { "mental": -2, "charm": 3 }, "nextSceneId": "ch3_first_fansign" },
+      { "text": "침묵 후 무대로 증명", "effect": { "mental": 3, "dance": 3 }, "nextSceneId": "ch3_first_fansign" },
+      { "text": "팬 소통 라이브로 직접 설명", "effect": { "charm": 6, "mental": 2 }, "nextSceneId": "ch3_first_fansign" }
+    ]
+  },
+  {
+    "id": "ch3_first_fansign",
+    "chapter": 3,
+    "bg": "dorm",
+    "speaker": "멤버",
+    "text": "작지만 조용히 줄이 늘어선 첫 팬사인회. 한 팬이 말했어요. '데뷔 때부터 봤어요. 꼭 잘됐으면 좋겠어요.' ...프로듀서님. 진짜 팬이 생겼어요. 팬 소통 전략은?",
+    "choices": [
+      { "text": "친근한 소통을 강화", "effect": { "charm": 5, "mental": 3 }, "nextSceneId": "ch4_comeback" },
+      { "text": "프로페셔널한 이미지 유지", "effect": { "charm": 3, "vocal": 3 }, "nextSceneId": "ch4_comeback" },
+      { "text": "팬 참여형 이벤트 기획", "effect": { "charm": 7 }, "nextSceneId": "ch4_comeback" }
+    ]
+  }
 ]

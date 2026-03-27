@@ -156,6 +156,36 @@ export function getNextSceneId(
   return scene.nextSceneId ?? null;
 }
 
+// -- Ending resolution --
+
+export interface GameStats {
+  vocal: number;
+  dance: number;
+  charm: number;
+  mental: number;
+}
+
+/**
+ * Resolve which ending scene to navigate to based on final stats.
+ * Called when a scene has isResult: true and the player clicks "결과 확인".
+ */
+export function resolveResultEnding(stats: GameStats): string {
+  const total = stats.vocal + stats.dance + stats.charm + stats.mental;
+  const isHighVocal = stats.vocal >= 75;
+  const isHighDance = stats.dance >= 75;
+  const isHighCharm = stats.charm >= 75;
+  const isAllHigh = total >= 280;
+
+  if (isAllHigh) return 'ending_legend';
+  if (total >= 240) return 'ending_first_place';
+  if (isHighCharm && stats.dance < 60) return 'ending_variety';
+  if (isHighVocal && stats.dance < 60) return 'ending_artistry';
+  if (isHighDance && stats.charm < 60) return 'ending_global';
+  if (isHighVocal && isHighDance && stats.charm < 60) return 'ending_solo';
+  if (total >= 200) return 'ending_global';
+  return 'ending_rebuild';
+}
+
 // -- Background image utilities --
 
 const BG_BASE_PATH = '/backgrounds/idol-game';
@@ -175,6 +205,10 @@ const BG_FILE_MAP: Record<string, string> = {
   practice_night: 'practice_room_night',
   dorm: 'dorm_room',
   dorm_night: 'dorm_room_night',
+  office_night: 'conference_room',
+  stage: 'practice_room_night',
+  conference_room: 'conference_room',
+  practice_room: 'practice_room',
   // 파일 미보유 - 유사 배경으로 대체
   eval_hall: 'conference_room',
   backstage: 'practice_room_night',
@@ -216,6 +250,7 @@ export function getFallbackBgUrl(bgKey: string): string {
  * CSS gradient fallback map for when background images fail to load.
  */
 const BG_GRADIENT_MAP: Record<string, string> = {
+  office_night: 'linear-gradient(to bottom, #1a1a2e, #0a0a1a)',
   practice: 'linear-gradient(to bottom, #1a0a35, #0a1528)',
   practice_night: 'linear-gradient(to bottom, #1a0a35, #0a1528)',
   stage: 'linear-gradient(to bottom, #200040, #000)',

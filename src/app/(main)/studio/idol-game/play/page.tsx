@@ -13,6 +13,7 @@ import {
 } from '@/lib/idol-game/saveManager';
 import {
   loadScene,
+  resolveResultEnding,
   type SceneData,
   type ChoiceData,
 } from '@/lib/idol-game/sceneEngine';
@@ -173,7 +174,7 @@ export default function IdolGamePlayPage() {
 
       // 3. 현재 씬으로 이동
       const currentId =
-        useIdolGameStore.getState().currentSceneId || 'ch1_intro';
+        useIdolGameStore.getState().currentSceneId || 'prologue_start';
 
       setIsLoading(false);
 
@@ -338,9 +339,16 @@ export default function IdolGamePlayPage() {
         }
       }
 
-      // 다음 씬으로 이동
+      // 다음 씬으로 이동 (isResult 씬이면 스탯 기반 엔딩 분기)
       if (choice.nextSceneId) {
-        await goToScene(choice.nextSceneId);
+        let nextId = choice.nextSceneId;
+        if (scene?.isResult) {
+          const resolved = resolveResultEnding(store.stats);
+          if (loadScene(resolved)) {
+            nextId = resolved;
+          }
+        }
+        await goToScene(nextId);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -381,7 +389,15 @@ export default function IdolGamePlayPage() {
       }
     }
 
-    await goToScene(scene.nextSceneId);
+    // 스탯 기반 엔딩 분기: isResult 씬에서 nextSceneId를 스탯으로 override
+    let nextId = scene.nextSceneId;
+    if (scene.isResult) {
+      const resolved = resolveResultEnding(store.stats);
+      if (loadScene(resolved)) {
+        nextId = resolved;
+      }
+    }
+    await goToScene(nextId);
   }, [scene, store, goToScene]);
 
   // ------------------------------------------------------------------

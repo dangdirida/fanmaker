@@ -225,7 +225,7 @@ export default function IdolGameSetupPage() {
         stage: "연습생",
         week: 1,
         energy: 5,
-        currentSceneId: "ch1_intro",
+        currentSceneId: "prologue_start",
         flagsJson: JSON.stringify({}),
         choiceHistoryJson: JSON.stringify([]),
         conceptBoardJson: JSON.stringify({}),

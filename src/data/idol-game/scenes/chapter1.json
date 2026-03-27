@@ -1,15 +1,113 @@
 [
-  {"id":"ch1_intro","chapter":1,"bg":"conference","titleFlash":"Chapter 1 -- 결성","speaker":"내레이터","text":"당신은 이제 팬이 아니라, 아이돌을 만드는 프로듀서입니다.\n당신의 선택 하나로, 평범한 연습생이 무대 위의 스타가 됩니다.\n이곳은 경쟁이 치열한 K-POP 업계. 살아남는 건 단 하나의 팀뿐입니다.","activeMemberIndex":-1,"nextSceneId":"ch1_first_look"},
-  {"id":"ch1_first_look","chapter":1,"bg":"practice","speaker":"매니저 박 팀장","text":"프로듀서님, 드디어 팀이 결성됐습니다.\n아직 아무것도 정해진 게 없어요. 실력도, 컨셉도, 팬덤도.\n하지만 한 가지는 확실합니다. 이 아이들에겐 가능성이 있어요.\n앞으로 함께 만들어 나가는 겁니다.","activeMemberIndex":-1,"showVirtualStudioBtn":true,"nextSceneId":"ch1_virtual_studio_prompt"},
-  {"id":"ch1_virtual_studio_prompt","chapter":1,"bg":"practice","speaker":"매니저 박 팀장","text":"지금 멤버들의 비주얼이 아직 정해지지 않았어요.\n버추얼 스튜디오에서 멤버들의 모습을 직접 만들어볼 수 있습니다.\n지금 하시겠어요? 나중에 언제든지 할 수 있으니 천천히 결정하세요.","activeMemberIndex":-1,"showVirtualStudioBtn":true,"choices":[{"text":"지금 바로 멤버 비주얼을 만들어본다","subText":"버추얼 스튜디오로 연결 (언제든 수정 가능)","effect":{"charm":3},"nextSceneId":"ch1_week1_choice"},{"text":"일단 훈련부터 시작한다","subText":"나중에 커스터마이징 가능","effect":{},"nextSceneId":"ch1_week1_choice"}]},
-  {"id":"ch1_week1_choice","chapter":1,"bg":"practice","speaker":"매니저 박 팀장","text":"첫 월말 평가가 3주 후입니다.\n이 평가 결과에 따라 데뷔조 진입 여부가 결정돼요.\n어떤 훈련에 집중할까요?","activeMemberIndex":-1,"energyCost":1,"choices":[{"text":"보컬 집중 트레이닝","subText":"안정적인 실력 확보, 개성 부족 위험","effect":{"vocal":12,"dance":-2,"charm":2,"mental":3},"nextSceneId":"ch1_vocal_training"},{"text":"퍼포먼스 강화 훈련","subText":"무대 임팩트 상승, 체력 소모 큼","effect":{"vocal":-2,"dance":12,"charm":4,"mental":-8},"nextSceneId":"ch1_dance_training"},{"text":"컨셉 몰입 훈련 (표정, 연기)","subText":"팬 반응 상승, 실력 성장은 느림","effect":{"vocal":0,"dance":2,"charm":10,"mental":5},"nextSceneId":"ch1_concept_training"},{"text":"팀워크 강화 캠프","subText":"멘탈 + 팀 시너지 상승, 직접 실력 변화 적음","effect":{"vocal":4,"dance":4,"charm":4,"mental":12},"nextSceneId":"ch1_teamwork_training"}]},
-  {"id":"ch1_vocal_training","chapter":1,"bg":"recording","speaker":"보컬 트레이너","text":"발성부터 다시 잡아야 합니다. 기초가 무너지면 나중에 더 힘들어요.\n\n연습실의 피아노 소리가 끊이지 않는다.\n매일 새벽까지 같은 소절을 반복한다.\n\n\"음색이 정말 깊어졌네요.\" 트레이너가 말했다.","activeMemberIndex":0,"nextSceneId":"ch1_random_event"},
-  {"id":"ch1_dance_training","chapter":1,"bg":"practice_night","speaker":"내레이터","text":"연습실의 불이 꺼지지 않는다. 하루 10시간 이상 안무를 반복한다.\n처음엔 엇박자가 나고, 체력도 한계에 부딪혔다.\n\n하지만 점점 동선이 맞기 시작하고, 무대 장악력이 눈에 띄게 상승한다.\n\n이 속도라면... 평가까지 뭔가 보여줄 수 있을 것 같다.","activeMemberIndex":1,"nextSceneId":"ch1_mental_crisis"},
-  {"id":"ch1_concept_training","chapter":1,"bg":"photo_studio","speaker":"이미지 디렉터","text":"거울 앞에서 표정 연기를 반복하는 멤버들.\n단순히 예쁜 게 아니라, 카메라가 잡아내는 '순간'을 만들어야 해요.\n\n사람을 끌어당기는 감정의 표현. 그게 팬들이 기억하는 장면이 됩니다.","activeMemberIndex":2,"nextSceneId":"ch1_random_event"},
-  {"id":"ch1_teamwork_training","chapter":1,"bg":"dorm_night","speaker":"내레이터","text":"숙소에서 밤새 이야기를 나눈 멤버들.\n눈물도 있었고, 웃음도 있었다.\n\n\"우리 꼭 같이 데뷔하자.\"\n\n그 말 하나가 팀의 방향을 바꿨다.\n지금은 실력보다, 서로를 믿는 힘이 더 중요하다.","activeMemberIndex":-1,"nextSceneId":"ch1_random_event"},
-  {"id":"ch1_mental_crisis","chapter":1,"bg":"practice_night","speaker":"멤버 (첫 번째)","text":"(연습 도중 한 멤버가 눈물을 보였다)\n\n\"너무 힘들어서... 못 버틸 것 같아.\"\n\n팀 분위기가 흔들린다.\n이 위기를 어떻게 넘길 것인가?","activeMemberIndex":0,"energyCost":1,"choices":[{"text":"진심 어린 팀 미팅을 진행한다","subText":"멘탈 회복 + 팀워크 상승","effect":{"mental":10,"charm":3},"nextSceneId":"ch1_random_event"},{"text":"감정을 무대 에너지로 승화시킨다","subText":"눈물을 표정 연기로 활용","effect":{"charm":14,"mental":8,"dance":2},"setFlags":{"emotional_performance":true},"nextSceneId":"ch1_random_event"},{"text":"하루 전체 휴식을 선언한다","subText":"멘탈 크게 회복, 평가 준비 부족","effect":{"mental":15,"dance":-3},"nextSceneId":"ch1_random_event"},{"text":"강행 훈련을 지속한다","subText":"퍼포먼스 완성도 극대화, 멘탈 붕괴 위험","effect":{"dance":6,"mental":-12},"nextSceneId":"ch1_random_event"}]},
-  {"id":"ch1_random_event","chapter":1,"bg":"dorm","speaker":"매니저 박 팀장","text":"훈련 중에 뜻밖의 일이 생겼습니다.\n\n연습 영상 하나가 직원 커뮤니티에서 화제가 됐어요.\n'이 그룹 언제 데뷔해요?' 라는 반응이 달렸습니다.\n아직 데뷔도 안 했는데, 기대감이 생기고 있어요.","activeMemberIndex":-1,"nextSceneId":"ch1_eval_notice"},
-  {"id":"ch1_eval_notice","chapter":1,"bg":"conference","speaker":"매니저 박 팀장","text":"내일이 월말 평가입니다.\n\n심사위원들이 직접 와서 퍼포먼스를 봅니다.\n이 평가 결과가 데뷔조 진입 여부를 결정해요.\n\n마지막 준비 방향을 정해주세요.","activeMemberIndex":-1,"energyCost":1,"choices":[{"text":"라이브 안정형 무대로 간다","subText":"실력으로 인정받는다","effect":{"vocal":3},"nextSceneId":"ch1_eval_stage"},{"text":"퍼포먼스 임팩트 극대화","subText":"무대 장악, 실수 위험 있음","effect":{"dance":3,"mental":-3},"nextSceneId":"ch1_eval_stage"},{"text":"팬서비스 집중 무대","subText":"표정과 눈맞춤, 직캠 의식","effect":{"charm":5},"nextSceneId":"ch1_eval_stage"},{"text":"직접 무대에서 춤춰보기","subText":"참여만 해도 댄스 보너스 +15","isCamera":true,"bonusLabel":"+댄스 보너스","effect":{"dance":15,"charm":5},"nextSceneId":"ch1_eval_result"}]},
-  {"id":"ch1_eval_stage","chapter":1,"bg":"eval_hall","speaker":"심사위원","text":"\"퍼포먼스... 예상 이상이네요.\"\n\n\"특히 표정, 눈에 남습니다.\"\n\n잠시 정적이 흘렀다.\n\n결과를 발표합니다.","activeMemberIndex":-1,"nextSceneId":"ch1_eval_result"},
-  {"id":"ch1_eval_result","chapter":1,"bg":"eval_hall","speaker":"심사위원","text":"\"데뷔조 진입 명단을 발표합니다.\"\n\n...\n\n합격입니다.","activeMemberIndex":-1,"isResult":true,"resultData":{"title":"데뷔조 진입 성공","description":"심사위원들의 눈길을 사로잡았습니다. 연습생 단계를 통과했어요. 이제 진짜 데뷔를 준비할 차례입니다.","stageUp":"데뷔조","weekAdvance":2,"unlockFlag":"debut_candidate"},"nextSceneId":"ch2_debut_prep"}
+  {
+    "id": "prologue_start",
+    "chapter": 1,
+    "bg": "conference",
+    "speaker": "내레이션",
+    "text": "당신은 이제 팬이 아니다. 누군가를 무대 위에 세우고, 세상이 그 이름을 부르게 만드는 사람이다.",
+    "choices": [
+      { "text": "좋아. 바로 시작하지.", "effect": { "mental": 3 }, "nextSceneId": "prologue_select_trainee" },
+      { "text": "연습생 자료부터 다시 보자.", "effect": { "mental": 2 }, "nextSceneId": "prologue_select_trainee" },
+      { "text": "이 프로젝트, 반드시 데뷔시킨다.", "effect": { "mental": 4 }, "nextSceneId": "prologue_select_trainee" }
+    ]
+  },
+  {
+    "id": "prologue_select_trainee",
+    "chapter": 1,
+    "bg": "conference",
+    "speaker": "실장",
+    "text": "이번 프로젝트는 한 명으로 시작합니다. 누굴 중심으로 팀을 세울지 선택하세요.",
+    "choices": [
+      {
+        "text": "강이든 — 보컬 특화형",
+        "subText": "보컬 65 / 댄스 35 / 매력 45 / 멘탈 50",
+        "effect": { "vocal": 5, "dance": -5, "charm": -5, "mental": 0 },
+        "nextSceneId": "prologue_style"
+      },
+      {
+        "text": "윤서준 — 퍼포먼스형",
+        "subText": "보컬 40 / 댄스 65 / 매력 55 / 멘탈 45",
+        "effect": { "vocal": -10, "dance": 5, "charm": -5, "mental": -5 },
+        "nextSceneId": "prologue_style"
+      },
+      {
+        "text": "한도윤 — 올라운더형",
+        "subText": "보컬 50 / 댄스 50 / 매력 50 / 멘탈 50",
+        "effect": { "vocal": -10, "dance": -10, "charm": -10, "mental": -10 },
+        "nextSceneId": "prologue_style"
+      }
+    ]
+  },
+  {
+    "id": "prologue_style",
+    "chapter": 1,
+    "bg": "conference",
+    "speaker": "실장",
+    "text": "어떤 방향으로 키울지 프로듀서의 철학을 정해주세요.",
+    "choices": [
+      { "text": "실력 중심으로 키운다", "effect": { "vocal": 5, "dance": 5 }, "nextSceneId": "ch1_training" },
+      { "text": "스타성 중심으로 키운다", "effect": { "charm": 8 }, "nextSceneId": "ch1_training" },
+      { "text": "균형 있게 키운다", "effect": { "mental": 5 }, "nextSceneId": "ch1_training" }
+    ]
+  },
+  {
+    "id": "ch1_training",
+    "chapter": 1,
+    "bg": "practice",
+    "speaker": "트레이너",
+    "text": "새벽 6시 연습실. 오늘부터 방향을 제대로 잡아야 합니다. 뭘 먼저 키울지 정하세요.",
+    "choices": [
+      { "text": "보컬 집중 훈련", "effect": { "vocal": 8 }, "nextSceneId": "ch1_feedback" },
+      { "text": "댄스 집중 훈련", "effect": { "dance": 8 }, "nextSceneId": "ch1_feedback" },
+      { "text": "카메라/표정/매력 훈련", "effect": { "charm": 8 }, "nextSceneId": "ch1_feedback" }
+    ]
+  },
+  {
+    "id": "ch1_feedback",
+    "chapter": 1,
+    "bg": "practice",
+    "speaker": "보컬 트레이너",
+    "text": "기본기는 있어요. 근데 확실히 자신감이 부족하네요. 어떻게 피드백할까요?",
+    "choices": [
+      { "text": "엄격하게 부족한 점을 짚는다", "effect": { "mental": -5, "vocal": 3, "dance": 3 }, "nextSceneId": "ch1_leak" },
+      { "text": "잘한 점부터 칭찬한다", "effect": { "mental": 5 }, "nextSceneId": "ch1_leak" },
+      { "text": "경쟁심을 자극한다", "effect": { "dance": 4, "mental": -2 }, "nextSceneId": "ch1_leak" }
+    ]
+  },
+  {
+    "id": "ch1_leak",
+    "chapter": 1,
+    "bg": "practice",
+    "speaker": "실장",
+    "text": "사내 테스트 영상 일부가 내부 커뮤니티에 퍼졌어요. 반응은 갈립니다. '실력은 있는데 아직 어색하다', '얼굴은 기억난다'. 어떻게 할까요?",
+    "choices": [
+      { "text": "반응을 직접 보여주고 자극한다", "effect": { "mental": -3, "vocal": 3 }, "nextSceneId": "ch1_rival" },
+      { "text": "좋은 댓글만 보여주며 안심시킨다", "effect": { "mental": 4, "charm": 2 }, "nextSceneId": "ch1_rival" },
+      { "text": "댓글은 숨기고 훈련에만 집중시킨다", "effect": { "mental": 1, "vocal": 2 }, "nextSceneId": "ch1_rival" }
+    ]
+  },
+  {
+    "id": "ch1_rival",
+    "chapter": 1,
+    "bg": "practice",
+    "speaker": "실장",
+    "text": "다른 기획사 남자 연습생 팀 영상이 화제가 됐어요. 비교 기사까지 슬슬 돌기 시작했습니다. 어떻게 대응할까요?",
+    "choices": [
+      { "text": "\"너는 너만의 강점으로 가자.\"", "effect": { "mental": 4 }, "nextSceneId": "ch1_evaluation" },
+      { "text": "\"우리가 더 독하게 준비하면 이긴다.\"", "effect": { "mental": -2, "dance": 4 }, "nextSceneId": "ch1_evaluation" },
+      { "text": "\"비교되는 부분을 바로 보완하자.\"", "effect": { "vocal": 3, "dance": 3 }, "nextSceneId": "ch1_evaluation" }
+    ]
+  },
+  {
+    "id": "ch1_evaluation",
+    "chapter": 1,
+    "bg": "conference",
+    "speaker": "대표",
+    "text": "이번 평가에서 가능성을 보여주지 못하면 프로젝트는 재정비다. 어떤 무대로 승부할까요?",
+    "choices": [
+      { "text": "라이브 중심 무대", "effect": { "vocal": 5 }, "nextSceneId": "ch2_concept_meeting" },
+      { "text": "퍼포먼스 중심 무대", "effect": { "dance": 5 }, "nextSceneId": "ch2_concept_meeting" },
+      { "text": "안정적인 밸런스 무대", "effect": { "mental": 3 }, "nextSceneId": "ch2_concept_meeting" }
+    ]
+  }
 ]
