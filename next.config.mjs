@@ -58,6 +58,15 @@ const nextConfig = {
     }
     return config;
   },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/feed",
+        permanent: false,
+      },
+    ];
+  },
   async headers() {
     return [
       {
