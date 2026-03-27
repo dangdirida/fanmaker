@@ -16,7 +16,7 @@ export async function PATCH(
     }
 
     const body = await req.json();
-    const { nickname, bio } = body;
+    const { nickname, bio, image } = body;
 
     // 닉네임 유효성 검사
     if (nickname !== undefined) {
@@ -50,6 +50,7 @@ export async function PATCH(
     const updateData: Record<string, string> = {};
     if (nickname !== undefined) updateData.nickname = nickname.trim();
     if (bio !== undefined) updateData.bio = bio.trim();
+    if (image !== undefined && typeof image === "string") updateData.image = image;
 
     const updated = await prisma.user.update({
       where: { id: params.userId },

@@ -115,10 +115,14 @@ export default function IdolGamePlayPage() {
       store.setIsTransitioning(true);
       await wait(350);
 
-      // 2. 씬 데이터 로드
-      const nextScene = loadScene(sceneId);
+      // 2. 씬 데이터 로드 (없으면 prologue_start로 fallback)
+      let nextScene = loadScene(sceneId);
       if (!nextScene) {
-        console.error('[goToScene] 씬을 찾을 수 없음:', sceneId);
+        console.warn('[goToScene] 씬을 찾을 수 없음:', sceneId, '→ prologue_start로 fallback');
+        nextScene = loadScene('prologue_start');
+      }
+      if (!nextScene) {
+        console.error('[goToScene] fallback 씬도 로드 실패');
         store.setIsTransitioning(false);
         isTransitioningRef.current = false;
         return;
@@ -155,24 +159,30 @@ export default function IdolGamePlayPage() {
     let cancelled = false;
 
     async function init() {
-      // 1. 세이브 로드
-      const result = await loadGame();
-      if (cancelled) return;
+      try {
+        // 1. 세이브 로드
+        const result = await loadGame();
+        if (cancelled) return;
 
-      if (result?.hasSave && result.save) {
-        store.loadFromSave(result.save);
+        if (result?.hasSave && result.save) {
+          store.loadFromSave(result.save);
+        }
+
+        // 2. 에너지 로드
+        const energyResult = await checkEnergy();
+        if (cancelled) return;
+
+        if (energyResult) {
+          store.setEnergy(energyResult.current);
+          setEnergyMax(energyResult.max);
+        }
+      } catch (err) {
+        console.warn('[init] 세이브/에너지 로드 실패:', err);
       }
 
-      // 2. 에너지 로드
-      const energyResult = await checkEnergy();
       if (cancelled) return;
 
-      if (energyResult) {
-        store.setEnergy(energyResult.current);
-        setEnergyMax(energyResult.max);
-      }
-
-      // 3. 현재 씬으로 이동
+      // 3. 현재 씬으로 이동 (세이브의 sceneId가 없으면 prologue_start)
       const currentId =
         useIdolGameStore.getState().currentSceneId || 'prologue_start';
 
@@ -630,7 +640,7 @@ export default function IdolGamePlayPage() {
 
       {/* ======== DialogBox ======== */}
       <div ref={dialogRef} className="relative z-10" style={{ minHeight: 180 }}>
-        {scene && !isEnding && (
+        {scene && !isEnding ? (
           <DialogBox
             speaker={scene.speaker}
             text={scene.text}
@@ -641,7 +651,11 @@ export default function IdolGamePlayPage() {
             isResult={scene.isResult}
             isEnding={scene.isEnding}
           />
-        )}
+        ) : !isEnding ? (
+          <div style={{ minHeight: 180, background: 'rgba(0,0,0,0.88)', borderTop: '1px solid rgba(168,85,247,0.3)', padding: '16px 20px', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 14 }}>씬을 불러오는 중...</p>
+          </div>
+        ) : null}
 
         {/* 엔딩 결과 카드 */}
         {isEnding && scene?.endingData && (
