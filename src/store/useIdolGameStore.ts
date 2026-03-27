@@ -75,8 +75,10 @@ export interface IdolGameState {
     } | null
   ) => void;
   setShowEnergyModal: (val: boolean) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   loadFromSave: (save: any) => void;
   resetGame: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getSavePayload: () => any;
 }
 
@@ -212,9 +214,11 @@ export const useIdolGameStore = create<IdolGameState>((set, get) => ({
 
   setShowEnergyModal: (val) => set({ showEnergyModal: val }),
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   loadFromSave: (save: any) => {
     if (!save) return;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const parseSafe = (val: any, fallback: any) => {
       if (!val) return fallback;
       if (typeof val === 'string') {

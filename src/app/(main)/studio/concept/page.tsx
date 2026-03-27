@@ -158,7 +158,7 @@ export default function ConceptStudioPage() {
         </div>
       </div>
       <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-2">컨셉 키트 생성 중...</h2>
-      <p className="text-gray-500 text-sm">AI가 {artistName}의 컨셉을 분석하고 있어요</p>
+      <p className="text-gray-500 text-sm">AI가 {artistName} 컨셉을 생성하고 있어요</p>
       <div className="mt-6 flex flex-wrap justify-center gap-1">
         {["트랙리스트 구성", "비주얼 방향성", "컬러 팔레트", "스타일링 가이드"].map((t, i) => (
           <div key={i} className="flex items-center gap-1 px-3 py-1.5 bg-purple-50 dark:bg-purple-950 rounded-full">
@@ -357,7 +357,7 @@ export default function ConceptStudioPage() {
           </div>
           <h1 className="text-2xl font-extrabold text-gray-900 dark:text-white">컨셉 스튜디오</h1>
         </div>
-        <p className="text-gray-500 text-sm">AI가 K-pop 컨셉 키트를 완성해드려요</p>
+        <p className="text-gray-500 text-sm">나만의 가상 아이돌 컨셉 키트를 만들어보세요</p>
       </div>
 
       {/* 스텝 인디케이터 */}
@@ -368,7 +368,7 @@ export default function ConceptStudioPage() {
               {step > s ? <Check className="w-3.5 h-3.5" /> : s}
             </div>
             <span className={`text-xs font-medium ${step >= s ? "text-gray-900 dark:text-white" : "text-gray-400"}`}>
-              {["아티스트", "무드 & 키워드", "세부 설정"][s - 1]}
+              {["그룹명", "무드 & 키워드", "세부 설정"][s - 1]}
             </span>
             {s < 3 && <ChevronRight className="w-3 h-3 text-gray-300" />}
           </div>
@@ -379,12 +379,12 @@ export default function ConceptStudioPage() {
       {step === 1 && (
         <div className="space-y-6">
           <div>
-            <label className="text-sm font-semibold text-gray-900 dark:text-white mb-3 block">아티스트/그룹명 *</label>
+            <label className="text-sm font-semibold text-gray-900 dark:text-white mb-3 block">나만의 그룹명 *</label>
             <input
               value={artistName}
               onChange={(e) => setArtistName(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && artistName && setStep(2)}
-              placeholder="예: aespa, BTS, 뉴진스..."
+              placeholder="예: NOVA, ARIA, ZENITH..."
               className="w-full bg-gray-50 dark:bg-gray-900 border-2 border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-2xl px-5 py-4 text-base focus:outline-none focus:border-purple-500 transition-colors"
               autoFocus
             />

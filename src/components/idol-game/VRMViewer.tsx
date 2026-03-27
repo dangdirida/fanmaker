@@ -195,8 +195,8 @@ export default function VRMViewer({
         const rightLowerArm = vrm.humanoid.getNormalizedBoneNode('rightLowerArm');
         if (leftUpperArm) leftUpperArm.rotation.z = 1.0;
         if (rightUpperArm) rightUpperArm.rotation.z = -1.0;
-        if (leftLowerArm) leftLowerArm.rotation.z = 0.3;
-        if (rightLowerArm) rightLowerArm.rotation.z = -0.3;
+        if (leftLowerArm) leftLowerArm.rotation.z = 0.2;
+        if (rightLowerArm) rightLowerArm.rotation.z = -0.2;
 
         // 손가락 자연스럽게 모으기 (30개 본 전체)
         const leftFingers = [
@@ -209,18 +209,18 @@ export default function VRMViewer({
 
         leftFingers.forEach((name) => {
           const bone = vrm.humanoid.getNormalizedBoneNode(name);
-          if (bone) bone.rotation.z = -0.3;
+          if (bone) bone.rotation.z = -0.25;
         });
         rightFingers.forEach((name) => {
           const bone = vrm.humanoid.getNormalizedBoneNode(name);
-          if (bone) bone.rotation.z = 0.3;
+          if (bone) bone.rotation.z = 0.25;
         });
 
         // 엄지는 방향이 달라서 별도 처리
         const leftThumb = vrm.humanoid.getNormalizedBoneNode('leftThumbProximal');
         const rightThumb = vrm.humanoid.getNormalizedBoneNode('rightThumbProximal');
-        if (leftThumb) { leftThumb.rotation.z = -0.4; leftThumb.rotation.y = -0.4; }
-        if (rightThumb) { rightThumb.rotation.z = 0.4; rightThumb.rotation.y = 0.4; }
+        if (leftThumb) { leftThumb.rotation.z = -0.4; leftThumb.rotation.y = -0.3; }
+        if (rightThumb) { rightThumb.rotation.z = 0.4; rightThumb.rotation.y = 0.3; }
 
         // 포즈 적용 후 반드시 업데이트 호출
         vrm.update(0);

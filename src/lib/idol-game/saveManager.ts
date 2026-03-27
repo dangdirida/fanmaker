@@ -3,6 +3,7 @@
 const HEADERS = { "Content-Type": "application/json" };
 
 /** 게임 상태를 서버에 저장 */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function saveGame(
   payload: any
 ): Promise<{ savedAt: string } | null> {
@@ -27,6 +28,7 @@ export async function saveGame(
 /** 서버에서 저장된 게임 불러오기 */
 export async function loadGame(): Promise<{
   hasSave: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   save?: any;
 } | null> {
   try {
@@ -39,6 +41,7 @@ export async function loadGame(): Promise<{
       console.error("[loadGame] 불러오기 실패:", json.error);
       return null;
     }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return json.data as { hasSave: boolean; save?: any };
   } catch (err) {
     console.error("[loadGame] 네트워크 오류:", err);

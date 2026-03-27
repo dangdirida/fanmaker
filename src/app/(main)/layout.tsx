@@ -35,9 +35,10 @@ const studioSubMenus = [
 ];
 
 const mobileMenus = [
-  { label: "홈", href: "/feed", icon: Home },
-  { label: "스튜디오", href: "/studio/virtual", icon: Sparkles },
-  { label: "프로필", href: "/profile", icon: User },
+  { label: "팬 유니버스", href: "/feed", icon: Home },
+  { label: "창작 스튜디오", href: "/studio/virtual", icon: Sparkles },
+  { label: "아이돌 키우기", href: "/studio/idol-game", icon: Gamepad2 },
+  { label: "내 프로필", href: "/profile", icon: User },
 ];
 
 export default function MainLayout({

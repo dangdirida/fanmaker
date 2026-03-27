@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { getBgUrl, handleBgImageError } from '@/lib/idol-game/sceneEngine';
+import { getBgUrl, handleBgImageError, getBgGradient } from '@/lib/idol-game/sceneEngine';
 
 interface SceneRendererProps {
   bgKey: string;
@@ -42,6 +42,15 @@ export default function SceneRenderer({ bgKey, spotlight, isTransitioning }: Sce
 
   return (
     <>
+      {/* CSS gradient fallback */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: getBgGradient(bgKey),
+          zIndex: 0,
+        }}
+      />
       {/* Layer A */}
       {layerA && (
         <img

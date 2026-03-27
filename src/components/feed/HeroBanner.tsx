@@ -6,8 +6,8 @@ import Link from "next/link";
 const slides = [
   {
     tag: " 버추얼 스튜디오",
-    title: "나만의 버추얼\n아이돌을 직접 디자인하세요",
-    sub: "AI로 세상에 없던 나만의 버추얼 아이돌을 만들어보세요",
+    title: "나만의 버추얼 아이돌을\n디자인하세요",
+    sub: "AI로 나만의 가상 K-pop 아이돌 캐릭터를 직접 만들어보세요",
     cta: "캐릭터 만들기 →",
     href: "/studio/virtual",
     icon: "",
@@ -17,7 +17,7 @@ const slides = [
   {
     tag: " 컨셉 디자인",
     title: "다음 앨범 컨셉,\n내가 먼저 만든다",
-    sub: "로고부터 앨범커버까지 컨셉 키트를 제작해보세요",
+    sub: "로고부터 앨범커버까지 AI로 컨셉 키트를 완성하세요",
     cta: "컨셉 제작하기 →",
     href: "/studio/concept",
     icon: "",
@@ -26,13 +26,23 @@ const slides = [
   },
   {
     tag: " 퍼포먼스 기획",
-    title: "무대 위 퍼포먼스를\n직접 기획",
-    sub: "포메이션과 동선을 기획하고 AI 시뮬레이션으로 확인해보세요",
+    title: "무대 위 퍼포먼스를\n직접 기획하세요",
+    sub: "포메이션과 동선을 설계하고 AI 시뮬레이션으로 확인해보세요",
     cta: "퍼포먼스 기획 →",
     href: "/studio/performance",
     icon: "",
     stats: ["3,400+ 퍼포먼스", "3D 시뮬레이션", "팀 협업 가능"],
     badges: ["AI 기반", "무료"],
+  },
+  {
+    tag: " 아이돌 키우기",
+    title: "나만의 아이돌 그룹을\n직접 키워보세요",
+    sub: "연습생부터 레전드까지, 선택 하나하나가 스토리가 돼요",
+    cta: "게임 시작하기 →",
+    href: "/studio/idol-game",
+    icon: "",
+    stats: ["스토리 기반", "캐릭터 육성", "다양한 엔딩"],
+    badges: ["인터랙티브", "무료"],
   },
   {
     tag: " 글로벌 싱크",

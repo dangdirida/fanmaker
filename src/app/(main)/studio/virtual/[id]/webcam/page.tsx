@@ -493,7 +493,6 @@ export default function WebcamExperiencePage() {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const w = window as any;
         const H = w.Hands || w.hands?.Hands || w.mediapipe?.Hands;
-        console.log("Hands object:", typeof H, Object.keys(w).filter(k => k.toLowerCase().includes('hand')));
         if (H) {
           handsInstance = new H({
             locateFile: (f: string) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469404/${f}`,
@@ -523,7 +522,6 @@ export default function WebcamExperiencePage() {
           setLoadingMsg("손가락 인식 초기화 중...");
           await handsInstance.initialize();
           handsTracking = true;
-          console.log("Hands ready!");
         }
       } catch (e) {
         console.warn("Hands failed:", e);

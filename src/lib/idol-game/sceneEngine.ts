@@ -213,7 +213,39 @@ export function getFallbackBgUrl(bgKey: string): string {
 }
 
 /**
- * img onError handler that switches from .jpg to .png fallback once.
+ * CSS gradient fallback map for when background images fail to load.
+ */
+const BG_GRADIENT_MAP: Record<string, string> = {
+  practice: 'linear-gradient(to bottom, #1a0a35, #0a1528)',
+  practice_night: 'linear-gradient(to bottom, #1a0a35, #0a1528)',
+  stage: 'linear-gradient(to bottom, #200040, #000)',
+  debut_stage: 'linear-gradient(to bottom, #200040, #000)',
+  concert: 'linear-gradient(to bottom, #200040, #000)',
+  music_show: 'linear-gradient(to bottom, #200040, #000)',
+  conference: 'linear-gradient(to bottom, #1a1a2e, #0f0f1a)',
+  eval_hall: 'linear-gradient(to bottom, #1a1a2e, #0f0f1a)',
+  press: 'linear-gradient(to bottom, #1a1a2e, #0f0f1a)',
+  dorm: 'linear-gradient(to bottom, #0a0a1a, #1a0a2e)',
+  dorm_night: 'linear-gradient(to bottom, #0a0a1a, #1a0a2e)',
+  rooftop: 'linear-gradient(to bottom, #0a0a1a, #1a0a2e)',
+  airport: 'linear-gradient(to bottom, #0a1a2e, #1a2e0a)',
+  overseas: 'linear-gradient(to bottom, #0a1a2e, #1a2e0a)',
+  award: 'linear-gradient(to bottom, #2e1a00, #1a0a00)',
+  award_win: 'linear-gradient(to bottom, #2e1a00, #1a0a00)',
+  crisis_stage: 'linear-gradient(to bottom, #0a0a0a, #1a0a0a)',
+  sns_viral: 'linear-gradient(to bottom, #0a0a0a, #1a0a0a)',
+  backstage: 'linear-gradient(to bottom, #0a0a0a, #1a0a0a)',
+  recording: 'linear-gradient(to bottom, #0a0a0a, #1a0a0a)',
+  photo_studio: 'linear-gradient(to bottom, #0a0a0a, #1a0a0a)',
+};
+
+export function getBgGradient(bgKey: string): string {
+  return BG_GRADIENT_MAP[bgKey] ?? 'linear-gradient(to bottom, #0a0a1a, #1a0a2e)';
+}
+
+/**
+ * img onError handler that switches from .jpg to .png fallback once,
+ * then hides the image on second failure so the CSS gradient shows through.
  */
 export function handleBgImageError(
   e: React.SyntheticEvent<HTMLImageElement>,
@@ -223,5 +255,7 @@ export function handleBgImageError(
   const fallback = getFallbackBgUrl(bgKey);
   if (!img.src.endsWith(fallback)) {
     img.src = fallback;
+  } else {
+    img.style.display = 'none';
   }
 }
