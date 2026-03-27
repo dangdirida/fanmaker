@@ -188,6 +188,26 @@ export default function VRMViewer({
         vrm.scene.rotation.y = Math.PI;
         scene.add(vrm.scene);
 
+        // T-포즈 해제 — 팔을 자연스럽게 내림
+        const leftUpperArm = vrm.humanoid.getNormalizedBoneNode('leftUpperArm');
+        const rightUpperArm = vrm.humanoid.getNormalizedBoneNode('rightUpperArm');
+        if (leftUpperArm) leftUpperArm.rotation.z = 1.2;
+        if (rightUpperArm) rightUpperArm.rotation.z = -1.2;
+
+        // 손가락 본 지원 여부 확인 후 자연스럽게 모아주기
+        const fingerBones = [
+          'leftIndexProximal', 'leftMiddleProximal', 'leftRingProximal', 'leftLittleProximal',
+          'rightIndexProximal', 'rightMiddleProximal', 'rightRingProximal', 'rightLittleProximal',
+        ];
+        fingerBones.forEach((boneName) => {
+          const bone = vrm.humanoid.getNormalizedBoneNode(boneName);
+          if (bone) bone.rotation.z = boneName.startsWith('left') ? -0.3 : 0.3;
+        });
+        console.log('VRM finger bones support:', fingerBones.map((b) => ({
+          name: b,
+          supported: !!vrm.humanoid.getNormalizedBoneNode(b),
+        })));
+
         const clock = new THREE.Clock();
         const animate = () => {
           if (cancelled) return;
