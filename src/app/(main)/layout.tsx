@@ -14,6 +14,7 @@ import {
   ImageIcon,
   Palette,
   Users,
+  Users2,
   Globe,
   Bell,
   LogOut,
@@ -63,6 +64,7 @@ export default function MainLayout({
     if (pathname.startsWith("/artist")) return "아티스트";
     if (pathname.startsWith("/post")) return "창작물";
     if (pathname === "/pricing") return "Pro 플랜";
+    if (pathname === "/virtual-idols") return "캐릭터 갤러리";
     return "";
   })();
 
@@ -92,6 +94,19 @@ export default function MainLayout({
             >
               <Home className="w-5 h-5" />
               <span>팬 유니버스</span>
+            </Link>
+
+            {/* 캐릭터 갤러리 */}
+            <Link
+              href="/virtual-idols"
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                pathname === "/virtual-idols"
+                  ? "bg-black text-white"
+                  : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800"
+              }`}
+            >
+              <Users2 className="w-5 h-5" />
+              <span>캐릭터 갤러리</span>
             </Link>
 
             {/* 창작 스튜디오 */}

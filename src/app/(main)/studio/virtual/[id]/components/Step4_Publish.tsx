@@ -30,10 +30,31 @@ export default function Step4_Publish({ idol, onPrev }: Props) {
   );
   const [publishing, setPublishing] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [generatingImage, setGeneratingImage] = useState(false);
+
+  const generateImage = async () => {
+    try {
+      setGeneratingImage(true);
+      await fetch("/api/virtual-idols/generate-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          idolId: idol.id, name: idol.name, gender: idol.gender,
+          concept: idol.concept, personality: idol.personality,
+          outfitStyle: idol.outfitStyle, skinTone: idol.skinTone,
+          eyeColor: idol.eyeColor, hairColor: idol.hairColor,
+        }),
+      });
+    } catch { /* 이미지 생성 실패해도 계속 진행 */ }
+    finally { setGeneratingImage(false); }
+  };
 
   const handlePublish = async () => {
     setPublishing(true);
     try {
+      // 이미지 생성 시도 (실패해도 게시 진행)
+      await generateImage();
+
       const res = await fetch(`/api/virtual-idols/${idol.id}/publish`, {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, description }),
@@ -157,7 +178,7 @@ export default function Step4_Publish({ idol, onPrev }: Props) {
         <button onClick={handlePublish} disabled={publishing || !title.trim()}
           className="flex-1 flex items-center justify-center gap-2 py-3 bg-black text-white rounded-xl text-sm font-bold hover:bg-gray-800 disabled:opacity-50 transition-all">
           {publishing ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
-          피드에 게시
+          {generatingImage ? "AI 이미지 생성 중..." : publishing ? "게시 중..." : "피드에 게시"}
         </button>
       </div>
     </div>

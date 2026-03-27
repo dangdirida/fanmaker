@@ -155,7 +155,7 @@ function VRMCanvasInner({ hairColor, skinTone, eyeColor, gender, outfitStyle }: 
           casual: '/models/female_casual.vrm',
           cute: '/models/female_cute.vrm',
           dress: '/models/female_dress.vrm',
-          sports: '/models/female_sports.vrm',
+          sports: '/models/female_casual.vrm',
           flower: '/models/female_flower.vrm',
           white: '/models/female_white.vrm',
         };
