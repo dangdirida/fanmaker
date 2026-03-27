@@ -191,22 +191,39 @@ export default function VRMViewer({
         // T-포즈 해제 — 팔을 자연스럽게 내림
         const leftUpperArm = vrm.humanoid.getNormalizedBoneNode('leftUpperArm');
         const rightUpperArm = vrm.humanoid.getNormalizedBoneNode('rightUpperArm');
-        if (leftUpperArm) leftUpperArm.rotation.z = 1.2;
-        if (rightUpperArm) rightUpperArm.rotation.z = -1.2;
+        const leftLowerArm = vrm.humanoid.getNormalizedBoneNode('leftLowerArm');
+        const rightLowerArm = vrm.humanoid.getNormalizedBoneNode('rightLowerArm');
+        if (leftUpperArm) leftUpperArm.rotation.z = 1.0;
+        if (rightUpperArm) rightUpperArm.rotation.z = -1.0;
+        if (leftLowerArm) leftLowerArm.rotation.z = 0.3;
+        if (rightLowerArm) rightLowerArm.rotation.z = -0.3;
 
-        // 손가락 본 지원 여부 확인 후 자연스럽게 모아주기
-        const fingerBones = [
-          'leftIndexProximal', 'leftMiddleProximal', 'leftRingProximal', 'leftLittleProximal',
-          'rightIndexProximal', 'rightMiddleProximal', 'rightRingProximal', 'rightLittleProximal',
+        // 손가락 자연스럽게 모으기 (30개 본 전체)
+        const leftFingers = [
+          'leftIndexProximal', 'leftIndexIntermediate', 'leftIndexDistal',
+          'leftMiddleProximal', 'leftMiddleIntermediate', 'leftMiddleDistal',
+          'leftRingProximal', 'leftRingIntermediate', 'leftRingDistal',
+          'leftLittleProximal', 'leftLittleIntermediate', 'leftLittleDistal',
         ];
-        fingerBones.forEach((boneName) => {
-          const bone = vrm.humanoid.getNormalizedBoneNode(boneName);
-          if (bone) bone.rotation.z = boneName.startsWith('left') ? -0.3 : 0.3;
+        const rightFingers = leftFingers.map((b) => b.replace('left', 'right'));
+
+        leftFingers.forEach((name) => {
+          const bone = vrm.humanoid.getNormalizedBoneNode(name);
+          if (bone) bone.rotation.z = -0.3;
         });
-        console.log('VRM finger bones support:', fingerBones.map((b) => ({
-          name: b,
-          supported: !!vrm.humanoid.getNormalizedBoneNode(b),
-        })));
+        rightFingers.forEach((name) => {
+          const bone = vrm.humanoid.getNormalizedBoneNode(name);
+          if (bone) bone.rotation.z = 0.3;
+        });
+
+        // 엄지는 방향이 달라서 별도 처리
+        const leftThumb = vrm.humanoid.getNormalizedBoneNode('leftThumbProximal');
+        const rightThumb = vrm.humanoid.getNormalizedBoneNode('rightThumbProximal');
+        if (leftThumb) { leftThumb.rotation.z = -0.4; leftThumb.rotation.y = -0.4; }
+        if (rightThumb) { rightThumb.rotation.z = 0.4; rightThumb.rotation.y = 0.4; }
+
+        // 포즈 적용 후 반드시 업데이트 호출
+        vrm.update(0);
 
         const clock = new THREE.Clock();
         const animate = () => {
