@@ -5,9 +5,19 @@ import Link from "next/link";
 
 const slides = [
   {
-    tag: " 버추얼 스튜디오",
-    title: "나만의 버추얼 아이돌을\n디자인하세요",
-    sub: "AI로 나만의 가상 K-pop 아이돌 캐릭터를 직접 만들어보세요",
+    tag: "AI 리믹스",
+    title: "내가 직접 만드는\nK-pop 리믹스",
+    sub: "좋아하는 아이돌 음원을 AI로 재탄생시켜 보세요",
+    cta: "리믹스 시작 →",
+    href: "/studio/remix",
+    icon: "",
+    stats: ["AI 파트분리", "6가지 스타일", "실시간 생성"],
+    badges: ["AI 기반", "준비중"],
+  },
+  {
+    tag: "버추얼 스튜디오",
+    title: "나만의 버추얼\n아이돌 디자인",
+    sub: "AI로 버추얼 아이돌의 비주얼을 직접 만들어보세요",
     cta: "캐릭터 만들기 →",
     href: "/studio/virtual",
     icon: "",
@@ -15,19 +25,19 @@ const slides = [
     badges: ["AI 기반", "무료"],
   },
   {
-    tag: " 컨셉 디자인",
-    title: "다음 앨범 컨셉,\n내가 먼저 만든다",
-    sub: "로고부터 앨범커버까지 AI로 컨셉 키트를 완성하세요",
-    cta: "컨셉 제작하기 →",
+    tag: "컨셉 디자인",
+    title: "다음 앨범 컨셉,\n팬이 먼저 만든다",
+    sub: "로고부터 앨범커버까지 컨셉 키트를 제작해보세요",
+    cta: "컨셉 제작 →",
     href: "/studio/concept",
     icon: "",
     stats: ["5,200+ 컨셉", "앨범커버 포함", "무료 다운로드"],
     badges: ["AI 기반", "무료"],
   },
   {
-    tag: " 퍼포먼스 기획",
-    title: "무대 위 퍼포먼스를\n직접 기획하세요",
-    sub: "포메이션과 동선을 설계하고 AI 시뮬레이션으로 확인해보세요",
+    tag: "퍼포먼스 기획",
+    title: "무대 위 퍼포먼스를\n직접 기획",
+    sub: "포메이션과 동선을 기획하고 AI 시뮬레이션으로 확인해보세요",
     cta: "퍼포먼스 기획 →",
     href: "/studio/performance",
     icon: "",
@@ -35,20 +45,20 @@ const slides = [
     badges: ["AI 기반", "무료"],
   },
   {
-    tag: " 아이돌 키우기",
-    title: "나만의 아이돌 그룹을\n직접 키워보세요",
-    sub: "연습생부터 레전드까지, 선택 하나하나가 스토리가 돼요",
-    cta: "게임 시작하기 →",
-    href: "/studio/idol-game",
+    tag: "아이돌 프로젝트",
+    title: "새로운 아이돌 그룹을\n창조해보세요",
+    sub: "세계관부터 멤버 구성까지, AI와 함께 데뷔 기획서를 완성해요",
+    cta: "아이돌 기획 →",
+    href: "/studio/idol-project",
     icon: "",
-    stats: ["스토리 기반", "캐릭터 육성", "다양한 엔딩"],
-    badges: ["인터랙티브", "무료"],
+    stats: ["세계관 설계", "멤버 구성", "팬덤명 생성"],
+    badges: ["AI 기반", "무료"],
   },
   {
-    tag: " 글로벌 싱크",
+    tag: "글로벌 싱크",
     title: "K-pop을\n전 세계 언어로",
-    sub: "나만의 가상 아이돌 콘텐츠를 다국어로 번역·공유해요",
-    cta: "번역 시작하기 →",
+    sub: "내가 좋아하는 아티스트의 콘텐츠를 다국어로 번역·공유해요",
+    cta: "번역 시작 →",
     href: "/studio/global-sync",
     icon: "",
     stats: ["45개 언어", "140개국 팬", "실시간 번역"],
@@ -88,7 +98,7 @@ export default function HeroBanner() {
 
   useEffect(() => {
     if (paused) return;
-    timerRef.current = setInterval(next, 4000);
+    timerRef.current = setInterval(next, 3000);
     return () => clearInterval(timerRef.current);
   }, [paused, next]);
 
@@ -96,7 +106,7 @@ export default function HeroBanner() {
 
   return (
     <div
-      className="relative w-full h-[300px] md:h-[460px] overflow-hidden"
+      className="relative w-full h-[240px] md:h-[420px] overflow-hidden"
       style={{ borderRadius: 20 }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}

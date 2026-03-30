@@ -38,7 +38,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={cn(geistSans.variable)} suppressHydrationWarning>
-      <body className="antialiased bg-white text-gray-900 dark:bg-[#0a0a0a] dark:text-white font-[family-name:var(--font-geist-sans)] transition-colors duration-200">
+      <body className="antialiased bg-white text-gray-900 dark:bg-[#0a0a0a] dark:text-white font-sans transition-colors duration-200">
         <SessionProvider>
           <ThemeProvider>{children}</ThemeProvider>
         </SessionProvider>

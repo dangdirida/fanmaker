@@ -9,7 +9,17 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Pretendard Variable', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+      },
       colors: {
+        ogq: {
+          primary: { 50: '#dff4ea', 100: '#b5e5d7', 400: '#58dab1', 500: '#32d29d', 600: '#00c389', 700: '#00b57f', 800: '#00996e', 900: '#007a58' },
+          secondary: { 600: '#703fe4', 700: '#5b1dcd' },
+          mono: { '000': '#ffffff', '050': '#f4f6f6', '080': '#eef1f1', 100: '#d8dfdf', 200: '#a7b6b9', 700: '#57676b', 800: '#425052', 900: '#262d2e' },
+          error: '#e21235',
+          success: '#00c389',
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

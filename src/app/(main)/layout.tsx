@@ -11,7 +11,6 @@ import {
   Sparkles,
   User,
   ChevronDown,
-  ImageIcon,
   Palette,
   Users,
   Users2,
@@ -25,13 +24,16 @@ import {
   Sun,
   Moon,
   Gamepad2,
+  Music2,
+  Star,
 } from "lucide-react";
 
 const studioSubMenus = [
-  { label: "버추얼", href: "/studio/virtual", icon: ImageIcon },
+  { label: "리믹스", href: "/studio/remix", icon: Music2 },
+  { label: "버추얼", href: "/studio/virtual", icon: Sparkles },
   { label: "컨셉", href: "/studio/concept", icon: Palette },
   { label: "퍼포먼스", href: "/studio/performance", icon: Users },
-  { label: "아이돌 프로젝트", href: "/studio/idol-project", icon: Sparkles },
+  { label: "아이돌 프로젝트", href: "/studio/idol-project", icon: Star },
   { label: "글로벌 싱크", href: "/studio/global-sync", icon: Globe },
 ];
 

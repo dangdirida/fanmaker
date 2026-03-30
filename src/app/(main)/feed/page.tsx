@@ -14,7 +14,8 @@ const TABS = [
 
 const CATEGORIES = [
   { key: "", label: "전체" },
-  { key: "VIRTUAL", label: "버추얼 아이돌" },
+  { key: "REMIX", label: "리믹스" },
+  { key: "VIRTUAL", label: "버추얼" },
   { key: "CONCEPT", label: "컨셉" },
   { key: "PERFORMANCE", label: "퍼포먼스" },
   { key: "IDOL_PROJECT", label: "아이돌 프로젝트" },

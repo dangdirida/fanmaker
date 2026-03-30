@@ -1,9 +1,36 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
+    /* OGQ Design Tokens */
+    --ogq-primary-50: #dff4ea;
+    --ogq-primary-100: #b5e5d7;
+    --ogq-primary-400: #58dab1;
+    --ogq-primary-500: #32d29d;
+    --ogq-primary-600: #00c389;
+    --ogq-primary-700: #00b57f;
+    --ogq-primary-800: #00996e;
+    --ogq-primary-900: #007a58;
+    --ogq-secondary-600: #703fe4;
+    --ogq-secondary-700: #5b1dcd;
+    --ogq-mono-000: #ffffff;
+    --ogq-mono-050: #f4f6f6;
+    --ogq-mono-080: #eef1f1;
+    --ogq-mono-100: #d8dfdf;
+    --ogq-mono-200: #a7b6b9;
+    --ogq-mono-700: #57676b;
+    --ogq-mono-800: #425052;
+    --ogq-mono-900: #262d2e;
+    --ogq-error: #e21235;
+    --ogq-success: #00c389;
+    --ogq-radius-sm: 4px;
+    --ogq-radius-md: 8px;
+    --ogq-radius-lg: 12px;
+    --ogq-radius-xl: 16px;
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
@@ -55,5 +82,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Pretendard Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 }
